@@ -34,13 +34,20 @@ function Text(props) {
    const scaleRange = [.25, 1, 1.75];
    let scale = useTransform(x, motionRange, scaleRange);
    
+   
    useEffect(()=>{
       textInput.current.value = localStorage.getItem("text" + props.test);
+      console.log(JSON.parse(localStorage.getItem("posX" + props.test)));
+      console.log(JSON.parse(localStorage.getItem("posY" + props.test)));
+      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, scale: 1})
    }, [])
    useEffect(()=>{
       localStorage.setItem("textElement", JSON.stringify(props.elements));
+     
    }, [props.elements])
- 
+   useEffect(() =>{
+      
+   })
    function getElementIndex(identifier){
       for(let i = 0; i < props.elements.length; i++){
          //console.log(props.elements[i]);
@@ -71,6 +78,27 @@ function Text(props) {
       setScaleSlider(false);
       console.log(info.point.x);
       localStorage.setItem("scalePosText" + props.test, info.point.x);
+   }
+   function storeTranslations(){
+      let elem = getComputedStyle(component.current);
+      let matrix = new DOMMatrix(elem.transform);
+      
+      console.log(matrix.m41 + ", " + matrix.m42);
+      localStorage.setItem("posX" + props.test, matrix.m41);
+      localStorage.setItem("posY" + props.test, matrix.m42);
+      console.log(localStorage.getItem("posX" + props.test));
+      console.log(localStorage.getItem("posY" + props.test));
+   }
+   function getTranslations(){
+      if(localStorage.getItem("posX" + props.test) !== null){
+         console.log(localStorage.getItem("posX" + props.test));
+         console.log(localStorage.getItem("posY" + props.test));
+         return [parseFloat(localStorage.getItem("posX" + props.test)), parseFloat(localStorage.getItem("posY" + props.test))]
+      }
+      else{
+         console.log("yeet2");
+         return [0,0];
+      }
    }
    function getScalePos(){
       if(localStorage.getItem("scalePosText" + props.test) !== null){
@@ -103,7 +131,7 @@ function Text(props) {
    }
    else {
       return (
-         <Component ref={component} initial = {{opacity: 0}} animate={{opacity: 1}} style={{scale}} onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }} drag={props.canEdit ? true : false} dragConstraints={{ left: -500, right: 500, top: -350, bottom: 475 }} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
+         <Component ref={component}  initial = {{x: 0, y: 0, opacity: 0}} animate={controls} style={{scale}} transition={{opacity: {duration: 1}}} onHoverStart={() => { setHover(true) }} dragMomentum = {false} onHoverEnd={() => { setHover(false) }} drag={props.canEdit ? true : false} onDragEnd={()=>{storeTranslations()}} dragConstraints={{ left: -500, right: 500, top: -350, bottom: 475 }}>
             <motion.div className="tools" initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
                <div className="slider-container">
                   <div className="slider">
