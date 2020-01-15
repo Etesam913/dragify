@@ -24,7 +24,6 @@ const Component = styled(motion.div)`
 function Text(props) {
    const [hover, setHover] = useState(false);
    const [deleted, setDeleted] = useState(false);
-   const [scaleSlider, setScaleSlider] = useState(false);
    const textInput = useRef(null);
    const component = useRef(null);
    // Animation
@@ -36,10 +35,10 @@ function Text(props) {
    
    
    useEffect(()=>{
-      textInput.current.value = localStorage.getItem("text" + props.test);
-      console.log(JSON.parse(localStorage.getItem("posX" + props.test)));
-      console.log(JSON.parse(localStorage.getItem("posY" + props.test)));
-      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, scale: 1})
+      textInput.current.value = localStorage.getItem("text" + props.identifier);
+      console.log(JSON.parse(localStorage.getItem("translateXText" + props.identifier)));
+      console.log(JSON.parse(localStorage.getItem("translateYText" + props.identifier)));
+      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1})
    }, [])
    useEffect(()=>{
       localStorage.setItem("textElement", JSON.stringify(props.elements));
@@ -60,11 +59,10 @@ function Text(props) {
    function handleTrashing() {
       if (props.canEdit) {
          setDeleted(true);
-         setScaleSlider(false);
-         localStorage.setItem("text" + props.test,  "");
-         localStorage.setItem("scalePosText" + props.test, "0");
-         let modifiedArray = props.elements.slice(0, getElementIndex(props.test)).concat(props.elements.slice(getElementIndex(props.test) + 1, props.elements.length));
-         console.log("identifier :" + props.test);
+         localStorage.setItem("text" + props.identifier,  "");
+         localStorage.setItem("scalePosText" + props.identifier, "0");
+         let modifiedArray = props.elements.slice(0, getElementIndex(props.identifier)).concat(props.elements.slice(getElementIndex(props.identifier) + 1, props.elements.length));
+         console.log("identifier :" + props.identifier);
          //console.log("index: " + getElementIndex(props.identifier));
          console.log("Modified array : " + modifiedArray);
          props.onChange(modifiedArray);
@@ -75,25 +73,24 @@ function Text(props) {
    }
    function slidingDone(event, info){
       storeScale();
-      setScaleSlider(false);
       console.log(info.point.x);
-      localStorage.setItem("scalePosText" + props.test, info.point.x);
+      localStorage.setItem("scalePosText" + props.identifier, info.point.x);
    }
    function storeTranslations(){
       let elem = getComputedStyle(component.current);
       let matrix = new DOMMatrix(elem.transform);
       
       console.log(matrix.m41 + ", " + matrix.m42);
-      localStorage.setItem("posX" + props.test, matrix.m41);
-      localStorage.setItem("posY" + props.test, matrix.m42);
-      console.log(localStorage.getItem("posX" + props.test));
-      console.log(localStorage.getItem("posY" + props.test));
+      localStorage.setItem("translateXText" + props.identifier, matrix.m41);
+      localStorage.setItem("translateYText" + props.identifier, matrix.m42);
+      console.log(localStorage.getItem("translateXText" + props.identifier));
+      console.log(localStorage.getItem("translateYText" + props.identifier));
    }
    function getTranslations(){
-      if(localStorage.getItem("posX" + props.test) !== null){
-         console.log(localStorage.getItem("posX" + props.test));
-         console.log(localStorage.getItem("posY" + props.test));
-         return [parseFloat(localStorage.getItem("posX" + props.test)), parseFloat(localStorage.getItem("posY" + props.test))]
+      if(localStorage.getItem("translateXText" + props.identifier) !== null){
+         console.log(localStorage.getItem("translateXText" + props.identifier));
+         console.log(localStorage.getItem("translateYText" + props.identifier));
+         return [parseFloat(localStorage.getItem("translateXText" + props.identifier)), parseFloat(localStorage.getItem("translateYText" + props.identifier))]
       }
       else{
          console.log("yeet2");
@@ -101,23 +98,23 @@ function Text(props) {
       }
    }
    function getScalePos(){
-      if(localStorage.getItem("scalePosText" + props.test) !== null){
-         console.log(parseInt(localStorage.getItem("scalePosText" + props.test)));
-         return parseInt(localStorage.getItem("scalePosText" + props.test));
+      if(localStorage.getItem("scalePosText" + props.identifier) !== null){
+         console.log(parseInt(localStorage.getItem("scalePosText" + props.identifier)));
+         return parseInt(localStorage.getItem("scalePosText" + props.identifier));
       }
       else{
          return 0;
       }
    }
    function storeScale(){
-      localStorage.setItem("scaleText" + props.test, scale.current);
-      console.log(localStorage.getItem("scaleText" + props.test));
+      localStorage.setItem("scaleText" + props.identifier, scale.current);
+      console.log(localStorage.getItem("scaleText" + props.identifier));
    }
  
    function getScale(){
-      if(localStorage.getItem("scaleText" + props.test) !== null){
+      if(localStorage.getItem("scaleText" + props.identifier) !== null){
          console.log('yeet');
-         return localStorage.getItem("scaleText" + props.test);
+         return localStorage.getItem("scaleText" + props.identifier);
       }
       else{
          return .5;
@@ -135,12 +132,12 @@ function Text(props) {
             <motion.div className="tools" initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
                <div className="slider-container">
                   <div className="slider">
-                     <motion.div className="handle" style={{ x }} drag={props.canEdit ? 'x' : false} dragConstraints={{ left: -70, right: 70 }} dragElastic={0} dragMomentum={false} onDragStart={() => {setScaleSlider(true)}}  onDragEnd={(event, info)=>{slidingDone(event, info)}}></motion.div>
+                     <motion.div className="handle" style={{ x }} drag={props.canEdit ? 'x' : false} dragConstraints={{ left: -70, right: 70 }} dragElastic={0} dragMomentum={false}  onDragEnd={(event, info)=>{slidingDone(event, info)}}></motion.div>
                   </div>
                </div>
                <motion.img src={trashcan} className="delete-button" onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
             </motion.div>
-            <TextArea ref = {textInput} onChange={(event)=>{localStorage.setItem("text" + props.test, event.target.value)}} placeholder="placeholder"></TextArea>
+            <TextArea ref = {textInput} onChange={(event)=>{localStorage.setItem("text" + props.identifier, event.target.value)}} placeholder="placeholder"></TextArea>
          </Component>
       );
    }

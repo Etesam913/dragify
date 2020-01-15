@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Text from './Text.js';
 import Today from './Today.js';
 import Time from './Time.js';
+import Link from './Link.js';
 import pencil from "./images/pencil.png";
 import edit from "./images/edit.png";
 import date from "./images/date.png";
@@ -55,35 +56,35 @@ function App() {
    const [dateElements, setDateElements] = useState([]);
    const [timeElements, setTimeElements] = useState([]);
 
-   const textElementsOnPage = textElements.map((props) => <Text key={props.id} test = {props.id} canEdit={editable} elements= {textElements} onChange={handleTextElementChange}></Text>);
-   const dateElementsOnPage = dateElements.map((props) => <Today key={props.id} canEdit={editable}></Today>)
-   const timeElementsOnPage = timeElements.map((props) => <Time key={props.id} canEdit={editable}></Time>)
+   const textElementsOnPage = textElements.map((props) => <Text key={props.id} identifier = {props.id} canEdit={editable} elements= {textElements} onChange={handleTextElementChange}></Text>);
+   const dateElementsOnPage = dateElements.map((props) => <Today key={props.id} canEdit={editable} identifier = {props.id} elements= {dateElements} onChange={handleDateElementChange}></Today>)
+   const timeElementsOnPage = timeElements.map((props) => <Time key={props.id} canEdit={editable} identifier = {props.id} elements= {timeElements} onChange={handleTimeElementChange}></Time>)
 
    useEffect(()=>{
-      if(localStorage.getItem("textElements") === ""){
+      if(localStorage.getItem("textElements") === "" || localStorage.getItem("dateElements") === ""){
          console.log("it is a string");
       }
       else{
-         console.log(JSON.parse(localStorage.getItem("textElement")));
-         //localStorage.setItem("textElement", JSON.stringify([]));
          setTextElements(JSON.parse(localStorage.getItem("textElement")));
+         setDateElements(JSON.parse(localStorage.getItem("dateElement")));
+         setTimeElements(JSON.parse(localStorage.getItem("timeElement")));
       }
    }, [])
    useEffect(()=>{
       localStorage.setItem("textElement", JSON.stringify(textElements));
+      localStorage.setItem("dateElement", JSON.stringify(dateElements));
+      localStorage.setItem("timeElement", JSON.stringify(timeElements));
       console.log(JSON.parse(localStorage.getItem("textElement")));
-   }, [textElements])
-   function save(){
-      localStorage.setItem("textElement", JSON.stringify(textElements));
-      console.log(localStorage.getItem("textElement"));
-   }
+   }, [textElements, dateElements, timeElements])
+   
    function handleTextElementChange(arr){
       setTextElements(arr);
    }
-   function recalibrateIndex(){
-      for(let i = 0; i< textElements.length; i++){
-         textElements[i].number = i;
-      }
+   function handleDateElementChange(arr){
+      setDateElements(arr);
+   }
+   function handleTimeElementChange(arr){
+      setTimeElements(arr);
    }
    function AddElement(type) {
       if (type === "text") {
@@ -92,15 +93,14 @@ function App() {
          setTextElements(textElements.concat(elem));
       }
       else if (type === "date") {
-         const elem = [{ id: Math.random() * 200, number: dateElements.length}];
+         const elem = [{ id: Math.random() * 200}];
          setDateElements(dateElements.concat(elem));
       }
       else if (type === "time") {
-         const elem = [{ id: Math.random() * 200, number: timeElements.length}];
+         const elem = [{ id: Math.random() * 200}];
          setTimeElements(timeElements.concat(elem));
       }
    }
-
    return (
       <Page>
          <EditButton onClick={() => { setEditable(!editable) }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
@@ -118,10 +118,10 @@ function App() {
             </SidebarButton>
          </Sidebar>
          <Canvas>
-         <button /*onClick={()=>{save()}}*/> placeholder</button>
             {textElementsOnPage}
             {dateElementsOnPage}
             {timeElementsOnPage}
+            <Link></Link>
          </Canvas>
       </Page>
    );

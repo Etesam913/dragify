@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import React, { useEffect, useState, useRef } from 'react';
+import { motion, useMotionValue, useTransform, useAnimation} from "framer-motion";
 import styled from 'styled-components';
 import './App.css';
 import trashcan from './images/trashcan.png';
@@ -19,6 +19,14 @@ function Time(props) {
    const [time, setTime] = useState("");
    const [hover, setHover] = useState(false);
    const [deleted, setDeleted] = useState(false);
+   const component = useRef(null);
+
+   let x = useMotionValue(getScalePos());
+   const motionRange = [-70, 0, 70];
+   const scaleRange = [.25, 1, 1.75];
+   const scale = useTransform(x, motionRange, scaleRange);
+   const controls = useAnimation();
+
    function getTimePeriodName(hourNumber) {
       if (hourNumber > 11 && hourNumber < 24) {
          return "pm";
@@ -46,6 +54,8 @@ function Time(props) {
       let seconds = d.getSeconds();
       if (seconds < 10) { seconds = "0" + seconds; }
       setTime(getTwelveHourTime(hour) + ":" + minutes + ":" + seconds + " " + getTimePeriodName(hour));
+      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1})
+
       const interval = setInterval(() => {
          d = new Date();
          hour = d.getHours();
@@ -58,29 +68,77 @@ function Time(props) {
       return () => clearInterval(interval);
    }, []);
 
+
+   function getElementIndex(identifier){
+      for(let i = 0; i < props.elements.length; i++){
+         //console.log(props.elements[i]);
+         if(identifier === props.elements[i].id){
+            return i;
+         }
+      }
+      return -1;
+   }
+
    function handleTrashing() {
       if (props.canEdit) {
          setDeleted(true);
+         let modifiedArray = props.elements.slice(0, getElementIndex(props.identifier)).concat(props.elements.slice(getElementIndex(props.identifier) + 1, props.elements.length));
+         props.onChange(modifiedArray);
       }
       else {
          return;
       }
    }
-   const x = useMotionValue(0);
-   const motionRange = [-70, 0, 70];
-   const scaleRange = [.25, 1, 1.75];
-   const scale = useTransform(x, motionRange, scaleRange);
 
+
+   function slidingDone(event, info){
+      storeScale();
+      //console.log(info.point.x);
+      localStorage.setItem("scalePosTime" + props.identifier, info.point.x);
+   }
+
+   function storeScale(){
+      localStorage.setItem("scaleTime" + props.identifier, scale.current);
+      //console.log(localStorage.getItem("scaleDate" + props.identifier));
+   }
+
+   function getScalePos(){
+      if(localStorage.getItem("scalePosTime" + props.identifier) !== null){
+         console.log(parseInt(localStorage.getItem("scalePosTime" + props.identifier)));
+         return parseInt(localStorage.getItem("scalePosTime" + props.identifier));
+      }
+      else{
+         return 0;
+      }
+   }
+
+   function storeTranslations(){
+      let elem = getComputedStyle(component.current);
+      let matrix = new DOMMatrix(elem.transform);
+      localStorage.setItem("translateXTime" + props.identifier, matrix.m41);
+      localStorage.setItem("translateYTime" + props.identifier, matrix.m42);
+      //console.log(localStorage.getItem("translateXDate") + props.identifier);
+   }
+
+   function getTranslations(){
+      if(localStorage.getItem("translateXTime" + props.identifier) !== null){
+         return [parseFloat(localStorage.getItem("translateXTime" + props.identifier)), parseFloat(localStorage.getItem("translateYTime" + props.identifier))]
+      }
+      else{
+         console.log("yeet2");
+         return [0,0];
+      }
+   }
    if (deleted) {
       return (<div></div>);
    }
    else {
       return (
-         <Component style={{ scale }} onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }} drag={props.canEdit ? true : false} dragConstraints={{ left: -500, right: 775, top: -425, bottom: 425 }} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
+         <Component ref= {component} animate = {controls} style={{ scale }} onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }} dragMomentum = {false} drag={props.canEdit ? true : false} onDragEnd={()=>{storeTranslations()}} dragConstraints={{ left: -500, right: 775, top: -425, bottom: 425 }} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
             <motion.div className="tools" initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
                <div className="slider-container">
                   <div className="slider">
-                     <motion.div className="handle" style={{ x }} drag={props.canEdit ? 'x' : false} dragConstraints={{ left: -70, right: 70 }} dragElastic={0}></motion.div>
+                     <motion.div className="handle" dragMomentum = {false} style={{ x }} drag={props.canEdit ? 'x' : false} onDragEnd={(event, info)=>{slidingDone(event, info)}} dragConstraints={{ left: -70, right: 70 }} dragElastic={0}></motion.div>
                   </div>
                </div>
                <motion.img src={trashcan} className="delete-button" onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
