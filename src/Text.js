@@ -7,8 +7,8 @@ import { removePropertiesDeep } from '@babel/types';
 
 const TextArea = styled(motion.input)`
   font-weight: bold;
-  font-family: "Roboto";
   font-size: 3rem;
+  font-family: "Public Sans";
   text-align: center;
   border-top: none; border-left: none; border-right: none; border-bottom: none;
   background-color: #fff0;
@@ -99,7 +99,6 @@ function Text(props) {
    }
    function getScalePos(){
       if(localStorage.getItem("scalePosText" + props.identifier) !== null){
-         console.log(parseInt(localStorage.getItem("scalePosText" + props.identifier)));
          return parseInt(localStorage.getItem("scalePosText" + props.identifier));
       }
       else{

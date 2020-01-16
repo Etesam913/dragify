@@ -3,7 +3,7 @@ import { motion, useTransform, useMotionValue, useAnimation } from 'framer-motio
 import styled from 'styled-components';
 import './App.css';
 import trashcan from './images/trashcan.png';
-import axios from "axios";
+import { link } from 'fs';
 const Component = styled(motion.div)`
    width: 10rem;
    height: 10rem;
@@ -17,6 +17,11 @@ const Component = styled(motion.div)`
 const Header = styled.div`
    font-size: 1rem;
    font-weight: bold;
+   margin-bottom: .2rem;
+`
+const Subtitle = styled.div`
+   font-size: .75rem;
+   text-align: center;
 `
 const LinkInput = styled.input`
    background-color: rgb(80%, 80%, 80%);
@@ -52,60 +57,90 @@ const FileLabel = styled(motion.label)`
 `;
 const FileInput = styled.input`
    visibility: hidden;
+   display: none;
 `;
-const Logo = styled.img`
-   width: 7.5rem;
-   height: 7.5rem;
+const Logo = styled(motion.img)`
+   width: 6.5rem;
+   height: 6.5rem;
+   object-fit: cover;
+   object-position: center;
    border-radius: 100%;
 `
 
 function Link(props) {
    const component = useRef(null);
+   const linkInput = useRef(null);
    const [stage, setStage] = useState(0);
    const [image, setImage] = useState("");
+   const [linkAddress, setLinkAddress] = useState("");
    const [loading, setLoading] = useState(false);
+   const [imageError, setImageError] = useState("");
 
-   const uploadImage = async e => {
+   function imageHandler(e) {
       const files = e.target.files;
+      if (files[0].size > 524288) { // 500 kilobytes
+         setImageError("File has to be under 500 kilobytes");
+      }
+      else{
+         setImageError("");
+         uploadImage(files);
+      }
+   }
+
+   async function uploadImage(files) {
+      
       const data = new FormData();
       data.append('file', files[0]);
       data.append('upload_preset', 'etesam');
       setLoading(true);
-      const res= await fetch('https://api.cloudinary.com/v1_1/dz5ashos1/image/upload', 
-      {
-         method: 'POST',
-         body: data
-      })
+      const res = await fetch('https://api.cloudinary.com/v1_1/dz5ashos1/image/upload',
+         {
+            method: 'POST',
+            body: data
+         })
       const file = await res.json();
       setLoading(false);
       setImage(file.secure_url);
    }
 
-   if(stage === 0){
-      return(
-         <Component ref={component} drag dragMomentum={false}>
-            <Header>Paste Link Below</Header>
-            <LinkInput></LinkInput>
-            <Button onClick = {()=>{setStage(1)}} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>Next</Button>
-         </Component>
-      );
+
+function storeLink() {
+   setStage(1);
+   if (linkInput.current.value[0] === "w" && linkInput.current.value[1] === "w" && linkInput.current.value[2] === "w") { // Is it a www link
+      setLinkAddress("https://" + linkInput.current.value);
    }
-   else if(stage === 1){
-      return (
-         <Component animate={{borderRadius: "50%"}} transition={{duration: 1}} ref={component} drag dragMomentum={false}>
-            <FileLabel for="files">Select Image</FileLabel>
-            <FileInput id="files" type="file" onChange={uploadImage}></FileInput>
-            <Button onClick = {()=>{setStage(2)}} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>Submit</Button>
-         </Component>
-      );
+   else {
+      setLinkAddress(linkInput.current.value);
    }
-   else{
-      return(
-         <Component animate={{borderRadius: "100%"}} transition={{duration: 1}} ref={component} drag dragMomentum={false}>
-            {loading ? <h3> loading </h3> : <Logo src={image}></Logo> }
-         </Component>
-      );
-   }
-   
+}
+
+if (stage === 0) {
+   return (
+      <Component animate={{ borderRadius: "0%" }} transition={{ duration: 1 }} ref={component} drag dragMomentum={false}>
+         <Header>Paste Link Below</Header>
+         <Subtitle> ex: www.reddit.com </Subtitle>
+         <LinkInput ref={linkInput}></LinkInput>
+         <Button onClick={() => { storeLink() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>Next</Button>
+      </Component>
+   );
+}
+else if (stage === 1) {
+   return (
+      <Component animate={{ borderRadius: "20%" }} transition={{ duration: 1 }} ref={component} drag dragMomentum={false}>
+         <FileLabel htmlFor="files">Select Image</FileLabel>
+         <FileInput id="files" type="file" onChange={(e) => { imageHandler(e) }}></FileInput>
+         <Subtitle style={{marginBottom: ".5rem", marginTop: ".5rem"}}>{imageError}</Subtitle>
+         <Button onClick={() => { setStage(2) }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>Submit</Button>
+      </Component>
+   );
+}
+else {
+   return (
+      <Component animate={{ borderRadius: "100%" }} transition={{ duration: 3 }} ref={component} drag dragMomentum={false}>
+         {loading ? <h3> loading </h3> : <a style={{borderRadius: "100%"}} href={linkAddress}><Logo src={image} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}></Logo></a>}
+      </Component>
+   );
+}
+
 }
 export default Link;
