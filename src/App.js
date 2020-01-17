@@ -5,6 +5,7 @@ import Text from './Text.js';
 import Today from './Today.js';
 import Time from './Time.js';
 import Link from './Link.js';
+import Searchbar from './Searchbar.js';
 import pencil from "./images/pencil.png";
 import edit from "./images/edit.png";
 import date from "./images/date.png";
@@ -72,11 +73,14 @@ function App() {
          setDateElements([]);
          setTimeElements([]);
          setLinkElements([]);
-
          setTextElements(JSON.parse(localStorage.getItem("textElement")));
          setDateElements(JSON.parse(localStorage.getItem("dateElement")));
          setTimeElements(JSON.parse(localStorage.getItem("timeElement")));
          setLinkElements(JSON.parse(localStorage.getItem("linkElement")));
+         if(localStorage.getItem("editable") !== ""){
+            setEditable(JSON.parse(localStorage.getItem("editable")));
+         }
+         
       }
    }, [])
    useEffect(()=>{
@@ -100,7 +104,10 @@ function App() {
    function handleLinkElementChange(arr){
       setLinkElements(arr);
    }
-
+   function changeEditable(){
+      localStorage.setItem("editable", !editable);
+      setEditable(JSON.stringify(!editable));
+   }
    function AddElement(type) {
       if (type === "text") {
          const elem = [{ id: Math.random() * 200}];
@@ -122,7 +129,7 @@ function App() {
    }
    return (
       <Page>
-         <EditButton onClick={() => { setEditable(!editable) }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+         <EditButton onClick={() => { changeEditable() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
             <img src={pencil} style={{ height: "64.5%", width: "64.5%" }} />
          </EditButton>
          <Sidebar>
@@ -144,6 +151,7 @@ function App() {
             {dateElementsOnPage}
             {timeElementsOnPage}
             {linkElementsOnPage}
+            <Searchbar></Searchbar>
          </Canvas>
       </Page>
    );
