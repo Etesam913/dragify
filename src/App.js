@@ -9,6 +9,7 @@ import pencil from "./images/pencil.png";
 import edit from "./images/edit.png";
 import date from "./images/date.png";
 import time from "./images/time.png";
+import chain from "./images/chain.png";
 
 const Page = styled.div`
   position: absolute;
@@ -55,27 +56,36 @@ function App() {
    const [textElements, setTextElements] = useState([]);
    const [dateElements, setDateElements] = useState([]);
    const [timeElements, setTimeElements] = useState([]);
+   const [linkElements, setLinkElements] = useState([]);
 
    const textElementsOnPage = textElements.map((props) => <Text key={props.id} identifier = {props.id} canEdit={editable} elements= {textElements} onChange={handleTextElementChange}></Text>);
    const dateElementsOnPage = dateElements.map((props) => <Today key={props.id} canEdit={editable} identifier = {props.id} elements= {dateElements} onChange={handleDateElementChange}></Today>)
    const timeElementsOnPage = timeElements.map((props) => <Time key={props.id} canEdit={editable} identifier = {props.id} elements= {timeElements} onChange={handleTimeElementChange}></Time>)
+   const linkElementsOnPage = linkElements.map((props) => <Link key={props.id} canEdit={editable} identifier = {props.id} elements= {linkElements} onChange={handleLinkElementChange}></Link>)
 
    useEffect(()=>{
       if(localStorage.getItem("textElements") === "" || localStorage.getItem("dateElements") === ""){
          console.log("it is a string");
       }
       else{
+         setTextElements([]);
+         setDateElements([]);
+         setTimeElements([]);
+         setLinkElements([]);
+
          setTextElements(JSON.parse(localStorage.getItem("textElement")));
          setDateElements(JSON.parse(localStorage.getItem("dateElement")));
          setTimeElements(JSON.parse(localStorage.getItem("timeElement")));
+         setLinkElements(JSON.parse(localStorage.getItem("linkElement")));
       }
    }, [])
    useEffect(()=>{
       localStorage.setItem("textElement", JSON.stringify(textElements));
       localStorage.setItem("dateElement", JSON.stringify(dateElements));
       localStorage.setItem("timeElement", JSON.stringify(timeElements));
+      localStorage.setItem("linkElement", JSON.stringify(linkElements));
       console.log(JSON.parse(localStorage.getItem("textElement")));
-   }, [textElements, dateElements, timeElements])
+   }, [textElements, dateElements, timeElements, linkElements])
    
    function handleTextElementChange(arr){
       setTextElements(arr);
@@ -86,6 +96,11 @@ function App() {
    function handleTimeElementChange(arr){
       setTimeElements(arr);
    }
+
+   function handleLinkElementChange(arr){
+      setLinkElements(arr);
+   }
+
    function AddElement(type) {
       if (type === "text") {
          const elem = [{ id: Math.random() * 200}];
@@ -99,6 +114,10 @@ function App() {
       else if (type === "time") {
          const elem = [{ id: Math.random() * 200}];
          setTimeElements(timeElements.concat(elem));
+      }
+      else if(type === "link"){
+         const elem = [{ id: Math.random() * 200}];
+         setLinkElements(linkElements.concat(elem));
       }
    }
    return (
@@ -116,12 +135,15 @@ function App() {
             <SidebarButton onClick={() => { AddElement("time") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                <img src={time} style={{ height: "35%", width: "75%" }} />
             </SidebarButton>
+            <SidebarButton onClick={() => { AddElement("link") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+               <img src={chain} style={{ height: "15", width: "75%" }} />
+            </SidebarButton>
          </Sidebar>
          <Canvas>
             {textElementsOnPage}
             {dateElementsOnPage}
             {timeElementsOnPage}
-            <Link></Link>
+            {linkElementsOnPage}
          </Canvas>
       </Page>
    );

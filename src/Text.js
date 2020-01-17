@@ -15,11 +15,12 @@ const TextArea = styled(motion.input)`
 `;
 const Component = styled(motion.div)`
     position: absolute;
-    left: 35%;
-    top: 35%;
+    left: 32%;
+    top: 38%;
     display: flex;
     flex-direction: column;
     width: 40rem;
+    z-index: 1
 `;
 function Text(props) {
    const [hover, setHover] = useState(false);
@@ -38,7 +39,7 @@ function Text(props) {
       textInput.current.value = localStorage.getItem("text" + props.identifier);
       console.log(JSON.parse(localStorage.getItem("translateXText" + props.identifier)));
       console.log(JSON.parse(localStorage.getItem("translateYText" + props.identifier)));
-      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1})
+      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}})
    }, [])
    useEffect(()=>{
       localStorage.setItem("textElement", JSON.stringify(props.elements));
@@ -93,7 +94,6 @@ function Text(props) {
          return [parseFloat(localStorage.getItem("translateXText" + props.identifier)), parseFloat(localStorage.getItem("translateYText" + props.identifier))]
       }
       else{
-         console.log("yeet2");
          return [0,0];
       }
    }
@@ -108,16 +108,6 @@ function Text(props) {
    function storeScale(){
       localStorage.setItem("scaleText" + props.identifier, scale.current);
       console.log(localStorage.getItem("scaleText" + props.identifier));
-   }
- 
-   function getScale(){
-      if(localStorage.getItem("scaleText" + props.identifier) !== null){
-         console.log('yeet');
-         return localStorage.getItem("scaleText" + props.identifier);
-      }
-      else{
-         return .5;
-      }
    }
 
    if (deleted) {
@@ -136,7 +126,7 @@ function Text(props) {
                </div>
                <motion.img src={trashcan} className="delete-button" onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
             </motion.div>
-            <TextArea ref = {textInput} onChange={(event)=>{localStorage.setItem("text" + props.identifier, event.target.value)}} placeholder="placeholder"></TextArea>
+            <TextArea  readOnly={props.canEdit ? false : true}  ref = {textInput} onChange={(event)=>{localStorage.setItem("text" + props.identifier, event.target.value)}} placeholder="placeholder"></TextArea>
          </Component>
       );
    }

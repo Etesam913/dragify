@@ -10,6 +10,7 @@ const Component = styled(motion.div)`
     top: 42%;
     display: flex;
     flex-direction: column;
+    z-index:1;
 `;
 const Text = styled(motion.div)`
     font-size: 3rem;
@@ -27,6 +28,23 @@ function Today(props) {
    const scale = useTransform(x, motionRange, scaleRange);
    const controls = useAnimation();
 
+   useEffect(() => {
+      var d = new Date();
+      var monthNumber = d.getMonth();
+      var day = d.getDate();
+      var year = d.getFullYear();
+      setToday(getMonth(monthNumber) + " " + day + " " + year);
+      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}})
+      const interval = setInterval(() => {
+         d = new Date();
+         monthNumber = d.getMonth();
+         day = d.getDate();
+         year = d.getFullYear();
+         setToday(getMonth(monthNumber) + " " + day + " " + year);
+      }, 30000); // Done every 30 seconds
+      return () => clearInterval(interval);
+   }, []);
+   
    function getElementIndex(identifier){
       for(let i = 0; i < props.elements.length; i++){
          //console.log(props.elements[i]);
@@ -96,22 +114,7 @@ function Today(props) {
       }
       return "That month does not exist";
    }
-   useEffect(() => {
-      var d = new Date();
-      var monthNumber = d.getMonth();
-      var day = d.getDate();
-      var year = d.getFullYear();
-      setToday(getMonth(monthNumber) + " " + day + " " + year);
-      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1})
-      const interval = setInterval(() => {
-         d = new Date();
-         monthNumber = d.getMonth();
-         day = d.getDate();
-         year = d.getFullYear();
-         setToday(getMonth(monthNumber) + " " + day + " " + year);
-      }, 30000); // Done every 30 seconds
-      return () => clearInterval(interval);
-   }, []);
+   
    if (deleted) {
       return (
          <div></div>

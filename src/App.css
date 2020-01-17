@@ -11,17 +11,45 @@
     border-radius: 1rem;
 }
 .handle{
-    position: absolute;
-    left: 43%;
-    bottom: -20%;
-    height: 1.5rem;
-    width: 1.5rem;
-    border-radius: 1rem;
-    background-color: rgb(219, 219, 219);
+   position: absolute;
+   left: 43%;
+   bottom: -20%;
+   height: 1.5rem;
+   width: 1.5rem;
+   border-radius: 1rem;
+   background-color: rgb(219, 219, 219);
 }
+
+.small-slider-container{
+   position: relative;
+   width: 5rem;
+   height: .75rem;
+}
+.small-slider{
+   position: absolute;
+   width: 5rem;
+   height: .75rem;
+   background-color: rgb(177, 177, 177);
+   border-radius: 1rem;
+}
+.small-handle{
+   position: absolute;
+   left: 41%;
+   bottom: -20%;
+   height: 1rem;
+   width: 1rem;
+   border-radius: 1rem;
+   background-color: rgb(219, 219, 219);
+}
+
+.small-delete-button{
+   width:40.25px;
+   height:50px;
+}
+
 .tools{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     width: 100%;
 }

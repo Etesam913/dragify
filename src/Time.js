@@ -5,10 +5,11 @@ import './App.css';
 import trashcan from './images/trashcan.png';
 const Component = styled(motion.div)`
     position: absolute;
-    left: 40%;
+    left: 43%;
     top: 42%;
     display: flex;
     flex-direction: column;
+    z-index: 1;
 `;
 const Text = styled(motion.div)`
     font-size: 3rem;
@@ -54,7 +55,7 @@ function Time(props) {
       let seconds = d.getSeconds();
       if (seconds < 10) { seconds = "0" + seconds; }
       setTime(getTwelveHourTime(hour) + ":" + minutes + ":" + seconds + " " + getTimePeriodName(hour));
-      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1})
+      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}})
 
       const interval = setInterval(() => {
          d = new Date();
@@ -92,14 +93,7 @@ function Time(props) {
 
 
    function slidingDone(event, info){
-      storeScale();
-      //console.log(info.point.x);
       localStorage.setItem("scalePosTime" + props.identifier, info.point.x);
-   }
-
-   function storeScale(){
-      localStorage.setItem("scaleTime" + props.identifier, scale.current);
-      //console.log(localStorage.getItem("scaleDate" + props.identifier));
    }
 
    function getScalePos(){
