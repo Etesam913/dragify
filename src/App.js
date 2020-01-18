@@ -11,6 +11,7 @@ import edit from "./images/edit.png";
 import date from "./images/date.png";
 import time from "./images/time.png";
 import chain from "./images/chain.png";
+import searchv2 from './images/searchv2.png';
 
 const Page = styled.div`
   position: absolute;
@@ -21,14 +22,16 @@ const Page = styled.div`
   flex-shrink: 0;
 `;
 const Sidebar = styled.div`
-  height: 100%;
-  width: 10rem;
-  background-color: #dfe6e3;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
+   position: relative;
+   top: 10%;
+   height: 90%;
+   width: 10rem;
+   background-color: #dfe6e3;
+   z-index: 1;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: space-around;
 `;
 const SidebarButton = styled(motion.div)`
   width: 5rem;
@@ -43,7 +46,7 @@ const SidebarButton = styled(motion.div)`
 const EditButton = styled(SidebarButton)`
   position: absolute;
   z-index: 2;
-  top: 3rem;
+  top: 1rem;
   left: 2.3rem;
 `;
 const Canvas = styled.div`
@@ -53,78 +56,87 @@ const Canvas = styled.div`
   z-index: 0;
 `;
 function App() {
-   const [editable, setEditable] = useState(true);
+   const [editable, setEditable] = useState(false);
    const [textElements, setTextElements] = useState([]);
    const [dateElements, setDateElements] = useState([]);
    const [timeElements, setTimeElements] = useState([]);
    const [linkElements, setLinkElements] = useState([]);
+   const [searchElements, setSearchElements] = useState([]);
 
-   const textElementsOnPage = textElements.map((props) => <Text key={props.id} identifier = {props.id} canEdit={editable} elements= {textElements} onChange={handleTextElementChange}></Text>);
-   const dateElementsOnPage = dateElements.map((props) => <Today key={props.id} canEdit={editable} identifier = {props.id} elements= {dateElements} onChange={handleDateElementChange}></Today>)
-   const timeElementsOnPage = timeElements.map((props) => <Time key={props.id} canEdit={editable} identifier = {props.id} elements= {timeElements} onChange={handleTimeElementChange}></Time>)
-   const linkElementsOnPage = linkElements.map((props) => <Link key={props.id} canEdit={editable} identifier = {props.id} elements= {linkElements} onChange={handleLinkElementChange}></Link>)
+   const textElementsOnPage = textElements.map((props) => <Text key={props.id} identifier={props.id} canEdit={editable} elements={textElements} onChange={handleTextElementChange}></Text>);
+   const dateElementsOnPage = dateElements.map((props) => <Today key={props.id} canEdit={editable} identifier={props.id} elements={dateElements} onChange={handleDateElementChange}></Today>)
+   const timeElementsOnPage = timeElements.map((props) => <Time key={props.id} canEdit={editable} identifier={props.id} elements={timeElements} onChange={handleTimeElementChange}></Time>)
+   const linkElementsOnPage = linkElements.map((props) => <Link key={props.id} canEdit={editable} identifier={props.id} elements={linkElements} onChange={handleLinkElementChange}></Link>)
+   const searchElementsOnPage = searchElements.map((props) => <Searchbar key={props.id} canEdit={editable} identifier={props.id} elements={searchElements} onChange={handleSearchElementChange}></Searchbar>)
 
-   useEffect(()=>{
-      if(localStorage.getItem("textElements") === "" || localStorage.getItem("dateElements") === ""){
+   useEffect(() => {
+      if (localStorage.getItem("textElements") === "" || localStorage.getItem("dateElements") === "") {
          console.log("it is a string");
       }
-      else{
-         setTextElements([]);
-         setDateElements([]);
-         setTimeElements([]);
-         setLinkElements([]);
+      else {
+         //setTextElements([]);
+         //setDateElements([]);
+         //setTimeElements([]);
+         //setLinkElements([]);
          setTextElements(JSON.parse(localStorage.getItem("textElement")));
          setDateElements(JSON.parse(localStorage.getItem("dateElement")));
          setTimeElements(JSON.parse(localStorage.getItem("timeElement")));
          setLinkElements(JSON.parse(localStorage.getItem("linkElement")));
-         if(localStorage.getItem("editable") !== ""){
+         setSearchElements(JSON.parse(localStorage.getItem("searchElement")));
+         if (JSON.parse(localStorage.getItem("editable")) !== null) {
             setEditable(JSON.parse(localStorage.getItem("editable")));
          }
-         
       }
    }, [])
-   useEffect(()=>{
+   useEffect(() => {
       localStorage.setItem("textElement", JSON.stringify(textElements));
       localStorage.setItem("dateElement", JSON.stringify(dateElements));
       localStorage.setItem("timeElement", JSON.stringify(timeElements));
       localStorage.setItem("linkElement", JSON.stringify(linkElements));
+      localStorage.setItem("searchElement", JSON.stringify(searchElements));
       console.log(JSON.parse(localStorage.getItem("textElement")));
-   }, [textElements, dateElements, timeElements, linkElements])
-   
-   function handleTextElementChange(arr){
+   }, [textElements, dateElements, timeElements, linkElements, searchElements])
+
+   function handleTextElementChange(arr) {
       setTextElements(arr);
    }
-   function handleDateElementChange(arr){
+   function handleDateElementChange(arr) {
       setDateElements(arr);
    }
-   function handleTimeElementChange(arr){
+   function handleTimeElementChange(arr) {
       setTimeElements(arr);
    }
-
-   function handleLinkElementChange(arr){
+   function handleLinkElementChange(arr) {
       setLinkElements(arr);
    }
-   function changeEditable(){
-      localStorage.setItem("editable", !editable);
-      setEditable(JSON.stringify(!editable));
+   function handleSearchElementChange(arr) {
+      setSearchElements(arr);
+   }
+   function changeEditable() {
+      localStorage.setItem("editable", JSON.stringify(!editable));
+      setEditable(!editable);
    }
    function AddElement(type) {
       if (type === "text") {
-         const elem = [{ id: Math.random() * 200}];
+         const elem = [{ id: Math.random() * 200 }];
          console.log(textElements.length);
          setTextElements(textElements.concat(elem));
       }
       else if (type === "date") {
-         const elem = [{ id: Math.random() * 200}];
+         const elem = [{ id: Math.random() * 200 }];
          setDateElements(dateElements.concat(elem));
       }
       else if (type === "time") {
-         const elem = [{ id: Math.random() * 200}];
+         const elem = [{ id: Math.random() * 200 }];
          setTimeElements(timeElements.concat(elem));
       }
-      else if(type === "link"){
-         const elem = [{ id: Math.random() * 200}];
+      else if (type === "link") {
+         const elem = [{ id: Math.random() * 200 }];
          setLinkElements(linkElements.concat(elem));
+      }
+      else if (type === "search") {
+         const elem = [{ id: Math.random() * 200 }];
+         setSearchElements(searchElements.concat(elem));
       }
    }
    return (
@@ -145,13 +157,17 @@ function App() {
             <SidebarButton onClick={() => { AddElement("link") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                <img src={chain} style={{ height: "15", width: "75%" }} />
             </SidebarButton>
+            <SidebarButton onClick={() => { AddElement("search") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+               <img src={searchv2} style={{ height: "60%", width: "60%" }} />
+            </SidebarButton>
          </Sidebar>
          <Canvas>
             {textElementsOnPage}
             {dateElementsOnPage}
             {timeElementsOnPage}
             {linkElementsOnPage}
-            <Searchbar></Searchbar>
+            {searchElementsOnPage}
+
          </Canvas>
       </Page>
    );

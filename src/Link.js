@@ -3,7 +3,6 @@ import { motion, useTransform, useMotionValue, useAnimation } from 'framer-motio
 import styled from 'styled-components';
 import './App.css';
 import trashcan from './images/trashcan.png';
-import { link } from 'fs';
 import backarrow from './images/backarrow.png';
 const Component = styled(motion.div)`
    position: absolute;
@@ -17,6 +16,7 @@ const Component = styled(motion.div)`
 const Box = styled(motion.div)`
    width: 10rem;
    height: 10rem;
+   margin-top: .5rem;
    background-color: rgb(90%, 90%, 90%);
    display: flex;
    flex-direction: column;

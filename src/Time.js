@@ -72,7 +72,6 @@ function Time(props) {
 
    function getElementIndex(identifier){
       for(let i = 0; i < props.elements.length; i++){
-         //console.log(props.elements[i]);
          if(identifier === props.elements[i].id){
             return i;
          }
@@ -90,7 +89,6 @@ function Time(props) {
          return;
       }
    }
-
 
    function slidingDone(event, info){
       localStorage.setItem("scalePosTime" + props.identifier, info.point.x);

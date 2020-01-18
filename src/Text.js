@@ -3,7 +3,6 @@ import { motion, useTransform, useMotionValue, useAnimation } from 'framer-motio
 import styled from 'styled-components';
 import './App.css';
 import trashcan from './images/trashcan.png';
-import { removePropertiesDeep } from '@babel/types';
 
 const TextArea = styled(motion.input)`
   font-weight: bold;
