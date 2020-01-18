@@ -6,12 +6,14 @@ import Today from './Today.js';
 import Time from './Time.js';
 import Link from './Link.js';
 import Searchbar from './Searchbar.js';
+import Joke from './Joke.js';
 import pencil from "./images/pencil.png";
 import edit from "./images/edit.png";
 import date from "./images/date.png";
 import time from "./images/time.png";
 import chain from "./images/chain.png";
 import searchv2 from './images/searchv2.png';
+import laugh from './images/laugh.png';
 
 const Page = styled.div`
   position: absolute;
@@ -62,12 +64,14 @@ function App() {
    const [timeElements, setTimeElements] = useState([]);
    const [linkElements, setLinkElements] = useState([]);
    const [searchElements, setSearchElements] = useState([]);
+   const [jokeElements, setJokeElements] = useState([]);
 
    const textElementsOnPage = textElements.map((props) => <Text key={props.id} identifier={props.id} canEdit={editable} elements={textElements} onChange={handleTextElementChange}></Text>);
    const dateElementsOnPage = dateElements.map((props) => <Today key={props.id} canEdit={editable} identifier={props.id} elements={dateElements} onChange={handleDateElementChange}></Today>)
    const timeElementsOnPage = timeElements.map((props) => <Time key={props.id} canEdit={editable} identifier={props.id} elements={timeElements} onChange={handleTimeElementChange}></Time>)
    const linkElementsOnPage = linkElements.map((props) => <Link key={props.id} canEdit={editable} identifier={props.id} elements={linkElements} onChange={handleLinkElementChange}></Link>)
    const searchElementsOnPage = searchElements.map((props) => <Searchbar key={props.id} canEdit={editable} identifier={props.id} elements={searchElements} onChange={handleSearchElementChange}></Searchbar>)
+   const jokeElementsOnPage = jokeElements.map((props) => <Joke key={props.id} canEdit={editable} identifier={props.id} elements={jokeElements} onChange={handleJokeElementChange}></Joke>)
 
    useEffect(() => {
       if (localStorage.getItem("textElements") === "" || localStorage.getItem("dateElements") === "") {
@@ -83,6 +87,7 @@ function App() {
          setTimeElements(JSON.parse(localStorage.getItem("timeElement")));
          setLinkElements(JSON.parse(localStorage.getItem("linkElement")));
          setSearchElements(JSON.parse(localStorage.getItem("searchElement")));
+         setSearchElements(JSON.parse(localStorage.getItem("jokeElement")));
          if (JSON.parse(localStorage.getItem("editable")) !== null) {
             setEditable(JSON.parse(localStorage.getItem("editable")));
          }
@@ -94,6 +99,8 @@ function App() {
       localStorage.setItem("timeElement", JSON.stringify(timeElements));
       localStorage.setItem("linkElement", JSON.stringify(linkElements));
       localStorage.setItem("searchElement", JSON.stringify(searchElements));
+      localStorage.setItem("jokeElement", JSON.stringify(jokeElements));
+
       console.log(JSON.parse(localStorage.getItem("textElement")));
    }, [textElements, dateElements, timeElements, linkElements, searchElements])
 
@@ -111,6 +118,9 @@ function App() {
    }
    function handleSearchElementChange(arr) {
       setSearchElements(arr);
+   }
+   function handleJokeElementChange(arr) {
+      setJokeElements(arr);
    }
    function changeEditable() {
       localStorage.setItem("editable", JSON.stringify(!editable));
@@ -138,6 +148,10 @@ function App() {
          const elem = [{ id: Math.random() * 200 }];
          setSearchElements(searchElements.concat(elem));
       }
+      else if (type === "joke") {
+         const elem = [{ id: Math.random() * 200 }];
+         setJokeElements(jokeElements.concat(elem));
+      }
    }
    return (
       <Page>
@@ -160,6 +174,9 @@ function App() {
             <SidebarButton onClick={() => { AddElement("search") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                <img src={searchv2} style={{ height: "60%", width: "60%" }} />
             </SidebarButton>
+            <SidebarButton onClick={() => { AddElement("joke") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+               <img src={laugh} style={{ height: "70%", width: "70%" }} />
+            </SidebarButton>
          </Sidebar>
          <Canvas>
             {textElementsOnPage}
@@ -167,7 +184,7 @@ function App() {
             {timeElementsOnPage}
             {linkElementsOnPage}
             {searchElementsOnPage}
-
+            {jokeElementsOnPage}
          </Canvas>
       </Page>
    );
