@@ -7,6 +7,7 @@ import Time from './Time.js';
 import Link from './Link.js';
 import Searchbar from './Searchbar.js';
 import Joke from './Joke.js';
+import List from './List.js';
 import pencil from "./images/pencil.png";
 import edit from "./images/edit.png";
 import date from "./images/date.png";
@@ -188,6 +189,7 @@ function App() {
             {linkElementsOnPage}
             {searchElementsOnPage}
             {jokeElementsOnPage}
+            <List></List>
          </Canvas>
       </Page>
    );
