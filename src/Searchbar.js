@@ -18,39 +18,46 @@ const Component = styled(motion.div)`
 `;
 
 const BarContainer = styled.form`
-   height: 2rem;
-`
-
-const Bar = styled.input`
    border: none;
    background-color: #e4e4e4;
    height: 2rem;
    border-radius: 2rem;
-   padding-left:2.1rem;
-   font-size: 1rem;
+   
    font-family: "Public Sans";
-   width: 15rem;
+   width: 20rem;
    margin-top: .5rem;
+   display: flex;
+   align-items: center;
+`
+
+const Bar = styled.input`
+   width: 15rem;
+   font-family: "Public Sans";
+   border: none;
+   font-size: 1rem;
+   background: transparent;
+   
 `
 const MagnifyingGlass = styled(motion.button)`
-   position: relative;
-   bottom: 120%;
    border: none;
    width: 1.5rem;
-   left: 101%;
+   margin-left: .5rem;
    height: 100%;
    background-color: transparent;
    background-image: url(${search});
    background-size: 1.25rem, 1.25rem;
-   background-position-y: 70%;
+   background-position-y: 50%;
    background-repeat: no-repeat;
 `;
 const SearchLogo = styled(motion.img)`
-   position: relative;
-   top: -84%;
-   left: -7%;
-   height: 1.2rem;  
+   height: 1.2rem;
+   margin-right: .3rem;
+   margin-left: .5rem;
 `
+const SearchLogoListItem = styled(SearchLogo)`
+   margin-right: 0rem;
+
+`;
 function Searchbar(props){
    const component = useRef(null);
    const [engine, setEngine] = useState({image: google, placeholder: "Search Google", action: "https://www.google.com/search"});
@@ -153,20 +160,20 @@ function Searchbar(props){
          return(
             <div style={{marginTop: "-2rem"}}>
                <div>
-                  <motion.img style={{height: "1.2rem", paddingLeft: ".2rem"}} src={otherEngines[0].image} onClick={()=>{otherEngineOnClick(otherEngines[0])}}
-                  initial={{opacity: 0, y: -20}} 
-                  animate={{opacity: 1, y: 0}}
+                  <SearchLogoListItem src={otherEngines[0].image} onClick={()=>{otherEngineOnClick(otherEngines[0])}}
+                  initial={{opacity: 0, y: 0}} 
+                  animate={{opacity: 1, y: 35}}
                   whileHover={{scale: 1.1}}
                   whileTap={{scale: 0.9}}>
-                  </motion.img>
+                  </SearchLogoListItem>
                </div>
                <div>
-                  <motion.img style={{height: "1.2rem", paddingLeft: ".2rem"}} src={otherEngines[1].image} onClick={()=>{otherEngineOnClick(otherEngines[1])}}
-                  initial={{opacity: 0, y: -40}} 
-                  animate={{opacity: 1, y: 0}} 
+                  <SearchLogoListItem src={otherEngines[1].image} onClick={()=>{otherEngineOnClick(otherEngines[1])}}
+                  initial={{opacity: 0, y: 0}} 
+                  animate={{opacity: 1, y: 35}} 
                   whileHover={{scale: 1.1}}
                   whileTap={{scale: 0.9}}>
-                  </motion.img>
+                  </SearchLogoListItem>
                </div>
             </div>
          );
@@ -187,11 +194,11 @@ function Searchbar(props){
                <motion.img src={trashcan} className="delete-button" onClick={() => {handleTrashing()}} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
             </motion.div>
             <BarContainer method="get" action={engine.action}>
+               <SearchLogo whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} onClick={()=>{storeOtherEngines()}} src={engine.image}></SearchLogo>
                <Bar type="text" placeholder={engine.placeholder} name="q" size="31" autoComplete="off"></Bar>
                <MagnifyingGlass type="submit" whileHover={{scale:1.1}} whileTap={{scale: 0.9}}></MagnifyingGlass>
-               <SearchLogo whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} onClick={()=>{storeOtherEngines()}} src={engine.image}></SearchLogo>
-               {engineList()}
             </BarContainer>
+            {engineList()}
          </Component>
       );
    }

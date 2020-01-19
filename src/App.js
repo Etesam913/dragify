@@ -78,16 +78,19 @@ function App() {
          console.log("it is a string");
       }
       else {
-         //setTextElements([]);
-         //setDateElements([]);
-         //setTimeElements([]);
-         //setLinkElements([]);
+         /*
+         setTextElements([]);
+         setDateElements([]);
+         setTimeElements([]);
+         setLinkElements([]);
+         setSearchElements([]);
+         setJokeElements([]);*/
          setTextElements(JSON.parse(localStorage.getItem("textElement")));
          setDateElements(JSON.parse(localStorage.getItem("dateElement")));
          setTimeElements(JSON.parse(localStorage.getItem("timeElement")));
          setLinkElements(JSON.parse(localStorage.getItem("linkElement")));
          setSearchElements(JSON.parse(localStorage.getItem("searchElement")));
-         setSearchElements(JSON.parse(localStorage.getItem("jokeElement")));
+         setJokeElements(JSON.parse(localStorage.getItem("jokeElement")));
          if (JSON.parse(localStorage.getItem("editable")) !== null) {
             setEditable(JSON.parse(localStorage.getItem("editable")));
          }
@@ -102,7 +105,7 @@ function App() {
       localStorage.setItem("jokeElement", JSON.stringify(jokeElements));
 
       console.log(JSON.parse(localStorage.getItem("textElement")));
-   }, [textElements, dateElements, timeElements, linkElements, searchElements])
+   }, [textElements, dateElements, timeElements, linkElements, searchElements, jokeElements])
 
    function handleTextElementChange(arr) {
       setTextElements(arr);
