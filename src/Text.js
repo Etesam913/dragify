@@ -40,13 +40,7 @@ function Text(props) {
       console.log(JSON.parse(localStorage.getItem("translateYText" + props.identifier)));
       controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}})
    }, [])
-   useEffect(()=>{
-      localStorage.setItem("textElement", JSON.stringify(props.elements));
-     
-   }, [props.elements])
-   useEffect(() =>{
-      
-   })
+
    function getElementIndex(identifier){
       for(let i = 0; i < props.elements.length; i++){
          //console.log(props.elements[i]);
