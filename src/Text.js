@@ -7,7 +7,7 @@ import trashcan from './images/trashcan.png';
 const TextArea = styled(motion.input)`
   font-weight: bold;
   font-size: 3rem;
-  font-family: "Public Sans";
+  font-family: "Roboto";
   text-align: center;
   border-top: none; border-left: none; border-right: none; border-bottom: none;
   background-color: #fff0;

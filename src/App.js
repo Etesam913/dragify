@@ -15,6 +15,7 @@ import time from "./images/time.png";
 import chain from "./images/chain.png";
 import searchv2 from './images/searchv2.png';
 import laugh from './images/laugh.png';
+import todolist from './images/todolist.png';
 
 const Page = styled.div`
   position: absolute;
@@ -66,6 +67,8 @@ function App() {
    const [linkElements, setLinkElements] = useState([]);
    const [searchElements, setSearchElements] = useState([]);
    const [jokeElements, setJokeElements] = useState([]);
+   const [listElements, setListElements] = useState([]);
+
 
    const textElementsOnPage = textElements.map((props) => <Text key={props.id} identifier={props.id} canEdit={editable} elements={textElements} onChange={handleTextElementChange}></Text>);
    const dateElementsOnPage = dateElements.map((props) => <Today key={props.id} canEdit={editable} identifier={props.id} elements={dateElements} onChange={handleDateElementChange}></Today>)
@@ -73,7 +76,7 @@ function App() {
    const linkElementsOnPage = linkElements.map((props) => <Link key={props.id} canEdit={editable} identifier={props.id} elements={linkElements} onChange={handleLinkElementChange}></Link>)
    const searchElementsOnPage = searchElements.map((props) => <Searchbar key={props.id} canEdit={editable} identifier={props.id} elements={searchElements} onChange={handleSearchElementChange}></Searchbar>)
    const jokeElementsOnPage = jokeElements.map((props) => <Joke key={props.id} canEdit={editable} identifier={props.id} elements={jokeElements} onChange={handleJokeElementChange}></Joke>)
-
+   const listElementsOnPage = listElements.map((props) => <List key={props.id} canEdit={editable} identifier={props.id} elements={listElements} onChange={handleListElementChange}></List>)
    useEffect(() => {
       if (localStorage.getItem("textElements") === "" || localStorage.getItem("dateElements") === "") {
          console.log("it is a string");
@@ -92,6 +95,8 @@ function App() {
          setLinkElements(JSON.parse(localStorage.getItem("linkElement")));
          setSearchElements(JSON.parse(localStorage.getItem("searchElement")));
          setJokeElements(JSON.parse(localStorage.getItem("jokeElement")));
+         setListElements(JSON.parse(localStorage.getItem("listElement")));
+
          if (JSON.parse(localStorage.getItem("editable")) !== null) {
             setEditable(JSON.parse(localStorage.getItem("editable")));
          }
@@ -104,9 +109,9 @@ function App() {
       localStorage.setItem("linkElement", JSON.stringify(linkElements));
       localStorage.setItem("searchElement", JSON.stringify(searchElements));
       localStorage.setItem("jokeElement", JSON.stringify(jokeElements));
-
+      localStorage.setItem("listElement", JSON.stringify(listElements));
       console.log(JSON.parse(localStorage.getItem("textElement")));
-   }, [textElements, dateElements, timeElements, linkElements, searchElements, jokeElements])
+   }, [textElements, dateElements, timeElements, linkElements, searchElements, jokeElements, listElements])
 
    function handleTextElementChange(arr) {
       setTextElements(arr);
@@ -125,6 +130,9 @@ function App() {
    }
    function handleJokeElementChange(arr) {
       setJokeElements(arr);
+   }
+   function handleListElementChange(arr) {
+      setListElements(arr);
    }
    function changeEditable() {
       localStorage.setItem("editable", JSON.stringify(!editable));
@@ -156,6 +164,10 @@ function App() {
          const elem = [{ id: Math.random() * 200 }];
          setJokeElements(jokeElements.concat(elem));
       }
+      else if (type === "list") {
+         const elem = [{ id: Math.random() * 200 }];
+         setListElements(listElements.concat(elem));
+      }
    }
    return (
       <Page>
@@ -181,6 +193,9 @@ function App() {
             <SidebarButton onClick={() => { AddElement("joke") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                <img src={laugh} style={{ height: "70%", width: "70%" }} />
             </SidebarButton>
+            <SidebarButton onClick={() => { AddElement("list") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+               <img src={todolist} style={{ height: "70%", width: "70%" }} />
+            </SidebarButton>
          </Sidebar>
          <Canvas>
             {textElementsOnPage}
@@ -189,7 +204,7 @@ function App() {
             {linkElementsOnPage}
             {searchElementsOnPage}
             {jokeElementsOnPage}
-            <List></List>
+            {listElementsOnPage}
          </Canvas>
       </Page>
    );

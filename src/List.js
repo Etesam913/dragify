@@ -22,7 +22,7 @@ const ListContainer = styled.div`
 const ListHeader = styled.input`
    font-size: 2rem;
    font-weight: bold;
-   width: 25rem;
+   width: 26rem;
    text-align: center;
    margin-bottom: 1rem;
    border-top: none; border-left: none; border-right: none;
@@ -30,47 +30,22 @@ const ListHeader = styled.input`
    border-bottom-color: black;
    border-bottom-width: .13rem;
    background-color: #fff0;
+   font-family: "Roboto";
 `;
 
 const Todo = styled.ul`
+   height: 25rem;
+  
    padding: 0;
    list-style-type: none;
    margin-top: 0rem;
+   overflow-y: scroll;
+   overflow-x: hidden;
 `;
 const AddButton = styled(motion.img)`
    height: 3rem;
    width: 3rem;
 `
-const DeleteButton = styled(AddButton)`
-   height: 2.5rem;
-   width: 2.5rem;
-   justify-self: center;
-   align-self: center;
-   grid-column-start: ${props => props.column};
-`;
-const ItemContainer=styled.div`
-   width: 25rem;
-   display: grid;
-   grid-template-columns: 5rem ,15rem, 5rem;
-   margin-bottom: 1rem;
-`;
-const Item = styled(motion.div)`
-   grid-column-start: 2;
-   border-radius: 1rem;
-`;
-
-const ItemInput = styled(motion.input)`
-   width: 100%;
-   height: 3rem;
-   border-radius: 1rem;
-   background-color: rgb(90%,90%,90%);
-   border: none;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   text-align: center;
-   font-size: 1.5rem;
-`;
 
 function List(props){
    const [items, setItems] = useState([]);

@@ -15,9 +15,10 @@ const CheckmarkButton = styled(DeleteButton)`
    grid-column-start: 1;
 `;
 const ItemContainer = styled(motion.div)`
-   width: 25rem;
+   width: 26rem;
    display: grid;
    grid-template-columns: 5rem ,15rem, 5rem;
+   grid-column-gap: .65rem;
    margin-bottom: 1rem;
 `;
 
@@ -33,6 +34,7 @@ const ItemInput = styled(motion.input)`
    align-items: center;
    text-align: center;
    font-size: 1.5rem;
+   font-family: "Roboto";
 `;
 
 function ListItem(props) {
