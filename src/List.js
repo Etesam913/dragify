@@ -26,10 +26,11 @@ const ListHeader = styled.input`
    margin-bottom: 1rem;
    border-top: none; border-left: none; border-right: none;
    border-bottom-style: solid;
-   border-bottom-color: black;
+   border-bottom-color: ${props=>props.borderColor};
    border-bottom-width: .13rem;
    background-color: #fff0;
    font-family: "Roboto";
+   color: ${props => props.fontColor};
 `;
 
 const Todo = styled.ul`
@@ -45,6 +46,7 @@ const Todo = styled.ul`
 const AddButton = styled(motion.img)`
    height: 3rem;
    width: 3rem;
+   filter: invert(${props=> props.invert});
 `
 function List(props){
    const [items, setItems] = useState([]);
@@ -67,9 +69,11 @@ function List(props){
          header.current.value = localStorage.getItem("listHeader" + props.identifier);
       }
    }, [])
+
    useEffect(()=>{
       localStorage.setItem("listItems" + props.identifier, JSON.stringify(items));
    }, [items])
+
    function addItem(){
       const currentItem = [{id: Math.random() * 100, active: true}];
       localStorage.setItem("listItems" + props.identifier, JSON.stringify(items.concat(currentItem)));
@@ -78,7 +82,7 @@ function List(props){
    const listItems = items.map((data) => {
          return (
             <AnimatePresence>
-               {data.active && (<ListItem key={data.id} identifier = {data.id} element={data} canEdit = {props.canEdit} items={items} setItems={handleItems}></ListItem>)}
+               {data.active && (<ListItem key={data.id} identifier = {data.id} element={data} darkMode = {props.darkMode} canEdit = {props.canEdit} items={items} setItems={handleItems}></ListItem>)}
             </AnimatePresence>
          );
    })
@@ -146,7 +150,7 @@ function List(props){
       return(
          <Component ref= {component} initial={{opacity: 0}} animate = {controls} style={{ scale }} onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }} dragMomentum = {false} drag={props.canEdit ? true : false} onDragEnd={()=>{storeTranslations()}} dragConstraints={{ left: -500, right: 775, top: -425, bottom: 425 }} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
             <motion.div className="tools" initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
-               <AddButton src={addbutton} 
+               <AddButton src={addbutton} invert = {props.darkMode ? "100%" : "0%"} 
                onClick={()=>{addItem()}} initial={{opacity: 0}} animate={hover ? {opacity: 1} : {opacity: 0}} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
                </AddButton>
                <div className="slider-container">
@@ -154,11 +158,11 @@ function List(props){
                      <motion.div className="handle" dragMomentum = {false} style={{ x }} drag={props.canEdit ? 'x' : false} onDragEnd={(event, info)=>{slidingDone(event, info)}} dragConstraints={{ left: -70, right: 70 }} dragElastic={0}></motion.div>
                   </div>
                </div>
-               <motion.img src={trashcan} className="delete-button" onClick={() => {handleTrashing()}} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
+               <motion.img src={trashcan} className={props.darkMode ? "delete-button inverted" :"delete-button"} onClick={() => {handleTrashing()}} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
             </motion.div>
             
             <ListContainer>
-               <ListHeader ref = {header} placeholder="Title" onChange={(event)=>{localStorage.setItem("listHeader" + props.identifier, event.target.value)}}></ListHeader>
+               <ListHeader borderColor={props.darkMode ? "white" : "black"} ref = {header} placeholder="Title" fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} onChange={(event)=>{localStorage.setItem("listHeader" + props.identifier, event.target.value)}}></ListHeader>
                <Todo>
                   {listItems}
                </Todo>

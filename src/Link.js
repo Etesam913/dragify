@@ -11,13 +11,14 @@ const Component = styled(motion.div)`
    z-index: 0;
    left: 46%;
    top: 40%;
+   color: ${props => props.fontColor}; /*rgb(39, 39, 39)*/
 `;
 
 const Box = styled(motion.div)`
    width: 10rem;
    height: 10rem;
    margin-top: .5rem;
-   background-color: rgb(90%, 90%, 90%);
+   background-color: ${props => props.backgroundColor};
    display: flex;
    flex-direction: column;
    justify-content: center;
@@ -27,13 +28,15 @@ const Header = styled.div`
    font-size: 1rem;
    font-weight: bold;
    margin-bottom: .2rem;
+   color: ${props=> props.fontcolor};
 `
 const Subtitle = styled.div`
    font-size: .75rem;
    text-align: center;
+   color: ${props=> props.fontcolor};
 `
 const LinkInput = styled.input`
-   background-color: rgb(80%, 80%, 80%);
+   background-color: ${props => props.buttonBackgroundColor};
    width: 85%;
    height: 1.5rem;
    border: none;
@@ -47,21 +50,24 @@ const Button = styled(motion.button)`
    font-weight: bold;
    width: 60%;
    height: 1.5rem;
-   background-color: rgb(80%, 80%, 80%);
+   background-color: ${props => props.buttonBackgroundColor};
    border: none;
    border-radius: 1rem;
+   color: ${props => props.fontColor};
 `
 const Backarrow = styled(motion.img)`
    width:37px;
    height:34px;
    margin-right: .5rem;
+   filter: invert(${props=> props.invert});
+
 `
 const FileLabel = styled(motion.label)`
+   background-color: ${props => props.buttonBackgroundColor};
    font-size: 1rem;
    font-weight: bold;
    width: 70%;
    height: 2.5rem;
-   background-color: rgb(80%, 80%, 80%);
    border: none;
    border-radius: 1rem;
    
@@ -113,7 +119,7 @@ function Link(props) {
       }
       controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}})
    }, [])
-
+   
    //Movement Functions
    function storeTranslations() {
       let elem = getComputedStyle(component.current);
@@ -216,27 +222,27 @@ function Link(props) {
    function displayContent() {
       if (stage === 0) { // Border radius, 0, 20, 100
          return (
-            <Box animate={{ borderRadius: "0%" }} transition={{ duration: 1 }} >
-               <Header>Paste Link Below</Header>
+            <Box backgroundColor={props.darkMode ? "rgb(39, 39, 39)" : "rgb(90%, 90%, 90%);"} animate={{ borderRadius: "0%" }} transition={{ duration: 1 }} >
+               <Header> Paste Link Below</Header>
                <Subtitle> ex: www.reddit.com </Subtitle>
-               <LinkInput ref={linkInput}></LinkInput>
-               <Button onClick={() => { storeLink() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>Next</Button>
+               <LinkInput ref={linkInput} buttonBackgroundColor = {props.darkMode ? "rgb(32, 34, 35)" : "rgb(80%, 80%, 80%)"}></LinkInput>
+               <Button buttonBackgroundColor = {props.darkMode ? "rgb(32, 34, 35)" : "rgb(80%, 80%, 80%)"} fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} onClick={() => { storeLink() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>Next</Button>
             </Box>
          );
       }
       else if (stage === 1) {
          return (
-            <Box animate={{ borderRadius: "20%" }} transition={{ duration: 1 }}>
-               <FileLabel whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} htmlFor="files">Select Image</FileLabel>
+            <Box backgroundColor={props.darkMode ? "rgb(39, 39, 39)" : "rgb(90%, 90%, 90%);"} animate={{ borderRadius: "20%" }} transition={{ duration: 1 }}>
+               <FileLabel buttonBackgroundColor = {props.darkMode ? "rgb(32, 34, 35)" : "rgb(80%, 80%, 80%)"} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} htmlFor="files">Select Image</FileLabel>
                <FileInput id="files" type="file" onChange={(e) => { imageHandler(e) }}></FileInput>
                <Subtitle style={{ marginBottom: ".5rem", marginTop: ".5rem" }}>{imageError}</Subtitle>
-               <Button onClick={() => { storeImage() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>Submit</Button>
+               <Button buttonBackgroundColor = {props.darkMode ? "rgb(32, 34, 35)" : "rgb(80%, 80%, 80%)"} fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} onClick={() => { storeImage() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>Submit</Button>
             </Box>
          );
       }
       else if (stage === 2) {
          return (
-            <Box animate={{ borderRadius: "100%" }} transition={{ duration: 3 }}>
+            <Box backgroundColor={props.darkMode ? "rgb(39, 39, 39)" : "rgb(90%, 90%, 90%);"} animate={{ borderRadius: "100%" }} transition={{ duration: 3 }}>
                {loading ? <h3> loading </h3> : <a style={{ borderRadius: "100%" }} href={linkAddress}><Logo src={image} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}></Logo></a>}
             </Box>
          );
@@ -259,15 +265,15 @@ function Link(props) {
    }
    else {
       return (
-         <Component ref={component} initial={{opacity: 0}} animate={controls} style={{ scale }} drag dragMomentum={false} dragConstraints={{ left: -700, right: 775, top: -425, bottom: 375 }} onHoverStart={() => { setHover(true) }} onHoverEnd={() => {setHover(false)}} onDragEnd={()=>{storeTranslations()}}>
+         <Component fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} ref={component} initial={{opacity: 0}} animate={controls} style={{ scale }} drag dragMomentum={false} dragConstraints={{ left: -700, right: 775, top: -425, bottom: 375 }} onHoverStart={() => { setHover(true) }} onHoverEnd={() => {setHover(false)}} onDragEnd={()=>{storeTranslations()}}>
             <motion.div className="tools" initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
-               <Backarrow style={{display: displayArrow()}} src={backarrow} onClick={()=> {goBack(stage-1)}} whileHover={{scale: 1.1}} whileTap={{scale: .9}}></Backarrow>
+               <Backarrow invert = {props.darkMode ? "100%" : "0%"} style={{display: displayArrow()}} src={backarrow} onClick={()=> {goBack(stage-1)}} whileHover={{scale: 1.1}} whileTap={{scale: .9}}></Backarrow>
                <div className="small-slider-container">
                   <div className="small-slider">
                      <motion.div className="small-handle" style={{ x }} drag={props.canEdit ? 'x'  : false} dragConstraints={{ left: -33, right: 33 }} dragElastic={0} dragMomentum={false} onDragEnd={(event, info) => { slidingDone(event, info) }}></motion.div>
                   </div>
                </div>
-               <motion.img src={trashcan} className="small-delete-button" onClick={() => { handleTrashing() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: .9 }}></motion.img>
+               <motion.img src={trashcan} className={props.darkMode ? "small-delete-button inverted" :"small-delete-button"} onClick={() => { handleTrashing() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: .9 }}></motion.img>
             </motion.div>
             {displayContent()}
          </Component>

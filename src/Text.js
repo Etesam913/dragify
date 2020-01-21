@@ -10,6 +10,7 @@ const TextArea = styled(motion.input)`
   font-family: "Roboto";
   text-align: center;
   border-top: none; border-left: none; border-right: none; border-bottom: none;
+  color: ${props => props.fontColor};
   background-color: #fff0;
 `;
 const Component = styled(motion.div)`
@@ -117,9 +118,9 @@ function Text(props) {
                      <motion.div className="handle" style={{ x }} drag={props.canEdit ? 'x' : false} dragConstraints={{ left: -70, right: 70 }} dragElastic={0} dragMomentum={false}  onDragEnd={(event, info)=>{slidingDone(event, info)}}></motion.div>
                   </div>
                </div>
-               <motion.img src={trashcan} className="delete-button" onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
+               <motion.img src={trashcan} className={props.darkMode ? "delete-button inverted" :"delete-button"} onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
             </motion.div>
-            <TextArea  readOnly={props.canEdit ? false : true}  ref = {textInput} onChange={(event)=>{localStorage.setItem("text" + props.identifier, event.target.value)}} placeholder="placeholder"></TextArea>
+            <TextArea fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} readOnly={props.canEdit ? false : true}  ref = {textInput} onChange={(event)=>{localStorage.setItem("text" + props.identifier, event.target.value)}} placeholder="placeholder"></TextArea>
          </Component>
       );
    }

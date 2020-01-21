@@ -13,10 +13,11 @@ const Component = styled(motion.div)`
     display: flex;
     flex-direction: column;
     z-index: 1;
+    color: ${props=> props.fontColor};
 `;
 
 const JokeSetup = styled(motion.div)`
-   background-color: rgb(90%,90%,90%);
+   background-color: ${props=>props.backgroundColor};
    height: 3.25rem;
    display: flex;
    flex-direction: column;
@@ -30,6 +31,8 @@ const JokeSetup = styled(motion.div)`
 `;
 const JokePunchline = styled(JokeSetup)`
    margin-bottom: 0rem;
+   background-color: ${props=>props.backgroundColor};
+
 `
 
 function Joke(props){
@@ -119,23 +122,25 @@ function Joke(props){
    }
 
    return(
-     <Component ref= {component} initial={{opacity: 0}} animate = {controls} style={{ scale }} onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }} dragMomentum = {false} drag={props.canEdit ? true : false} onDragEnd={()=>{storeTranslations()}} dragConstraints={{ left: -500, right: 775, top: -425, bottom: 425 }} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
+     <Component fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} ref= {component} initial={{opacity: 0}} animate = {controls} style={{ scale }} onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }} dragMomentum = {false} drag={props.canEdit ? true : false} onDragEnd={()=>{storeTranslations()}} dragConstraints={{ left: -500, right: 775, top: -425, bottom: 425 }} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
          <motion.div className="tools" initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
             <div className="slider-container">
                <div className="slider">
                   <motion.div className="handle" dragMomentum = {false} style={{ x }} drag={props.canEdit ? 'x' : false} onDragEnd={(event, info)=>{slidingDone(event, info)}} dragConstraints={{ left: -70, right: 70 }} dragElastic={0}></motion.div>
                </div>
             </div>
-            <motion.img src={trashcan} className="delete-button" onClick={() => {handleTrashing()}} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
+            <motion.img src={trashcan} className={props.darkMode ? "delete-button inverted" :"delete-button"} onClick={() => {handleTrashing()}} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
          </motion.div>
-        <JokeSetup 
+        <JokeSetup backgroundColor = {props.darkMode ? "rgb(32, 34, 35)" : "#e4e4e4"}
         initial={{opacity: 0}} 
         animate={jokeSetup !== "" ? {opacity: 1} : {opacity: 0}}
         onClick={()=>{setShowPunchline(true)}} whileHover={showPunchline ? {scale: 1} : {scale: 1.05}} whileTap={showPunchline ? {scale: 1} :{scale: 0.95}}> 
         {loading ? "..." : jokeSetup}
         </JokeSetup>
-
-        <JokePunchline initial={{opacity: 0, y: -20}} animate={showPunchline ? {opacity: 1, y: 0} : {opacity: 0}}>{error ? "something went wrong" : jokePunchline}</JokePunchline>
+        <JokePunchline backgroundColor = {props.darkMode ? "rgb(32, 34, 35)" : "#e4e4e4"} 
+        initial={{opacity: 0, y: -20}} 
+        animate={showPunchline ? {opacity: 1, y: 0} : {opacity: 0}}>{error ? "something went wrong" : jokePunchline}
+        </JokePunchline>
      </Component>
    );
 }

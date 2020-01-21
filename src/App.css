@@ -57,6 +57,9 @@
     width:50.25px;
     height:60px;
 }
+.inverted{
+   filter: invert(100%);
+}
 .inputComponent{
     position: absolute;
     left: 35%;

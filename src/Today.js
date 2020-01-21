@@ -15,6 +15,7 @@ const Component = styled(motion.div)`
 const Text = styled(motion.div)`
     font-size: 3rem;
     font-weight: bold;
+    color: ${props=>props.fontColor};
 `;
 
 function Today(props) {
@@ -129,9 +130,9 @@ function Today(props) {
                      <motion.div className="handle" style={{ x }} drag={props.canEdit ? 'x' : false} dragConstraints={{ left: -70, right: 70 }} dragElastic={0} onDragEnd={(event, info)=>{slidingDone(event, info)}}></motion.div>
                   </div>
                </div>
-               <motion.img src={trashcan} className="delete-button" onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
+               <motion.img src={trashcan} className={props.darkMode ? "delete-button inverted" :"delete-button"} onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
             </motion.div>
-            <Text>{today}</Text>
+            <Text fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"}>{today}</Text>
          </Component>
       );
    }

@@ -19,7 +19,7 @@ const Component = styled(motion.div)`
 
 const BarContainer = styled.form`
    border: none;
-   background-color: #e4e4e4;
+   background-color: ${props=>props.backgroundColor};
    height: 2rem;
    border-radius: 2rem;
    
@@ -36,7 +36,7 @@ const Bar = styled.input`
    border: none;
    font-size: 1rem;
    background: transparent;
-   
+   color: ${props=>props.fontColor}
 `
 const MagnifyingGlass = styled(motion.button)`
    border: none;
@@ -53,10 +53,13 @@ const SearchLogo = styled(motion.img)`
    height: 1.2rem;
    margin-right: .3rem;
    margin-left: .5rem;
+   filter: invert(${props=> props.invert});
 `
 const SearchLogoListItem = styled(SearchLogo)`
    margin-right: 0rem;
+   filter: invert(${props=> props.invert});
 
+   
 `;
 function Searchbar(props){
    const component = useRef(null);
@@ -160,7 +163,7 @@ function Searchbar(props){
          return(
             <div style={{marginTop: "-2rem"}}>
                <div>
-                  <SearchLogoListItem src={otherEngines[0].image} onClick={()=>{otherEngineOnClick(otherEngines[0])}}
+                  <SearchLogoListItem invert = {props.darkMode ? "100%" : "0%"} src={otherEngines[0].image} onClick={()=>{otherEngineOnClick(otherEngines[0])}}
                   initial={{opacity: 0, y: 0}} 
                   animate={{opacity: 1, y: 35}}
                   whileHover={{scale: 1.1}}
@@ -168,7 +171,7 @@ function Searchbar(props){
                   </SearchLogoListItem>
                </div>
                <div>
-                  <SearchLogoListItem src={otherEngines[1].image} onClick={()=>{otherEngineOnClick(otherEngines[1])}}
+                  <SearchLogoListItem invert = {props.darkMode ? "100%" : "0%"} src={otherEngines[1].image} onClick={()=>{otherEngineOnClick(otherEngines[1])}}
                   initial={{opacity: 0, y: 0}} 
                   animate={{opacity: 1, y: 35}} 
                   whileHover={{scale: 1.1}}
@@ -191,11 +194,11 @@ function Searchbar(props){
                      <motion.div className="handle" dragMomentum = {false} style={{ x }} drag={props.canEdit ? 'x' : false} onDragEnd={(event, info)=>{slidingDone(event, info)}} dragConstraints={{ left: -70, right: 70 }} dragElastic={0}></motion.div>
                   </div>
                </div>
-               <motion.img src={trashcan} className="delete-button" onClick={() => {handleTrashing()}} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
+               <motion.img src={trashcan} className={props.darkMode ? "delete-button inverted" :"delete-button"} onClick={() => {handleTrashing()}} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
             </motion.div>
-            <BarContainer method="get" action={engine.action}>
-               <SearchLogo whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} onClick={()=>{storeOtherEngines()}} src={engine.image}></SearchLogo>
-               <Bar type="text" placeholder={engine.placeholder} name="q" size="31" autoComplete="off"></Bar>
+            <BarContainer backgroundColor = {props.darkMode ? "rgb(32, 34, 35)" : "#e4e4e4"}  method="get" action={engine.action}>
+               <SearchLogo invert = {props.darkMode ? "100%" : "0%"} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}} onClick={()=>{storeOtherEngines()}} src={engine.image}></SearchLogo>
+               <Bar type="text" placeholder={engine.placeholder} name="q" size="31" autoComplete="off" fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"}></Bar>
                <MagnifyingGlass type="submit" whileHover={{scale:1.1}} whileTap={{scale: 0.9}}></MagnifyingGlass>
             </BarContainer>
             {engineList()}

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useCycle } from 'framer-motion';
 import styled from 'styled-components';
 import Text from './Text.js';
 import Today from './Today.js';
@@ -16,8 +16,11 @@ import chain from "./images/chain.png";
 import searchv2 from './images/searchv2.png';
 import laugh from './images/laugh.png';
 import todolist from './images/todolist.png';
+import moon from './images/moon.png';
+import sun from './images/sun.png';
 
 const Page = styled.div`
+   background-color: ${props => props.backgroundColor};
   position: absolute;
   height: 100%;
   width: 100%;
@@ -27,40 +30,52 @@ const Page = styled.div`
 `;
 const Sidebar = styled.div`
    position: relative;
-   top: 10%;
-   height: 90%;
+   height: 100%;
    width: 10rem;
-   background-color: #dfe6e3;
    z-index: 1;
    display: flex;
    flex-direction: column;
    align-items: center;
    justify-content: space-around;
+   
 `;
 const SidebarButton = styled(motion.div)`
   width: 5rem;
   height: 5rem;
-  background-color: #b3b3b3;
+  background-color: #e0d9d3;
   border-radius: 3rem;
   display: flex;
   justify-content: center;
   align-items: center;
+   
+
 `
 
-const EditButton = styled(SidebarButton)`
-  position: absolute;
-  z-index: 2;
-  top: 1rem;
-  left: 2.3rem;
+const EditContainer = styled.div`
+   height: 10%;
+   display: flex;
+   align-items: center;
+   justify-content: center
 `;
+const EditButton = styled(SidebarButton)`
+  
+`;
+
+const DarkModeButton = styled(EditButton)`
+   position: absolute;
+   z-index: 1;
+   left: 95%;
+   top: 2%;
+`;
+
 const Canvas = styled.div`
   height: 100%;
   width: 100%;
-  background-color: white;
   z-index: 0;
 `;
 function App() {
    const [editable, setEditable] = useState(false);
+   const [darkMode, setDarkMode] = useState(false);
    const [textElements, setTextElements] = useState([]);
    const [dateElements, setDateElements] = useState([]);
    const [timeElements, setTimeElements] = useState([]);
@@ -70,13 +85,13 @@ function App() {
    const [listElements, setListElements] = useState([]);
 
 
-   const textElementsOnPage = textElements.map((props) => <Text key={props.id} identifier={props.id} canEdit={editable} elements={textElements} onChange={handleTextElementChange}></Text>);
-   const dateElementsOnPage = dateElements.map((props) => <Today key={props.id} canEdit={editable} identifier={props.id} elements={dateElements} onChange={handleDateElementChange}></Today>)
-   const timeElementsOnPage = timeElements.map((props) => <Time key={props.id} canEdit={editable} identifier={props.id} elements={timeElements} onChange={handleTimeElementChange}></Time>)
-   const linkElementsOnPage = linkElements.map((props) => <Link key={props.id} canEdit={editable} identifier={props.id} elements={linkElements} onChange={handleLinkElementChange}></Link>)
-   const searchElementsOnPage = searchElements.map((props) => <Searchbar key={props.id} canEdit={editable} identifier={props.id} elements={searchElements} onChange={handleSearchElementChange}></Searchbar>)
-   const jokeElementsOnPage = jokeElements.map((props) => <Joke key={props.id} canEdit={editable} identifier={props.id} elements={jokeElements} onChange={handleJokeElementChange}></Joke>)
-   const listElementsOnPage = listElements.map((props) => <List key={props.id} canEdit={editable} identifier={props.id} elements={listElements} onChange={handleListElementChange}></List>)
+   const textElementsOnPage = textElements.map((props) => <Text key={props.id} identifier={props.id} canEdit={editable} elements={textElements} onChange={handleTextElementChange} darkMode={darkMode}></Text>);
+   const dateElementsOnPage = dateElements.map((props) => <Today key={props.id} canEdit={editable} identifier={props.id} elements={dateElements} onChange={handleDateElementChange} darkMode={darkMode}></Today>)
+   const timeElementsOnPage = timeElements.map((props) => <Time key={props.id} canEdit={editable} identifier={props.id} elements={timeElements} onChange={handleTimeElementChange} darkMode={darkMode}></Time>)
+   const linkElementsOnPage = linkElements.map((props) => <Link key={props.id} canEdit={editable} identifier={props.id} elements={linkElements} onChange={handleLinkElementChange} darkMode={darkMode}></Link>)
+   const searchElementsOnPage = searchElements.map((props) => <Searchbar key={props.id} canEdit={editable} identifier={props.id} elements={searchElements} onChange={handleSearchElementChange} darkMode={darkMode}></Searchbar>)
+   const jokeElementsOnPage = jokeElements.map((props) => <Joke key={props.id} canEdit={editable} identifier={props.id} elements={jokeElements} onChange={handleJokeElementChange} darkMode={darkMode}></Joke>)
+   const listElementsOnPage = listElements.map((props) => <List key={props.id} canEdit={editable} identifier={props.id} elements={listElements} onChange={handleListElementChange} darkMode={darkMode}></List>)
    useEffect(() => {
       if (localStorage.getItem("textElements") === "" || localStorage.getItem("dateElements") === "") {
          console.log("it is a string");
@@ -169,12 +184,14 @@ function App() {
          setListElements(listElements.concat(elem));
       }
    }
+
    return (
-      <Page>
-         <EditButton onClick={() => { changeEditable() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-            <img src={pencil} style={{ height: "64.5%", width: "64.5%" }} />
-         </EditButton>
-         <Sidebar>
+      <Page backgroundColor={darkMode ? "rgb(24, 26, 27);" : "white"}>
+
+         <Sidebar /*sidebarColor={darkMode ? "rgb(32, 34, 35)" : "#e4e4e4"}*/>
+            <EditButton onClick={() => { changeEditable() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+               <img src={pencil} style={{ height: "64.5%", width: "64.5%" }} />
+            </EditButton>
             <SidebarButton onClick={() => { AddElement("text") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                <img src={edit} style={{ height: "55%", width: "35%" }} />
             </SidebarButton>
@@ -197,6 +214,9 @@ function App() {
                <img src={todolist} style={{ height: "70%", width: "70%" }} />
             </SidebarButton>
          </Sidebar>
+         <DarkModeButton onClick={() => { setDarkMode(!darkMode) }} whileTap={{ scale: 0.9 }} whileHover={{ scale: 1.1 }}>
+            <img src={darkMode ? sun : moon} style={{ height: "70%", width: "70%" }}></img>
+         </DarkModeButton>
          <Canvas>
             {textElementsOnPage}
             {dateElementsOnPage}

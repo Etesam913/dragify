@@ -11,12 +11,16 @@ const DeleteButton = styled(motion.img)`
    align-self: center;
    grid-column-start: 3;
    padding-right: .40rem;
+   filter: invert(${props=> props.invert});
+
 `;
 const CheckmarkButton = styled(DeleteButton)`
    grid-column-start: 1;
    justify-self: center;
    align-self: center;
    padding-left: .40rem;
+   filter: invert(${props=> props.invert});
+
 `;
 const ItemContainer = styled(motion.div)`
    display: inline-grid;
@@ -29,7 +33,8 @@ const ItemInput = styled(motion.input)`
    width: 16rem;
    height: 3rem;
    border-radius: 1rem;
-   background-color: rgb(90%,90%,90%);
+   background-color: ${props=>props.backgroundColor};
+   color: ${props=>props.fontColor};
    grid-column-start: 2;
    border: none;
    justify-content: center;
@@ -78,9 +83,9 @@ function ListItem(props) {
    }
    return(
          <ItemContainer initial={{ opacity: .7, y: -30, scale: .1 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, scale: 0.1 }} onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }}>
-            <CheckmarkButton src={checkmarkbutton} onClick={()=>{strikeThroughTask()}} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} initial={{ opacity: 0, scale: 0.1 }} animate={hover && props.canEdit ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.1 }}></CheckmarkButton>
-            <ItemInput ref={task} onChange={(event)=>{localStorage.setItem("task" + props.identifier, event.target.value)}} placeholder="Task" initial={{ y: -30, opacity: 0 }} animate={{ y: 0, opacity: 1 }}></ItemInput>
-            <DeleteButton src={deletebutton} onClick={() => {handleDelete()}}  whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} initial={{ opacity: 0, scale: 0.1 }} animate={hover && props.canEdit ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.1 }}></DeleteButton>
+            <CheckmarkButton invert = {props.darkMode ? "100%" : "0%"} src={checkmarkbutton} onClick={()=>{strikeThroughTask()}} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} initial={{ opacity: 0, scale: 0.1 }} animate={hover && props.canEdit ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.1 }}></CheckmarkButton>
+            <ItemInput backgroundColor = {props.darkMode ? "rgb(32, 34, 35)" : "#e4e4e4"} fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} ref={task} onChange={(event)=>{localStorage.setItem("task" + props.identifier, event.target.value)}} placeholder="Task" initial={{ y: -30, opacity: 0 }} animate={{ y: 0, opacity: 1 }}></ItemInput>
+            <DeleteButton invert = {props.darkMode ? "100%" : "0%"} src={deletebutton} onClick={() => {handleDelete()}}  whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} initial={{ opacity: 0, scale: 0.1 }} animate={hover && props.canEdit ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.1 }}></DeleteButton>
          </ItemContainer>
    );
 }
