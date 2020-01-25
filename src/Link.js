@@ -121,11 +121,17 @@ function Link(props) {
    }, [])
    
    //Movement Functions
-   function storeTranslations() {
-      let elem = getComputedStyle(component.current);
-      let matrix = new DOMMatrix(elem.transform);
-      localStorage.setItem("translateXLink" + props.identifier, matrix.m41);
-      localStorage.setItem("translateYLink" + props.identifier, matrix.m42);
+   function storeTranslations(){
+      setTimeout(function(){
+         if(component.current !== null){
+            let elem = getComputedStyle(component.current);
+            let matrix = new DOMMatrix(elem.transform);
+            localStorage.setItem("translateXLink" + props.identifier, matrix.m41);
+            localStorage.setItem("translateYLink" + props.identifier, matrix.m42);
+            console.log(localStorage.getItem("translateXLink" + props.identifier));
+            console.log(localStorage.getItem("translateYLink" + props.identifier));
+         }
+      }, 1000)
    }
    function getTranslations() {
       if (localStorage.getItem("translateXLink" + props.identifier) !== null) {

@@ -106,11 +106,16 @@ function Time(props) {
    }
 
    function storeTranslations(){
-      let elem = getComputedStyle(component.current);
-      let matrix = new DOMMatrix(elem.transform);
-      localStorage.setItem("translateXTime" + props.identifier, matrix.m41);
-      localStorage.setItem("translateYTime" + props.identifier, matrix.m42);
-      //console.log(localStorage.getItem("translateXDate") + props.identifier);
+      setTimeout(function(){
+         if(component.current != null){
+            let elem = getComputedStyle(component.current);
+            let matrix = new DOMMatrix(elem.transform);
+            localStorage.setItem("translateXTime" + props.identifier, matrix.m41);
+            localStorage.setItem("translateYTime" + props.identifier, matrix.m42);
+            console.log(localStorage.getItem("translateXTime" + props.identifier));
+            console.log(localStorage.getItem("translateYTime" + props.identifier));
+         }
+      }, 1000)
    }
 
    function getTranslations(){

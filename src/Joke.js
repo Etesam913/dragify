@@ -105,11 +105,16 @@ function Joke(props){
    }
    // Translations
    function storeTranslations(){
-      let elem = getComputedStyle(component.current);
-      let matrix = new DOMMatrix(elem.transform);
-      localStorage.setItem("translateXJoke" + props.identifier, matrix.m41);
-      localStorage.setItem("translateYJoke" + props.identifier, matrix.m42);
-      //console.log(localStorage.getItem("translateXDate") + props.identifier);
+      setTimeout(function(){
+         if(component.current !== null){
+            let elem = getComputedStyle(component.current);
+            let matrix = new DOMMatrix(elem.transform);
+            localStorage.setItem("translateXJoke" + props.identifier, matrix.m41);
+            localStorage.setItem("translateYJoke" + props.identifier, matrix.m42);
+            console.log(localStorage.getItem("translateXJoke" + props.identifier));
+            console.log(localStorage.getItem("translateYJoke" + props.identifier));
+         }
+      }, 1000)
    }
 
    function getTranslations(){

@@ -72,14 +72,16 @@ function Text(props) {
       localStorage.setItem("scalePosText" + props.identifier, info.point.x);
    }
    function storeTranslations(){
-      let elem = getComputedStyle(component.current);
-      let matrix = new DOMMatrix(elem.transform);
-      
-      console.log(matrix.m41 + ", " + matrix.m42);
-      localStorage.setItem("translateXText" + props.identifier, matrix.m41);
-      localStorage.setItem("translateYText" + props.identifier, matrix.m42);
-      console.log(localStorage.getItem("translateXText" + props.identifier));
-      console.log(localStorage.getItem("translateYText" + props.identifier));
+      setTimeout(function(){
+         if(component.current !== null){
+            let elem = getComputedStyle(component.current);
+            let matrix = new DOMMatrix(elem.transform);
+            localStorage.setItem("translateXText" + props.identifier, matrix.m41);
+            localStorage.setItem("translateYText" + props.identifier, matrix.m42);
+            console.log(localStorage.getItem("translateXText" + props.identifier));
+            console.log(localStorage.getItem("translateYText" + props.identifier));
+         }
+      }, 1000)
    }
    function getTranslations(){
       if(localStorage.getItem("translateXText" + props.identifier) !== null){

@@ -121,11 +121,16 @@ function Searchbar(props){
    }
    // Translations
    function storeTranslations(){
-      let elem = getComputedStyle(component.current);
-      let matrix = new DOMMatrix(elem.transform);
-      localStorage.setItem("translateXSearch" + props.identifier, matrix.m41);
-      localStorage.setItem("translateYSearch" + props.identifier, matrix.m42);
-      //console.log(localStorage.getItem("translateXDate") + props.identifier);
+      setTimeout(function(){
+         if(component.current != null){
+            let elem = getComputedStyle(component.current);
+            let matrix = new DOMMatrix(elem.transform);
+            localStorage.setItem("translateXSearch" + props.identifier, matrix.m41);
+            localStorage.setItem("translateYSearch" + props.identifier, matrix.m42);
+            console.log(localStorage.getItem("translateXSearch" + props.identifier));
+            console.log(localStorage.getItem("translateYSearch" + props.identifier));
+         }
+      }, 1000)
    }
 
    function getTranslations(){

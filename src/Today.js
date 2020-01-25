@@ -79,11 +79,16 @@ function Today(props) {
    }
 
    function storeTranslations(){
-      let elem = getComputedStyle(component.current);
-      let matrix = new DOMMatrix(elem.transform);
-      localStorage.setItem("translateXDate" + props.identifier, matrix.m41);
-      localStorage.setItem("translateYDate" + props.identifier, matrix.m42);
-      //console.log(localStorage.getItem("translateXDate") + props.identifier);
+      setTimeout(function(){
+         if(component.current !== null){
+            let elem = getComputedStyle(component.current);
+            let matrix = new DOMMatrix(elem.transform);
+            localStorage.setItem("translateXDate" + props.identifier, matrix.m41);
+            localStorage.setItem("translateYDate" + props.identifier, matrix.m42);
+            console.log(localStorage.getItem("translateXDate" + props.identifier));
+            console.log(localStorage.getItem("translateYDate" + props.identifier));
+         }
+      }, 1000)
    }
 
    function getTranslations(){

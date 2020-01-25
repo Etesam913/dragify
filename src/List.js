@@ -127,10 +127,16 @@ function List(props){
 
    // Translations
    function storeTranslations(){
-      let elem = getComputedStyle(component.current);
-      let matrix = new DOMMatrix(elem.transform);
-      localStorage.setItem("translateXList" + props.identifier, matrix.m41);
-      localStorage.setItem("translateYList" + props.identifier, matrix.m42);
+      setTimeout(function(){
+         if(component.current!==null){
+            let elem = getComputedStyle(component.current);
+            let matrix = new DOMMatrix(elem.transform);
+            localStorage.setItem("translateXList" + props.identifier, matrix.m41);
+            localStorage.setItem("translateYList" + props.identifier, matrix.m42);
+            console.log(localStorage.getItem("translateXList" + props.identifier));
+            console.log(localStorage.getItem("translateYList" + props.identifier));
+         }
+      }, 1000)
    }
 
    function getTranslations(){
