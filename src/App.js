@@ -18,6 +18,8 @@ import laugh from './images/laugh.png';
 import todolist from './images/todolist.png';
 import moon from './images/moon.png';
 import sun from './images/sun.png';
+import backarrow from './images/backarrow.png';
+
 
 const Page = styled.div`
    background-color: ${props => props.backgroundColor};
@@ -29,36 +31,42 @@ const Page = styled.div`
   flex-shrink: 0;
 `;
 const Sidebar = styled.div`
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   width: 8rem;
+   margin-top: .5rem;
+
+`;
+const Itembar = styled(motion.div)`
    position: relative;
    height: 100%;
-   width: 10rem;
    z-index: 1;
    display: flex;
    flex-direction: column;
    align-items: center;
    justify-content: space-around;
-   
 `;
-const SidebarButton = styled(motion.div)`
+const ItembarButton = styled(motion.div)`
   width: 5rem;
   height: 5rem;
-  background-color: #e0d9d3;
+  background-color: ${props=>props.buttonBackgroundColor};
   border-radius: 3rem;
   display: flex;
   justify-content: center;
   align-items: center;
-   
-
 `
-
+const ItemImage = styled.img`
+   filter: invert(${props=> props.invert});
+`;
 const EditContainer = styled.div`
    height: 10%;
    display: flex;
    align-items: center;
    justify-content: center
 `;
-const EditButton = styled(SidebarButton)`
-  
+const EditButton = styled(ItembarButton)`
+   background-color: ${props=>props.buttonBackgroundColor};
 `;
 
 const DarkModeButton = styled(EditButton)`
@@ -66,6 +74,7 @@ const DarkModeButton = styled(EditButton)`
    z-index: 1;
    left: 95%;
    top: 2%;
+   background-color: ${props=>props.buttonBackgroundColor};
 `;
 
 const Canvas = styled.div`
@@ -83,15 +92,15 @@ function App() {
    const [searchElements, setSearchElements] = useState([]);
    const [jokeElements, setJokeElements] = useState([]);
    const [listElements, setListElements] = useState([]);
+   const canvas = useRef(null);
 
-
-   const textElementsOnPage = textElements.map((props) => <Text key={props.id} identifier={props.id} canEdit={editable} elements={textElements} onChange={handleTextElementChange} darkMode={darkMode}></Text>);
-   const dateElementsOnPage = dateElements.map((props) => <Today key={props.id} canEdit={editable} identifier={props.id} elements={dateElements} onChange={handleDateElementChange} darkMode={darkMode}></Today>)
-   const timeElementsOnPage = timeElements.map((props) => <Time key={props.id} canEdit={editable} identifier={props.id} elements={timeElements} onChange={handleTimeElementChange} darkMode={darkMode}></Time>)
-   const linkElementsOnPage = linkElements.map((props) => <Link key={props.id} canEdit={editable} identifier={props.id} elements={linkElements} onChange={handleLinkElementChange} darkMode={darkMode}></Link>)
-   const searchElementsOnPage = searchElements.map((props) => <Searchbar key={props.id} canEdit={editable} identifier={props.id} elements={searchElements} onChange={handleSearchElementChange} darkMode={darkMode}></Searchbar>)
-   const jokeElementsOnPage = jokeElements.map((props) => <Joke key={props.id} canEdit={editable} identifier={props.id} elements={jokeElements} onChange={handleJokeElementChange} darkMode={darkMode}></Joke>)
-   const listElementsOnPage = listElements.map((props) => <List key={props.id} canEdit={editable} identifier={props.id} elements={listElements} onChange={handleListElementChange} darkMode={darkMode}></List>)
+   const textElementsOnPage = textElements.map((props) => <Text key={props.id} identifier={props.id} canEdit={editable} elements={textElements} onChange={handleTextElementChange} darkMode={darkMode} canvas={canvas}></Text>);
+   const dateElementsOnPage = dateElements.map((props) => <Today key={props.id} canEdit={editable} identifier={props.id} elements={dateElements} onChange={handleDateElementChange} darkMode={darkMode} canvas={canvas}></Today>)
+   const timeElementsOnPage = timeElements.map((props) => <Time key={props.id} canEdit={editable} identifier={props.id} elements={timeElements} onChange={handleTimeElementChange} darkMode={darkMode} canvas={canvas}></Time>)
+   const linkElementsOnPage = linkElements.map((props) => <Link key={props.id} canEdit={editable} identifier={props.id} elements={linkElements} onChange={handleLinkElementChange} darkMode={darkMode} canvas={canvas}></Link>)
+   const searchElementsOnPage = searchElements.map((props) => <Searchbar key={props.id} canEdit={editable} identifier={props.id} elements={searchElements} onChange={handleSearchElementChange} darkMode={darkMode} canvas={canvas}></Searchbar>)
+   const jokeElementsOnPage = jokeElements.map((props) => <Joke key={props.id} canEdit={editable} identifier={props.id} elements={jokeElements} onChange={handleJokeElementChange} darkMode={darkMode} canvas={canvas}></Joke>)
+   const listElementsOnPage = listElements.map((props) => <List key={props.id} canEdit={editable} identifier={props.id} elements={listElements} onChange={handleListElementChange} darkMode={darkMode} canvas={canvas}></List>)
    useEffect(() => {
       if (localStorage.getItem("textElements") === "" || localStorage.getItem("dateElements") === "") {
          console.log("it is a string");
@@ -185,39 +194,51 @@ function App() {
       }
    }
 
+   const sidebarContainer = {
+      hidden: { opacity: 0, scale: 0 },
+      show: {
+         opacity: 1, scale: 1,
+         transition: { staggerChildren: 0.375 }
+      }
+   }
+
+   const item = { hidden: { opacity: 0, scale: 0 }, show: { opacity: 1, scale: 1 } };
+
    return (
       <Page backgroundColor={darkMode ? "rgb(24, 26, 27);" : "white"}>
-
-         <Sidebar /*sidebarColor={darkMode ? "rgb(32, 34, 35)" : "#e4e4e4"}*/>
-            <EditButton onClick={() => { changeEditable() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-               <img src={pencil} style={{ height: "64.5%", width: "64.5%" }} />
+         <Sidebar>
+            <EditButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={item} onClick={() => { changeEditable() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+               <ItemImage invert = {darkMode ? "100%" : "0%"} src={editable ? backarrow : pencil} style={{ height: "64.5%", width: "64.5%" }} />
             </EditButton>
-            <SidebarButton onClick={() => { AddElement("text") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-               <img src={edit} style={{ height: "55%", width: "35%" }} />
-            </SidebarButton>
-            <SidebarButton onClick={() => { AddElement("date") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-               <img src={date} style={{ height: "60.5%", width: "63.5%" }} />
-            </SidebarButton>
-            <SidebarButton onClick={() => { AddElement("time") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-               <img src={time} style={{ height: "35%", width: "75%" }} />
-            </SidebarButton>
-            <SidebarButton onClick={() => { AddElement("link") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-               <img src={chain} style={{ height: "15", width: "75%" }} />
-            </SidebarButton>
-            <SidebarButton onClick={() => { AddElement("search") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-               <img src={searchv2} style={{ height: "60%", width: "60%" }} />
-            </SidebarButton>
-            <SidebarButton onClick={() => { AddElement("joke") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-               <img src={laugh} style={{ height: "70%", width: "70%" }} />
-            </SidebarButton>
-            <SidebarButton onClick={() => { AddElement("list") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-               <img src={todolist} style={{ height: "70%", width: "70%" }} />
-            </SidebarButton>
+            <Itembar variants={sidebarContainer} initial="hidden" animate={editable ? "show" : "hidden"}>
+               <ItembarButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={item} onClick={() => { AddElement("text") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <ItemImage src={edit} invert = {darkMode ? "100%" : "0%"} style={{ height: "55%", width: "35%" }} />
+               </ItembarButton>
+               <ItembarButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={item} onClick={() => { AddElement("date") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <ItemImage src={date} invert = {darkMode ? "100%" : "0%"} style={{ height: "60.5%", width: "63.5%" }} />
+               </ItembarButton>
+               <ItembarButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={item} onClick={() => { AddElement("time") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <ItemImage src={time} invert = {darkMode ? "100%" : "0%"} style={{ height: "35%", width: "75%" }} />
+               </ItembarButton>
+               <ItembarButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={item} onClick={() => { AddElement("link") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <ItemImage src={chain} invert = {darkMode ? "100%" : "0%"} style={{ height: "15", width: "75%" }} />
+               </ItembarButton>
+               <ItembarButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={item} onClick={() => { AddElement("search") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <ItemImage src={searchv2} invert = {darkMode ? "100%" : "0%"} style={{ height: "60%", width: "60%" }} />
+               </ItembarButton>
+               <ItembarButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={item} onClick={() => { AddElement("joke") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <ItemImage src={laugh} invert = {darkMode ? "100%" : "0%"} style={{ height: "70%", width: "70%" }} />
+               </ItembarButton>
+               <ItembarButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={item} onClick={() => { AddElement("list") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                  <ItemImage src={todolist} invert = {darkMode ? "100%" : "0%"} style={{ height: "70%", width: "70%" }} />
+               </ItembarButton>
+            </Itembar>
          </Sidebar>
-         <DarkModeButton onClick={() => { setDarkMode(!darkMode) }} whileTap={{ scale: 0.9 }} whileHover={{ scale: 1.1 }}>
-            <img src={darkMode ? sun : moon} style={{ height: "70%", width: "70%" }}></img>
+
+         <DarkModeButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} onClick={() => { setDarkMode(!darkMode) }} whileTap={{ scale: 0.9 }} whileHover={{ scale: 1.1 }}>
+            <ItemImage src={darkMode ? sun : moon} invert = {darkMode ? "100%" : "0%"} style={{ height: "70%", width: "70%" }}></ItemImage>
          </DarkModeButton>
-         <Canvas>
+         <Canvas ref={canvas}>
             {textElementsOnPage}
             {dateElementsOnPage}
             {timeElementsOnPage}
