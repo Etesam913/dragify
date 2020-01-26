@@ -21,18 +21,17 @@ const BarContainer = styled.form`
    border: none;
    background-color: ${props=>props.backgroundColor};
    height: 2rem;
-   border-radius: 2rem;
-   
-   font-family: "Public Sans";
+   border-radius: 2rem;   
    width: 20rem;
    margin-top: .5rem;
    display: flex;
    align-items: center;
+   font-family: "Gothic A1";
+
 `
 
 const Bar = styled.input`
    width: 15rem;
-   font-family: "Public Sans";
    border: none;
    font-size: 1rem;
    background: transparent;

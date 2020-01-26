@@ -20,7 +20,6 @@ const ListContainer = styled.div`
 `;
 const ListHeader = styled.input`
    font-size: 2rem;
-   font-weight: bold;
    width: 26rem;
    text-align: center;
    margin-bottom: 1rem;
@@ -29,7 +28,7 @@ const ListHeader = styled.input`
    border-bottom-color: ${props=>props.borderColor};
    border-bottom-width: .13rem;
    background-color: #fff0;
-   font-family: "Roboto";
+   font-family: "Gothic A1";
    color: ${props => props.fontColor};
 `;
 

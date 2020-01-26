@@ -5,9 +5,8 @@ import './App.css';
 import trashcan from './images/trashcan.png';
 
 const TextArea = styled(motion.input)`
-  font-weight: bold;
   font-size: 3rem;
-  font-family: "Roboto";
+  font-family: "Gothic A1";
   text-align: center;
   border-top: none; border-left: none; border-right: none; border-bottom: none;
   color: ${props => props.fontColor};
@@ -41,7 +40,9 @@ function Text(props) {
       console.log(JSON.parse(localStorage.getItem("translateYText" + props.identifier)));
       controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}})
    }, [])
-
+   useEffect(()=>{
+      console.log("bob");
+   })
    function getElementIndex(identifier){
       for(let i = 0; i < props.elements.length; i++){
          //console.log(props.elements[i]);

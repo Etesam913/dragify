@@ -26,7 +26,6 @@ const Box = styled(motion.div)`
 `;
 const Header = styled.div`
    font-size: 1rem;
-   font-weight: bold;
    margin-bottom: .2rem;
    color: ${props=> props.fontcolor};
 `
@@ -47,7 +46,6 @@ const LinkInput = styled.input`
 `;
 const Button = styled(motion.button)`
    font-size: .75rem;
-   font-weight: bold;
    width: 60%;
    height: 1.5rem;
    background-color: ${props => props.buttonBackgroundColor};
