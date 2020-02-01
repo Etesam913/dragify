@@ -26,7 +26,7 @@ const ColorContainer = styled(motion.div)`
    width: 100%;
    display: flex;
    justify-content: center;
-   transform: scale(0.8);
+   transform: scale(.8);
 `;
 function Text(props) {
    const [hover, setHover] = useState(false);
@@ -44,8 +44,8 @@ function Text(props) {
 
    useEffect(() => {
       textInput.current.value = localStorage.getItem("text" + props.identifier);
-      if(localStorage.getItem("color") !== null){
-         setColor(localStorage.getItem("color"));
+      if(localStorage.getItem("color" + props.identifier) !== null){
+         setColor(localStorage.getItem("color" + props.identifier));
       }
       console.log(JSON.parse(localStorage.getItem("translateXText" + props.identifier)));
       console.log(JSON.parse(localStorage.getItem("translateYText" + props.identifier)));
@@ -80,7 +80,7 @@ function Text(props) {
    }
    function handleColorChange(colorVal){
       setColor(colorVal.hex);
-      localStorage.setItem("color", colorVal.hex);
+      localStorage.setItem("color" + props.identifier, colorVal.hex);
    }
    function slidingDone(event, info) {
       storeScale();
@@ -140,7 +140,7 @@ function Text(props) {
             </motion.div>
             <TextArea animate={{color: color}} transition={{duration: 0.5, type: "spring", damping: 300}} readOnly={props.canEdit ? false : true} ref={textInput} onChange={(event) => { localStorage.setItem("text" + props.identifier, event.target.value) }} placeholder="placeholder"></TextArea>
             <ColorContainer initial={{ opacity: 0}} animate={hover && props.canEdit ? { opacity: 1} : { opacity: 0 }}>
-               <CirclePicker width="25rem" onChange={handleColorChange}/>
+               <CirclePicker colors={props.colorArray} width="30rem" onChange={handleColorChange}/>
             </ColorContainer>
          </Component>
       );
