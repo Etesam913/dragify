@@ -73,6 +73,11 @@ function List(props){
       localStorage.setItem("listItems" + props.identifier, JSON.stringify(items));
    }, [items])
 
+   useEffect(()=>{
+      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
+      
+   }, [props.windowResize])
+   
    function addItem(){
       const currentItem = [{id: Math.random() * 100, active: true}];
       localStorage.setItem("listItems" + props.identifier, JSON.stringify(items.concat(currentItem)));

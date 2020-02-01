@@ -45,6 +45,11 @@ function Today(props) {
       return () => clearInterval(interval);
    }, []);
    
+   useEffect(()=>{
+      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
+      
+   }, [props.windowResize])
+
    function getElementIndex(identifier){
       for(let i = 0; i < props.elements.length; i++){
          //console.log(props.elements[i]);

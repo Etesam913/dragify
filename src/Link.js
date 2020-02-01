@@ -118,6 +118,11 @@ function Link(props) {
       controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}})
    }, [])
    
+   useEffect(()=>{
+      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
+      
+   }, [props.windowResize])
+
    //Movement Functions
    function storeTranslations(){
       setTimeout(function(){
@@ -257,7 +262,6 @@ function Link(props) {
    }
    function displayArrow(){
       if(stage === 0){
-         console.log("none");
          return "none";
       }
       else{
@@ -269,7 +273,7 @@ function Link(props) {
    }
    else {
       return (
-         <Component fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} ref={component} initial={{opacity: 0}} animate={controls} style={{ scale }} drag dragMomentum={false} dragConstraints={props.canvas} onHoverStart={() => { setHover(true) }} onHoverEnd={() => {setHover(false)}} onDragEnd={()=>{storeTranslations()}}>
+         <Component fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} ref={component} initial={{opacity: 0}} animate={controls} style={{ scale }} drag={props.canEdit ? true : false} onDragEnd={()=>{storeTranslations()}} dragMomentum={false} dragConstraints={props.canvas} onHoverStart={() => { setHover(true) }} onHoverEnd={() => {setHover(false)}} onDragEnd={()=>{storeTranslations()}}>
             <motion.div className="tools" initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
                <Backarrow invert = {props.darkMode ? "100%" : "0%"} style={{display: displayArrow()}} src={backarrow} onClick={()=> {goBack(stage-1)}} whileHover={{scale: 1.1}} whileTap={{scale: .9}}></Backarrow>
                <div className="small-slider-container">

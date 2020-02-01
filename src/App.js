@@ -29,6 +29,7 @@ const Page = styled.div`
   display: flex;
   justify-content: flex-start;
   flex-shrink: 0;
+  overflow-x:hidden;
 `;
 const Sidebar = styled.div`
    display: flex;
@@ -92,16 +93,27 @@ function App() {
    const [searchElements, setSearchElements] = useState([]);
    const [jokeElements, setJokeElements] = useState([]);
    const [listElements, setListElements] = useState([]);
+   const [moveElements, setMoveElements] = useState(true);
    const canvas = useRef(null);
 
-   const textElementsOnPage = textElements.map((props) => <Text key={props.id} identifier={props.id} canEdit={editable} elements={textElements} onChange={handleTextElementChange} darkMode={darkMode} canvas={canvas}></Text>);
-   const dateElementsOnPage = dateElements.map((props) => <Today key={props.id} canEdit={editable} identifier={props.id} elements={dateElements} onChange={handleDateElementChange} darkMode={darkMode} canvas={canvas}></Today>)
-   const timeElementsOnPage = timeElements.map((props) => <Time key={props.id} canEdit={editable} identifier={props.id} elements={timeElements} onChange={handleTimeElementChange} darkMode={darkMode} canvas={canvas}></Time>)
-   const linkElementsOnPage = linkElements.map((props) => <Link key={props.id} canEdit={editable} identifier={props.id} elements={linkElements} onChange={handleLinkElementChange} darkMode={darkMode} canvas={canvas}></Link>)
-   const searchElementsOnPage = searchElements.map((props) => <Searchbar key={props.id} canEdit={editable} identifier={props.id} elements={searchElements} onChange={handleSearchElementChange} darkMode={darkMode} canvas={canvas}></Searchbar>)
-   const jokeElementsOnPage = jokeElements.map((props) => <Joke key={props.id} canEdit={editable} identifier={props.id} elements={jokeElements} onChange={handleJokeElementChange} darkMode={darkMode} canvas={canvas}></Joke>)
-   const listElementsOnPage = listElements.map((props) => <List key={props.id} canEdit={editable} identifier={props.id} elements={listElements} onChange={handleListElementChange} darkMode={darkMode} canvas={canvas}></List>)
+   const textElementsOnPage = textElements.map((props) => <Text key={props.id} identifier={props.id} canEdit={editable} elements={textElements} onChange={handleTextElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements}></Text>);
+   const dateElementsOnPage = dateElements.map((props) => <Today key={props.id} canEdit={editable} identifier={props.id} elements={dateElements} onChange={handleDateElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements}></Today>)
+   const timeElementsOnPage = timeElements.map((props) => <Time key={props.id} canEdit={editable} identifier={props.id} elements={timeElements} onChange={handleTimeElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements}></Time>)
+   const linkElementsOnPage = linkElements.map((props) => <Link key={props.id} canEdit={editable} identifier={props.id} elements={linkElements} onChange={handleLinkElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements}></Link>)
+   const searchElementsOnPage = searchElements.map((props) => <Searchbar key={props.id} canEdit={editable} identifier={props.id} elements={searchElements} onChange={handleSearchElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements}></Searchbar>)
+   const jokeElementsOnPage = jokeElements.map((props) => <Joke key={props.id} canEdit={editable} identifier={props.id} elements={jokeElements} onChange={handleJokeElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements}></Joke>)
+   const listElementsOnPage = listElements.map((props) => <List key={props.id} canEdit={editable} identifier={props.id} elements={listElements} onChange={handleListElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements}></List>)
+
+
+
    useEffect(() => {
+      window.addEventListener('resize', function(event){
+         this.clearTimeout(resizeTimer);
+         setMoveElements(false);
+         var resizeTimer = setTimeout(function(){
+            setMoveElements(true);
+         }, 500);
+      })
       if (localStorage.getItem("textElements") === "" || localStorage.getItem("dateElements") === "") {
          console.log("it is a string");
       }
@@ -124,6 +136,9 @@ function App() {
          if (JSON.parse(localStorage.getItem("editable")) !== null) {
             setEditable(JSON.parse(localStorage.getItem("editable")));
          }
+      }
+      return()=>{
+         window.removeEventListener("resize", function(){});
       }
    }, [])
    useEffect(() => {

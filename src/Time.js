@@ -14,6 +14,7 @@ const Component = styled(motion.div)`
 const Text = styled(motion.div)`
     font-size: 3rem;
     color: ${props=> props.fontColor};
+    font-family: "Gothic A1";
 `;
 
 function Time(props) {
@@ -69,6 +70,10 @@ function Time(props) {
       return () => clearInterval(interval);
    }, []);
 
+   useEffect(()=>{
+      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
+      
+   }, [props.windowResize])
 
    function getElementIndex(identifier){
       for(let i = 0; i < props.elements.length; i++){
