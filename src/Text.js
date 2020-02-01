@@ -3,7 +3,7 @@ import { motion, useTransform, useMotionValue, useAnimation } from 'framer-motio
 import styled from 'styled-components';
 import './App.css';
 import trashcan from './images/trashcan.png';
-
+import { CirclePicker } from 'react-color';
 const TextArea = styled(motion.input)`
   font-size: 3rem;
   font-family: "Gothic A1";
@@ -21,9 +21,17 @@ const Component = styled(motion.div)`
     width: 40rem;
     z-index: 1
 `;
+
+const ColorContainer = styled(motion.div)`
+   width: 100%;
+   display: flex;
+   justify-content: center;
+   transform: scale(0.8);
+`;
 function Text(props) {
    const [hover, setHover] = useState(false);
    const [deleted, setDeleted] = useState(false);
+   const [color, setColor] = useState("#000000");
    const textInput = useRef(null);
    const component = useRef(null);
    // Animation
@@ -32,22 +40,24 @@ function Text(props) {
    const motionRange = [-70, 0, 70];
    const scaleRange = [.25, 1, 1.75];
    let scale = useTransform(x, motionRange, scaleRange);
-   
-   
-   useEffect(()=>{
+
+
+   useEffect(() => {
       textInput.current.value = localStorage.getItem("text" + props.identifier);
+      if(localStorage.getItem("color") !== null){
+         setColor(localStorage.getItem("color"));
+      }
       console.log(JSON.parse(localStorage.getItem("translateXText" + props.identifier)));
       console.log(JSON.parse(localStorage.getItem("translateYText" + props.identifier)));
-      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}})
+      controls.start({ x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: { duration: 1.5 } })
    }, [])
-   useEffect(()=>{
-      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
-      
+   useEffect(() => {
+      controls.start({ x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: { duration: 1.5 } });
    }, [props.windowResize])
-   function getElementIndex(identifier){
-      for(let i = 0; i < props.elements.length; i++){
+   function getElementIndex(identifier) {
+      for (let i = 0; i < props.elements.length; i++) {
          //console.log(props.elements[i]);
-         if(identifier === props.elements[i].id){
+         if (identifier === props.elements[i].id) {
             return i;
          }
       }
@@ -56,7 +66,7 @@ function Text(props) {
    function handleTrashing() {
       if (props.canEdit) {
          setDeleted(true);
-         localStorage.setItem("text" + props.identifier,  "");
+         localStorage.setItem("text" + props.identifier, "");
          localStorage.setItem("scalePosText" + props.identifier, "0");
          let modifiedArray = props.elements.slice(0, getElementIndex(props.identifier)).concat(props.elements.slice(getElementIndex(props.identifier) + 1, props.elements.length));
          console.log("identifier :" + props.identifier);
@@ -68,14 +78,18 @@ function Text(props) {
          return;
       }
    }
-   function slidingDone(event, info){
+   function handleColorChange(colorVal){
+      setColor(colorVal.hex);
+      localStorage.setItem("color", colorVal.hex);
+   }
+   function slidingDone(event, info) {
       storeScale();
       console.log(info.point.x);
       localStorage.setItem("scalePosText" + props.identifier, info.point.x);
    }
-   function storeTranslations(){
-      setTimeout(function(){
-         if(component.current !== null){
+   function storeTranslations() {
+      setTimeout(function () {
+         if (component.current !== null) {
             let elem = getComputedStyle(component.current);
             let matrix = new DOMMatrix(elem.transform);
             localStorage.setItem("translateXText" + props.identifier, matrix.m41);
@@ -85,25 +99,25 @@ function Text(props) {
          }
       }, 1000)
    }
-   function getTranslations(){
-      if(localStorage.getItem("translateXText" + props.identifier) !== null){
+   function getTranslations() {
+      if (localStorage.getItem("translateXText" + props.identifier) !== null) {
          console.log(localStorage.getItem("translateXText" + props.identifier));
          console.log(localStorage.getItem("translateYText" + props.identifier));
          return [parseFloat(localStorage.getItem("translateXText" + props.identifier)), parseFloat(localStorage.getItem("translateYText" + props.identifier))]
       }
-      else{
-         return [0,0];
+      else {
+         return [0, 0];
       }
    }
-   function getScalePos(){
-      if(localStorage.getItem("scalePosText" + props.identifier) !== null){
+   function getScalePos() {
+      if (localStorage.getItem("scalePosText" + props.identifier) !== null) {
          return parseInt(localStorage.getItem("scalePosText" + props.identifier));
       }
-      else{
+      else {
          return 0;
       }
    }
-   function storeScale(){
+   function storeScale() {
       localStorage.setItem("scaleText" + props.identifier, scale.current);
       console.log(localStorage.getItem("scaleText" + props.identifier));
    }
@@ -115,16 +129,19 @@ function Text(props) {
    }
    else {
       return (
-         <Component ref={component}  initial = {{x: 0, y: 0, opacity: 0}} animate={controls} style={{scale}} transition={{opacity: {duration: 1}}} onHoverStart={() => { setHover(true) }} dragMomentum = {false} onHoverEnd={() => { setHover(false) }} drag={props.canEdit ? true : false} onDragEnd={()=>{storeTranslations()}} dragConstraints={props.canvas}>
-            <motion.div className="tools" initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
+         <Component ref={component} initial={{ x: 0, y: 0, opacity: 0 }} animate={controls} style={{ scale }} transition={{ opacity: { duration: 1 } }} onHoverStart={() => { setHover(true) }} dragMomentum={false} onHoverEnd={() => { setHover(false) }} drag={props.canEdit ? true : false} onDragEnd={() => { storeTranslations() }} dragConstraints={props.canvas}>
+            <motion.div className="tools" initial={{ opacity: 0}} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
                <div className="slider-container">
                   <div className="slider">
-                     <motion.div className="handle" style={{ x }} drag={props.canEdit ? 'x' : false} dragConstraints={{ left: -70, right: 70 }} dragElastic={0} dragMomentum={false}  onDragEnd={(event, info)=>{slidingDone(event, info)}}></motion.div>
+                     <motion.div className="handle" style={{ x }} drag={props.canEdit ? 'x' : false} dragConstraints={{ left: -70, right: 70 }} dragElastic={0} dragMomentum={false} onDragEnd={(event, info) => { slidingDone(event, info) }}></motion.div>
                   </div>
                </div>
-               <motion.img src={trashcan} className={props.darkMode ? "delete-button inverted" :"delete-button"} onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
+               <motion.img src={trashcan} className={props.darkMode ? "delete-button inverted" : "delete-button"} onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
             </motion.div>
-            <TextArea fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} readOnly={props.canEdit ? false : true}  ref = {textInput} onChange={(event)=>{localStorage.setItem("text" + props.identifier, event.target.value)}} placeholder="placeholder"></TextArea>
+            <TextArea animate={{color: color}} transition={{duration: 0.5, type: "spring", damping: 300}} readOnly={props.canEdit ? false : true} ref={textInput} onChange={(event) => { localStorage.setItem("text" + props.identifier, event.target.value) }} placeholder="placeholder"></TextArea>
+            <ColorContainer initial={{ opacity: 0}} animate={hover && props.canEdit ? { opacity: 1} : { opacity: 0 }}>
+               <CirclePicker width="25rem" onChange={handleColorChange}/>
+            </ColorContainer>
          </Component>
       );
    }

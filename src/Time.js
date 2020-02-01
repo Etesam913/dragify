@@ -3,6 +3,8 @@ import { motion, useMotionValue, useTransform, useAnimation} from "framer-motion
 import styled from 'styled-components';
 import './App.css';
 import trashcan from './images/trashcan.png';
+import { CirclePicker } from 'react-color';
+
 const Component = styled(motion.div)`
     position: absolute;
     left: 43%;
@@ -146,6 +148,10 @@ function Time(props) {
                <motion.img src={trashcan} className={props.darkMode ? "delete-button inverted" :"delete-button"} onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
             </motion.div>
             <Text fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"}>{time}</Text>
+            <motion.div>
+               <CirclePicker width="25rem" />
+            </motion.div>
+            
          </Component>
       );
    }
