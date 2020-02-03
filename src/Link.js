@@ -36,11 +36,13 @@ const Subtitle = styled.div`
 `
 const LinkInput = styled.input`
    background-color: ${props => props.buttonBackgroundColor};
+   color: ${props=> props.fontColor};
    width: 85%;
    height: 1.5rem;
    border: none;
    border-radius: 2rem;
    padding-left: .5rem;
+   padding-right: .5rem;
    margin-bottom: .5rem;
    margin-top: .5rem;
 `;
@@ -58,7 +60,6 @@ const Backarrow = styled(motion.img)`
    height:34px;
    margin-right: .5rem;
    filter: invert(${props=> props.invert});
-
 `
 const FileLabel = styled(motion.label)`
    background-color: ${props => props.buttonBackgroundColor};
@@ -234,7 +235,7 @@ function Link(props) {
             <Box backgroundColor={props.darkMode ? "rgb(39, 39, 39)" : "rgb(90%, 90%, 90%);"} animate={{ borderRadius: "0%" }} transition={{ duration: 1 }} >
                <Header> Paste Link Below</Header>
                <Subtitle> ex: www.reddit.com </Subtitle>
-               <LinkInput ref={linkInput} buttonBackgroundColor = {props.darkMode ? "rgb(32, 34, 35)" : "rgb(80%, 80%, 80%)"}></LinkInput>
+               <LinkInput ref={linkInput} fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"}  buttonBackgroundColor = {props.darkMode ? "rgb(32, 34, 35)" : "rgb(80%, 80%, 80%)"}></LinkInput>
                <Button buttonBackgroundColor = {props.darkMode ? "rgb(32, 34, 35)" : "rgb(80%, 80%, 80%)"} fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} onClick={() => { storeLink() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>Next</Button>
             </Box>
          );

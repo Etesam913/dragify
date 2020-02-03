@@ -11,18 +11,28 @@ const Component = styled(motion.div)`
     top: 42%;
     display: flex;
     flex-direction: column;
+    align-items: center;
     z-index: 1;
 `;
 const Text = styled(motion.div)`
     font-size: 3rem;
-    color: ${props=> props.fontColor};
     font-family: "Gothic A1";
 `;
+
+const ColorContainer = styled(motion.div)`
+   width: 100%;
+   display: flex;
+   justify-content: center;
+   transform: scale(.6);
+`;
+
 
 function Time(props) {
    const [time, setTime] = useState("");
    const [hover, setHover] = useState(false);
    const [deleted, setDeleted] = useState(false);
+   const [color, setColor] = useState("#000000");
+
    const component = useRef(null);
 
    let x = useMotionValue(getScalePos());
@@ -58,7 +68,11 @@ function Time(props) {
       let seconds = d.getSeconds();
       if (seconds < 10) { seconds = "0" + seconds; }
       setTime(getTwelveHourTime(hour) + ":" + minutes + ":" + seconds + " " + getTimePeriodName(hour));
-      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}})
+      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
+
+      if(localStorage.getItem("colorTime" + props.identifier) !== null){
+         setColor(localStorage.getItem("colorTime" + props.identifier));
+      }
 
       const interval = setInterval(() => {
          d = new Date();
@@ -95,6 +109,11 @@ function Time(props) {
       else {
          return;
       }
+   }
+
+   function handleColorChange(colorVal){
+      setColor(colorVal.hex);
+      localStorage.setItem("colorTime" + props.identifier, colorVal.hex);
    }
 
    function slidingDone(event, info){
@@ -147,10 +166,10 @@ function Time(props) {
                </div>
                <motion.img src={trashcan} className={props.darkMode ? "delete-button inverted" :"delete-button"} onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
             </motion.div>
-            <Text fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"}>{time}</Text>
-            <motion.div>
-               <CirclePicker width="25rem" />
-            </motion.div>
+            <Text animate={{color: color}} transition={{duration: 0.5, type: "spring", damping: 300}}>{time}</Text>
+            <ColorContainer initial={{ opacity: 0}} animate={hover && props.canEdit ? { opacity: 1} : { opacity: 0 }}>
+               <CirclePicker colors={props.colorArray} width="30rem" onChange={handleColorChange}/>
+            </ColorContainer>
             
          </Component>
       );

@@ -44,8 +44,8 @@ function Text(props) {
 
    useEffect(() => {
       textInput.current.value = localStorage.getItem("text" + props.identifier);
-      if(localStorage.getItem("color" + props.identifier) !== null){
-         setColor(localStorage.getItem("color" + props.identifier));
+      if(localStorage.getItem("colorText" + props.identifier) !== null){
+         setColor(localStorage.getItem("colorText" + props.identifier));
       }
       console.log(JSON.parse(localStorage.getItem("translateXText" + props.identifier)));
       console.log(JSON.parse(localStorage.getItem("translateYText" + props.identifier)));
@@ -80,7 +80,7 @@ function Text(props) {
    }
    function handleColorChange(colorVal){
       setColor(colorVal.hex);
-      localStorage.setItem("color" + props.identifier, colorVal.hex);
+      localStorage.setItem("colorText" + props.identifier, colorVal.hex);
    }
    function slidingDone(event, info) {
       storeScale();
