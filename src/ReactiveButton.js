@@ -36,7 +36,7 @@ function ReactiveButton(props){
          <ButtonContent 
          onHoverStart={()=>{setHover(true)}} onHoverEnd={()=>{setHover(false)}}
          animate={{backgroundColor: hover ? "rgb(232, 232, 232)" : "rgba(224, 217, 211, 0)"}}
-         whileHover={{scale: 1.15, boxShadow: props.darkMode ? "0px 16px 10px 0px rgba(232, 232, 232, 0)" : "0px 16px 10px 0px rgba(232, 232, 232, 0.5)"}}
+         whileHover={{scale: 1.15, boxShadow: props.darkMode ? "none" : "0px 16px 10px 0px rgba(232, 232, 232, 0.5)"}}
          whileTap={{scale: 1.05, boxShadow: "0px 16px 10px 0px rgba(232, 232, 232, 0)"}}
          transition={{duration: 0.25}}
          >
