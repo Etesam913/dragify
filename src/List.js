@@ -60,7 +60,6 @@ function List(props){
    const controls = useAnimation();
 
    useEffect(()=>{
-      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
       if(JSON.parse(localStorage.getItem("listItems" + props.identifier)) !== null){
          setItems(JSON.parse(localStorage.getItem("listItems" + props.identifier)));
       }

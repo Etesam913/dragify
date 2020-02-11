@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useCycle } from 'framer-motion';
+import { motion} from 'framer-motion';
 import styled from 'styled-components';
 import Text from './Text.js';
 import Today from './Today.js';
@@ -107,7 +107,9 @@ function App() {
 
    useEffect(() => {
       window.addEventListener('resize', function(event){
-         this.clearTimeout(resizeTimer);
+         if(resizeTimer !== null){
+            this.clearTimeout(resizeTimer);
+         }
          setMoveElements(false);
          var resizeTimer = setTimeout(function(){
             setMoveElements(true);
@@ -217,17 +219,7 @@ function App() {
    }
 
    const sidebarItem = { hidden: { opacity: 0, scale: 0 }, show: { opacity: 1, scale: 1 } };
-
-   const presetsContainer = {
-      hidden: {opacity: 0},
-      show:{opacity: 1}, transition: {staggerChildren: 0.375}
-   }
-
-   const presetItem = {
-      hidden: { opacity: 0}, show: { opacity: 1}
-   }
-
-
+   
    return (
       <Page backgroundColor={darkMode ? "rgb(24, 26, 27);" : "white"}>
          <Sidebar>
@@ -264,13 +256,13 @@ function App() {
          </DarkModeButton>
          <Canvas ref={canvas}>
             <Presets>
-               <motion.div animate={editable ? {opacity: 1} : {opacity: 0}} transition={editable ? {delay:0} : {delay:.4}}>
+               <motion.div animate={editable ? {opacity: 1, scale: 1} : {opacity: 0, scale: 0}} transition={editable ? {delay:0} : {delay:.4}}>
                   <ReactiveButton text="Preset 1" darkMode={darkMode}></ReactiveButton>
                </motion.div>
-               <motion.div animate={editable ? {opacity: 1} : {opacity: 0}} transition={{delay: .2}}>
+               <motion.div animate={editable ? {opacity: 1, scale: 1} : {opacity: 0, scale: 0}} transition={{delay: .2}}>
                   <ReactiveButton text="Preset 2" darkMode={darkMode}></ReactiveButton>
                </motion.div>
-               <motion.div animate={editable ? {opacity: 1} : {opacity: 0}} transition={editable ? {delay: .4} : {delay: 0}}>
+               <motion.div animate={editable ? {opacity: 1, scale: 1} : {opacity: 0, scale: 0}} transition={editable ? {delay: .4} : {delay: 0}}>
                   <ReactiveButton text="Preset 3" darkMode={darkMode}></ReactiveButton>
                </motion.div>
             </Presets>

@@ -48,7 +48,6 @@ const ItemInput = styled(motion.input)`
 
 function ListItem(props) {
    const [hover, setHover] = useState(false);
-   const [deleted, setDeleted] = useState(false);
    const task = useRef(null);
 
    useEffect(()=>{
@@ -75,7 +74,7 @@ function ListItem(props) {
       props.setItems(tempArr);
    }
    function strikeThroughTask(){
-      if(task.current.value != ""){
+      if(task.current.value !== ""){
          task.current.style.setProperty("text-decoration", "line-through");
          localStorage.setItem("isDone" + props.identifier, JSON.stringify(true));
          task.current.readOnly = true;

@@ -68,8 +68,7 @@ function Time(props) {
       let seconds = d.getSeconds();
       if (seconds < 10) { seconds = "0" + seconds; }
       setTime(getTwelveHourTime(hour) + ":" + minutes + ":" + seconds + " " + getTimePeriodName(hour));
-      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
-
+      
       if(localStorage.getItem("colorTime" + props.identifier) !== null){
          setColor(localStorage.getItem("colorTime" + props.identifier));
       }

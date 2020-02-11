@@ -116,12 +116,10 @@ function Link(props) {
       if (currentLink !== null) {
          setLinkAddress(currentLink);
       }
-      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}})
    }, [])
    
    useEffect(()=>{
       controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
-      
    }, [props.windowResize])
 
    //Movement Functions

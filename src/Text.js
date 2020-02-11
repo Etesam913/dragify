@@ -49,7 +49,6 @@ function Text(props) {
       }
       console.log(JSON.parse(localStorage.getItem("translateXText" + props.identifier)));
       console.log(JSON.parse(localStorage.getItem("translateYText" + props.identifier)));
-      controls.start({ x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: { duration: 1.5 } })
    }, [])
    useEffect(() => {
       controls.start({ x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: { duration: 1.5 } });

@@ -66,7 +66,6 @@ function Joke(props){
          setLoading(false);
       }
       fetchData();
-      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}})
    },[])
 
    useEffect(()=>{

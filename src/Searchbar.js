@@ -79,7 +79,6 @@ function Searchbar(props){
       if(JSON.parse(localStorage.getItem("engine" + props.identifier)) !== null){
          setEngine(JSON.parse(localStorage.getItem("engine" + props.identifier)));
       }
-      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}})
    }, [])
 
    useEffect(()=>{

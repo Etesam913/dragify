@@ -45,7 +45,6 @@ function Today(props) {
       var day = d.getDate();
       var year = d.getFullYear();
       setToday(getMonth(monthNumber) + " " + day + " " + year);
-      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
 
       if(localStorage.getItem("colorDate" + props.identifier) !== null){
          setColor(localStorage.getItem("colorDate" + props.identifier));
@@ -63,7 +62,6 @@ function Today(props) {
    
    useEffect(()=>{
       controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
-      
    }, [props.windowResize])
 
    function getElementIndex(identifier){
