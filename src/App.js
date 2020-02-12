@@ -241,27 +241,6 @@ function App() {
                <ItemImage invert={darkMode ? "100%" : "0%"} src={editable ? backarrow : pencil} style={{ height: "64.5%", width: "64.5%" }} />
             </EditButton>
             <Itembar variants={sidebarContainer} initial="hidden" animate={editable ? "show" : "hidden"}>
-               {/*<ItembarButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={sidebarItem} onClick={() => { AddElement("text") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                  <ItemImage src={edit} invert = {darkMode ? "100%" : "0%"} style={{ height: "55%", width: "35%" }} />
-               </ItembarButton>
-               <ItembarButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={sidebarItem} onClick={() => { AddElement("date") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                  <ItemImage src={date} invert = {darkMode ? "100%" : "0%"} style={{ height: "60.5%", width: "63.5%" }} />
-               </ItembarButton>
-               <ItembarButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={sidebarItem} onClick={() => { AddElement("time") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                  <ItemImage src={time} invert = {darkMode ? "100%" : "0%"} style={{ height: "35%", width: "75%" }} />
-               </ItembarButton>
-               <ItembarButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={sidebarItem} onClick={() => { AddElement("link") }} whileHover={{ scale: 1.1, boxShadow: darkMode ? "0px 16px 10px 0px rgba(232, 232, 232, 0)" : "0px 16px 10px 0px rgba(232, 232, 232, 0.5)" }} whileTap={{ scale: 0.9 }}>
-                  <ItemImage src={chain} invert = {darkMode ? "100%" : "0%"} style={{ height: "15", width: "75%" }} />
-               </ItembarButton>
-               <ItembarButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={sidebarItem} onClick={() => { AddElement("search") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                  <ItemImage src={searchv2} invert = {darkMode ? "100%" : "0%"} style={{ height: "60%", width: "60%" }} />
-               </ItembarButton>
-               <ItembarButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={sidebarItem} onClick={() => { AddElement("joke") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                  <ItemImage src={laugh} invert = {darkMode ? "100%" : "0%"} style={{ height: "70%", width: "70%" }} />
-               </ItembarButton>
-               <ItembarButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={sidebarItem} onClick={() => { AddElement("list") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                  <ItemImage src={todolist} invert = {darkMode ? "100%" : "0%"} style={{ height: "70%", width: "70%" }} />
-               </ItembarButton>*/}
                <ItembarButton img={edit} imgDim={["55%", "35%"]} addElement={() => { addElement("text") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
                <ItembarButton img={date} imgDim={["60.5%", "63.5%"]} addElement={() => { addElement("date") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
                <ItembarButton img={time} imgDim={["35%", "75%"]} addElement={() => { addElement("time") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
@@ -269,8 +248,6 @@ function App() {
                <ItembarButton img={searchv2} imgDim={["60%", "60%"]} addElement={() => { addElement("search") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
                <ItembarButton img={laugh} imgDim={["70%", "70%"]} addElement={() => { addElement("joke") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
                <ItembarButton img={todolist} imgDim={["70%", "70%"]} addElement={() => { addElement("list") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
-
-
             </Itembar>
          </Sidebar>
 
@@ -279,14 +256,17 @@ function App() {
          </DarkModeButton>
          <Canvas ref={canvas}>
             <Presets>
-               <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={editable ? { delay: 0 } : { delay: .4 }}>
+               <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={editable ? { delay: 0 } : { delay: .6 }}>
                   <ReactiveButton text="Preset 1" darkMode={darkMode}></ReactiveButton>
                </motion.div>
-               <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={{ delay: .2 }}>
+               <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={editable ? { delay: .2 } : { delay: .4 }}>
                   <ReactiveButton text="Preset 2" darkMode={darkMode}></ReactiveButton>
                </motion.div>
-               <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={editable ? { delay: .4 } : { delay: 0 }}>
+               <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={editable ? { delay: .4 } : { delay: .2 }}>
                   <ReactiveButton text="Preset 3" darkMode={darkMode}></ReactiveButton>
+               </motion.div>
+               <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={editable ? { delay: .6 } : { delay: 0 }}>
+                  <ReactiveButton text="Set Background" darkMode={darkMode}></ReactiveButton>
                </motion.div>
             </Presets>
             {textElementsOnPage}

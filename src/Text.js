@@ -19,7 +19,7 @@ const Component = styled(motion.div)`
     display: flex;
     flex-direction: column;
     width: 40rem;
-    z-index: 1
+    z-index: 1;
 `;
 
 const ColorContainer = styled(motion.div)`
@@ -68,9 +68,9 @@ function Text(props) {
          localStorage.setItem("text" + props.identifier, "");
          localStorage.setItem("scalePosText" + props.identifier, "0");
          let modifiedArray = props.elements.slice(0, getElementIndex(props.identifier)).concat(props.elements.slice(getElementIndex(props.identifier) + 1, props.elements.length));
-         console.log("identifier :" + props.identifier);
+         //console.log("identifier :" + props.identifier);
          //console.log("index: " + getElementIndex(props.identifier));
-         console.log("Modified array : " + modifiedArray);
+         //console.log("Modified array : " + modifiedArray);
          props.onChange(modifiedArray);
       }
       else {
@@ -83,7 +83,7 @@ function Text(props) {
    }
    function slidingDone(event, info) {
       storeScale();
-      console.log(info.point.x);
+      //console.log(info.point.x);
       localStorage.setItem("scalePosText" + props.identifier, info.point.x);
    }
    function storeTranslations() {
@@ -93,15 +93,15 @@ function Text(props) {
             let matrix = new DOMMatrix(elem.transform);
             localStorage.setItem("translateXText" + props.identifier, matrix.m41);
             localStorage.setItem("translateYText" + props.identifier, matrix.m42);
-            console.log(localStorage.getItem("translateXText" + props.identifier));
-            console.log(localStorage.getItem("translateYText" + props.identifier));
+            //console.log(localStorage.getItem("translateXText" + props.identifier));
+            //console.log(localStorage.getItem("translateYText" + props.identifier));
          }
       }, 1000)
    }
    function getTranslations() {
       if (localStorage.getItem("translateXText" + props.identifier) !== null) {
-         console.log(localStorage.getItem("translateXText" + props.identifier));
-         console.log(localStorage.getItem("translateYText" + props.identifier));
+         //console.log(localStorage.getItem("translateXText" + props.identifier));
+         //console.log(localStorage.getItem("translateYText" + props.identifier));
          return [parseFloat(localStorage.getItem("translateXText" + props.identifier)), parseFloat(localStorage.getItem("translateYText" + props.identifier))]
       }
       else {
@@ -118,7 +118,7 @@ function Text(props) {
    }
    function storeScale() {
       localStorage.setItem("scaleText" + props.identifier, scale.current);
-      console.log(localStorage.getItem("scaleText" + props.identifier));
+      //console.log(localStorage.getItem("scaleText" + props.identifier));
    }
 
    if (deleted) {
@@ -128,7 +128,7 @@ function Text(props) {
    }
    else {
       return (
-         <Component ref={component} initial={{ x: 0, y: 0, opacity: 0 }} animate={controls} style={{ scale }} transition={{ opacity: { duration: 1 } }} onHoverStart={() => { setHover(true) }} dragMomentum={false} onHoverEnd={() => { setHover(false) }} drag={props.canEdit ? true : false} onDragEnd={() => { storeTranslations() }} dragConstraints={props.canvas}>
+         <Component ref={component} initial={{ x: 0, y: 0, opacity: 0 }} animate={controls} style={{ scale }} transition={{ opacity: { duration: 1 } }}  onHoverStart={() => { setHover(true) }} dragMomentum={false} onHoverEnd={() => { setHover(false) }} drag={props.canEdit ? true : false} onDragEnd={() => { storeTranslations() }} dragConstraints={props.canvas}>
             <motion.div className="tools" initial={{ opacity: 0}} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
                <div className="slider-container">
                   <div className="slider">
@@ -137,7 +137,7 @@ function Text(props) {
                </div>
                <motion.img src={trashcan} className={props.darkMode ? "delete-button inverted" : "delete-button"} onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
             </motion.div>
-            <TextArea animate={{color: color}} transition={{duration: 0.5, type: "spring", damping: 300}} readOnly={props.canEdit ? false : true} ref={textInput} onChange={(event) => { localStorage.setItem("text" + props.identifier, event.target.value) }} placeholder="placeholder"></TextArea>
+            <TextArea ref={textInput} animate={{color: color}} transition={{duration: 0.5, type: "spring", damping: 300}} readOnly={props.canEdit ? false : true}  onChange={(event) => { localStorage.setItem("text" + props.identifier, event.target.value) }} placeholder="placeholder"></TextArea>
             <ColorContainer initial={{ opacity: 0}} animate={hover && props.canEdit ? { opacity: 1} : { opacity: 0 }}>
                <CirclePicker colors={props.colorArray} width="30rem" onChange={handleColorChange}/>
             </ColorContainer>

@@ -4,7 +4,6 @@ import { motion} from "framer-motion";
 
 const Button = styled(motion.div)`
    height: 2rem;
-   width: 5rem;
    border-radius: .5rem;
    margin-left: .75rem;
    margin-right: .75rem;
@@ -12,6 +11,7 @@ const Button = styled(motion.div)`
    border-style: solid;
    border-color: rgb(232, 232, 232);
    filter: invert(${props=> props.invert}%);
+   
 `;
 const ButtonContent = styled(motion.div)`
    height: 100%;
@@ -28,6 +28,8 @@ const Text = styled.div`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
+  padding-left: .5rem;
+   padding-right: .5rem;
 `;
 function ReactiveButton(props){
    const [hover, setHover] = useState(false);
