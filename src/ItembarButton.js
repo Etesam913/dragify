@@ -11,7 +11,7 @@ const Button = styled(motion.div)`
   align-items: center;
   border-width: 1.5px;
    border-style: solid;
-   border-color: rgb(232, 232, 232);
+   border-color: ${props=> props.borderColor};
    background-color: rgba(255, 255, 255, 0);
 `;
 
@@ -27,10 +27,11 @@ function ItembarButton(props) {
       <Button 
          variants={sidebarItem}
          onClick={props.addElement}
-         whileHover={{ scale: 1.1, backgroundColor: "rgb(232, 232, 232)", boxShadow: props.darkMode ? "rgba(153, 153, 153, 0.4) 0px 0px 0px 0px" : "0px 16px 10px 0px rgba(232, 232, 232, 0.5)" }}
+         whileHover={{ scale: 1.1, backgroundColor: props.darkMode ? "rgb(200, 200, 200)" : "rgb(232, 232, 232)", boxShadow: props.darkMode ? "rgba(153, 153, 153, 0.4) 0px 0px 0px 0px" : "0px 16px 10px 0px rgba(232, 232, 232, 0.5)" }}
          whileTap={{ scale: 0.9, boxShadow: "rgba(153, 153, 153, 0.4) 0px 0px 0px 0px"}}
          onHoverStart={()=>{setHover(true)}}
          onHoverEnd={()=>{setHover(false)}}
+         borderColor={props.darkMode ? "rgb(200, 200, 200)" : "rgb(232, 232, 232)"}
       >
          <Image src={props.img} invert={props.darkMode ? "100%" : "0%"} style={{height: props.imgDim[0], width: props.imgDim[1]}}></Image>
       </Button>

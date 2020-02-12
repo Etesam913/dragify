@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { CirclePicker } from 'react-color';
+
 import styled from 'styled-components';
 import Text from './Text.js';
 import Today from './Today.js';
@@ -50,17 +52,21 @@ const Itembar = styled(motion.div)`
    align-items: center;
    justify-content: space-around;
 `;
-/*const ItembarButton = styled(motion.div)`
-  width: 5rem;
-  height: 5rem;
-  background-color: ${props=>props.buttonBackgroundColor};
-  border-radius: 3rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`*/
+
 const ItemImage = styled.img`
    filter: invert(${props => props.invert});
+`;
+
+const BackgroundWindow = styled(motion.div)`
+   position: fixed;
+   top: 20%;
+   height: 60%;
+   width: 35%;
+   background-color: blue;
+   z-index: 2;
+   left: 33.5%;
+   border-radius: 3rem;
+   background-color: rgb(232, 232, 232);
 `;
 
 const EditButton = styled(motion.div)`
@@ -100,6 +106,7 @@ function App() {
    const [jokeElements, setJokeElements] = useState([]);
    const [listElements, setListElements] = useState([]);
    const [moveElements, setMoveElements] = useState(true);
+   const [showBackgroundWindow, setShowBackgroundWindow] = useState(false);
    const canvas = useRef(null);
    const colors = ['#f2f2f2', '#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#000000'];
 
@@ -152,8 +159,8 @@ function App() {
 
    useEffect(() => {
 
-      console.log(editable);
-   }, [editable])
+      console.log(showBackgroundWindow);
+   }, [showBackgroundWindow])
 
    useEffect(() => {
       localStorage.setItem("textElement", JSON.stringify(textElements));
@@ -254,6 +261,10 @@ function App() {
          <DarkModeButton buttonBackgroundColor={darkMode ? "#434342" : "#e0d9d3"} onClick={() => { setDarkMode(!darkMode) }} whileTap={{ scale: 0.9 }} whileHover={{ scale: 1.1 }}>
             <ItemImage src={darkMode ? sun : moon} invert={darkMode ? "100%" : "0%"} style={{ height: "70%", width: "70%" }}></ItemImage>
          </DarkModeButton>
+         {showBackgroundWindow ? 
+         <BackgroundWindow initial={{opacity: 0, scale: 0}} animate={{opacity: 1, scale: 1}}>
+            <CirclePicker width="75%"/>
+         </BackgroundWindow> : <div></div>}
          <Canvas ref={canvas}>
             <Presets>
                <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={editable ? { delay: 0 } : { delay: .6 }}>
@@ -266,7 +277,7 @@ function App() {
                   <ReactiveButton text="Preset 3" darkMode={darkMode}></ReactiveButton>
                </motion.div>
                <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={editable ? { delay: .6 } : { delay: 0 }}>
-                  <ReactiveButton text="Set Background" darkMode={darkMode}></ReactiveButton>
+                  <ReactiveButton text="Set Background" darkMode={darkMode} showWindow={()=>{setShowBackgroundWindow(true)}}></ReactiveButton>
                </motion.div>
             </Presets>
             {textElementsOnPage}

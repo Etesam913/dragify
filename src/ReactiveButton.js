@@ -27,6 +27,9 @@ const Text = styled.div`
    background: -webkit-linear-gradient(45deg, #2af598, #009efd);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
   text-align: center;
   padding-left: .5rem;
    padding-right: .5rem;
@@ -41,6 +44,7 @@ function ReactiveButton(props){
          whileHover={{scale: 1.15, boxShadow: props.darkMode ? "none" : "0px 16px 10px 0px rgba(232, 232, 232, 0.5)"}}
          whileTap={{scale: 1.05, boxShadow: "0px 16px 10px 0px rgba(232, 232, 232, 0)"}}
          transition={{duration: 0.25}}
+         onClick={props.showWindow}
          >
             <Text>{props.text}</Text>
          </ButtonContent>
