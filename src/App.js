@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion} from 'framer-motion';
+import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import Text from './Text.js';
 import Today from './Today.js';
@@ -9,6 +9,7 @@ import Searchbar from './Searchbar.js';
 import Joke from './Joke.js';
 import List from './List.js';
 import ReactiveButton from './ReactiveButton.js';
+import ItembarButton from './ItembarButton.js';
 import pencil from "./images/pencil.png";
 import edit from "./images/edit.png";
 import date from "./images/date.png";
@@ -49,7 +50,7 @@ const Itembar = styled(motion.div)`
    align-items: center;
    justify-content: space-around;
 `;
-const ItembarButton = styled(motion.div)`
+/*const ItembarButton = styled(motion.div)`
   width: 5rem;
   height: 5rem;
   background-color: ${props=>props.buttonBackgroundColor};
@@ -57,13 +58,19 @@ const ItembarButton = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`*/
 const ItemImage = styled.img`
-   filter: invert(${props=> props.invert});
+   filter: invert(${props => props.invert});
 `;
 
-const EditButton = styled(ItembarButton)`
-   background-color: ${props=>props.buttonBackgroundColor};
+const EditButton = styled(motion.div)`
+ width: 5rem;
+  height: 5rem;
+  border-radius: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+   background-color: ${props => props.buttonBackgroundColor};
 `;
 
 const DarkModeButton = styled(EditButton)`
@@ -71,7 +78,7 @@ const DarkModeButton = styled(EditButton)`
    z-index: 1;
    left: 95%;
    top: 2%;
-   background-color: ${props=>props.buttonBackgroundColor};
+   background-color: ${props => props.buttonBackgroundColor};
 `;
 const Presets = styled(motion.div)`
    display: flex;
@@ -106,12 +113,12 @@ function App() {
 
 
    useEffect(() => {
-      window.addEventListener('resize', function(event){
-         if(resizeTimer !== null){
+      window.addEventListener('resize', function (event) {
+         if (resizeTimer !== null) {
             this.clearTimeout(resizeTimer);
          }
          setMoveElements(false);
-         var resizeTimer = setTimeout(function(){
+         var resizeTimer = setTimeout(function () {
             setMoveElements(true);
          }, 500);
       })
@@ -138,10 +145,16 @@ function App() {
             setEditable(JSON.parse(localStorage.getItem("editable")));
          }
       }
-      return()=>{
-         window.removeEventListener("resize", function(){});
+      return () => {
+         window.removeEventListener("resize", function () { });
       }
-   }, [])
+   }, []);
+
+   useEffect(() => {
+
+      console.log(editable);
+   }, [editable])
+
    useEffect(() => {
       localStorage.setItem("textElement", JSON.stringify(textElements));
       localStorage.setItem("dateElement", JSON.stringify(dateElements));
@@ -175,10 +188,11 @@ function App() {
       setListElements(arr);
    }
    function changeEditable() {
+      console.log("bob");
       localStorage.setItem("editable", JSON.stringify(!editable));
       setEditable(!editable);
    }
-   function AddElement(type) {
+   function addElement(type) {
       if (type === "text") {
          const elem = [{ id: Math.random() * 200 }];
          console.log(textElements.length);
@@ -219,15 +233,15 @@ function App() {
    }
 
    const sidebarItem = { hidden: { opacity: 0, scale: 0 }, show: { opacity: 1, scale: 1 } };
-   
+
    return (
       <Page backgroundColor={darkMode ? "rgb(24, 26, 27);" : "white"}>
          <Sidebar>
-            <EditButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={sidebarItem} onClick={() => { changeEditable() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-               <ItemImage invert = {darkMode ? "100%" : "0%"} src={editable ? backarrow : pencil} style={{ height: "64.5%", width: "64.5%" }} />
+            <EditButton buttonBackgroundColor={darkMode ? "#434342" : "#e0d9d3"} variants={sidebarItem} onClick={() => { changeEditable() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+               <ItemImage invert={darkMode ? "100%" : "0%"} src={editable ? backarrow : pencil} style={{ height: "64.5%", width: "64.5%" }} />
             </EditButton>
             <Itembar variants={sidebarContainer} initial="hidden" animate={editable ? "show" : "hidden"}>
-               <ItembarButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={sidebarItem} onClick={() => { AddElement("text") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+               {/*<ItembarButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={sidebarItem} onClick={() => { AddElement("text") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                   <ItemImage src={edit} invert = {darkMode ? "100%" : "0%"} style={{ height: "55%", width: "35%" }} />
                </ItembarButton>
                <ItembarButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={sidebarItem} onClick={() => { AddElement("date") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
@@ -247,22 +261,31 @@ function App() {
                </ItembarButton>
                <ItembarButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} variants={sidebarItem} onClick={() => { AddElement("list") }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                   <ItemImage src={todolist} invert = {darkMode ? "100%" : "0%"} style={{ height: "70%", width: "70%" }} />
-               </ItembarButton>
+               </ItembarButton>*/}
+               <ItembarButton img={edit} imgDim={["55%", "35%"]} addElement={() => { addElement("text") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
+               <ItembarButton img={date} imgDim={["60.5%", "63.5%"]} addElement={() => { addElement("date") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
+               <ItembarButton img={time} imgDim={["35%", "75%"]} addElement={() => { addElement("time") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
+               <ItembarButton img={chain} imgDim={["32%", "75%"]} addElement={() => { addElement("link") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
+               <ItembarButton img={searchv2} imgDim={["60%", "60%"]} addElement={() => { addElement("search") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
+               <ItembarButton img={laugh} imgDim={["70%", "70%"]} addElement={() => { addElement("joke") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
+               <ItembarButton img={todolist} imgDim={["70%", "70%"]} addElement={() => { addElement("list") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
+
+
             </Itembar>
          </Sidebar>
 
-         <DarkModeButton buttonBackgroundColor = {darkMode ? "#434342" : "#e0d9d3"} onClick={() => { setDarkMode(!darkMode) }} whileTap={{ scale: 0.9 }} whileHover={{ scale: 1.1 }}>
-            <ItemImage src={darkMode ? sun : moon} invert = {darkMode ? "100%" : "0%"} style={{ height: "70%", width: "70%" }}></ItemImage>
+         <DarkModeButton buttonBackgroundColor={darkMode ? "#434342" : "#e0d9d3"} onClick={() => { setDarkMode(!darkMode) }} whileTap={{ scale: 0.9 }} whileHover={{ scale: 1.1 }}>
+            <ItemImage src={darkMode ? sun : moon} invert={darkMode ? "100%" : "0%"} style={{ height: "70%", width: "70%" }}></ItemImage>
          </DarkModeButton>
          <Canvas ref={canvas}>
             <Presets>
-               <motion.div animate={editable ? {opacity: 1, scale: 1} : {opacity: 0, scale: 0}} transition={editable ? {delay:0} : {delay:.4}}>
+               <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={editable ? { delay: 0 } : { delay: .4 }}>
                   <ReactiveButton text="Preset 1" darkMode={darkMode}></ReactiveButton>
                </motion.div>
-               <motion.div animate={editable ? {opacity: 1, scale: 1} : {opacity: 0, scale: 0}} transition={{delay: .2}}>
+               <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={{ delay: .2 }}>
                   <ReactiveButton text="Preset 2" darkMode={darkMode}></ReactiveButton>
                </motion.div>
-               <motion.div animate={editable ? {opacity: 1, scale: 1} : {opacity: 0, scale: 0}} transition={editable ? {delay: .4} : {delay: 0}}>
+               <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={editable ? { delay: .4 } : { delay: 0 }}>
                   <ReactiveButton text="Preset 3" darkMode={darkMode}></ReactiveButton>
                </motion.div>
             </Presets>
