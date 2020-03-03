@@ -111,12 +111,14 @@ function BackgroundWindow(props) {
     } 
     else{
       setImageError("Submitted Successfully");
-      uploadImage(files);
+      uploadBackgroundImage(files);
+      console.log("bob2");
     }
     
   }
 
-  async function uploadImage(files) {
+  async function uploadBackgroundImage(files) {
+    console.log("2");
     const data = new FormData();
     data.append('file', files[0]);
     data.append('upload_preset', 'etesam');
@@ -129,7 +131,7 @@ function BackgroundWindow(props) {
     const file = await res.json();
     setLoading(false);
     props.setBackgroundImg([true, file.secure_url]);
-    localStorage.setItem("image" + props.identifier, file.secure_url);
+    //localStorage.setItem("image" + props.identifier, file.secure_url);
   }
 
   function handleColorChange(colorVal) {
@@ -153,7 +155,7 @@ function BackgroundWindow(props) {
         <CirclePicker width="75%" onChange={handleColorChange} colors={colors} />
       </RowFlex>
       <RowFlex>
-        <FileInput id="files" type="file" onChange={(e) => { imageHandler(e) }}></FileInput>
+        <FileInput id="backgroundFile" type="file" onChange={(e) => { imageHandler(e) }}></FileInput>
         <Test onClick={() => { props.setBackgroundImg([false, ""]) }}>bob</Test>
       </RowFlex>
 

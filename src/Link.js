@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import './App.css';
 import trashcan from './images/trashcan.png';
 import backarrow from './images/backarrow.png';
+import { isGenericTypeAnnotation } from '@babel/types';
 const Component = styled(motion.div)`
    position: absolute;
    display: flex;
@@ -189,9 +190,11 @@ function Link(props) {
       else {
          setImageError("Submitted Successfully");
          uploadImage(files);
+         console.log("bob");
       }
    }
-   async function uploadImage(files) {
+   async function uploadImage(files){
+     console.log("1");
       const data = new FormData();
       data.append('file', files[0]);
       data.append('upload_preset', 'etesam');
@@ -204,7 +207,7 @@ function Link(props) {
       const file = await res.json();
       setLoading(false);
       setImage(file.secure_url);
-      localStorage.setItem("image" + props.identifier, file.secure_url);
+      //localStorage.setItem("image" + props.identifier, file.secure_url);
    }
    function storeImage() {
       setStage(2);
