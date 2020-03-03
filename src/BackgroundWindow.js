@@ -2,7 +2,7 @@ import React from "react";
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { CirclePicker } from 'react-color';
-
+import deletebutton from "./images/deletebutton.png";
 
 const Container = styled(motion.div)`
    position: fixed;
@@ -24,14 +24,36 @@ const Title = styled(motion.div)`
   font-size: 2rem;
   margin-top: .5rem;
   margin-bottom: .5rem;
+  padding-left: 10%;
+  -webkit-touch-callout: none; 
+    -webkit-user-select: none; 
+     -khtml-user-select: none; 
+       -moz-user-select: none; 
+        -ms-user-select: none; 
+            user-select: none; 
+`;
+
+const DeleteButton = styled(motion.img)`
+  height: 2rem;
+  width: 2rem;
+  filter: invert(${props => props.invert});
 `;
 
 const RowTitle = styled(Title)`
   margin-left: .75rem;
   margin-right: 1rem;
+  padding-left: 0;
 `;
 
-const Row = styled(motion.div)`
+const RowGrid = styled.div`
+  display: grid;
+  grid-template-columns: 90% 10%;
+  width: 100%;
+  justify-items: center;
+  align-items: center;
+`;
+
+const RowFlex = styled(motion.div)`
   width: 100%;
   display: flex;
   margin-top: .5rem;
@@ -59,11 +81,18 @@ function BackgroundWindow(props){
 
   return(
     <Container color={props.darkMode ? "white" : "black"} backgroundColor={props.darkMode ? "rgb(39, 39, 39)" : "rgb(232, 232, 232)"} variants={backgroundVariants} initial={{ opacity: 0, scale: 0 }} animate={props.showBackgroundWindow && props.editable ? "show": "hidden"}>
-      <Title> Background Options </Title>
-      <Row>
+      <RowGrid>
+        <Title> Background Options </Title>
+        <DeleteButton src={deletebutton}
+        invert={props.darkMode ? "100%" : "0%"}
+        whileHover={{scale: 1.1}} whileTap={{scale:0.95}}
+        onClick={()=>{props.setBackgroundWindow()}}>
+        </DeleteButton>
+      </RowGrid>
+      <RowFlex>
         <RowTitle>Colors: </RowTitle> 
         <CirclePicker width="75%"  onChange={handleColorChange} colors={colors}/>
-      </Row>
+      </RowFlex>
         
     </Container>
   );

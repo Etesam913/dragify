@@ -56,8 +56,6 @@ const ItemImage = styled.img`
    filter: invert(${props => props.invert});
 `;
 
-
-
 const EditButton = styled(motion.div)`
  width: 5rem;
   height: 5rem;
@@ -229,8 +227,6 @@ function App() {
 
   const sidebarItem = { hidden: { opacity: 0, scale: 0 }, show: { opacity: 1, scale: 1 } };
 
-  
-
   return (
     <Page animate={{backgroundColor: backgroundColor}}>
       <Sidebar>
@@ -252,7 +248,7 @@ function App() {
         <ItemImage src={darkMode ? sun : moon} invert={darkMode ? "100%" : "0%"} style={{ height: "70%", width: "70%" }}></ItemImage>
       </DarkModeButton>
 
-      <BackgroundWindow setBackgroundColor={setBackgroundColor} showBackgroundWindow={showBackgroundWindow} editable={editable} darkMode = {darkMode}></BackgroundWindow>
+      <BackgroundWindow setBackgroundColor={setBackgroundColor} setBackgroundWindow = {()=>{setShowBackgroundWindow(!showBackgroundWindow)}} showBackgroundWindow={showBackgroundWindow} editable={editable} darkMode = {darkMode}></BackgroundWindow>
 
 
       <Canvas ref={canvas}>
