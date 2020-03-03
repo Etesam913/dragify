@@ -23,6 +23,7 @@ import moon from './images/moon.png';
 import sun from './images/sun.png';
 import backarrow from './images/backarrow.png';
 import BackgroundWindow from './BackgroundWindow.js';
+import placeholderBackground from './images/placeholderBackground.jpg'
 
 
 const Page = styled(motion.div)`
@@ -33,6 +34,10 @@ const Page = styled(motion.div)`
   justify-content: flex-start;
   flex-shrink: 0;
   overflow-x:hidden;
+  background-image: url(${props=>props.backgroundImage});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 `;
 const Sidebar = styled.div`
    display: flex;
@@ -94,7 +99,8 @@ function App() {
   const [listElements, setListElements] = useState([]);
   const [moveElements, setMoveElements] = useState(true);
   const [showBackgroundWindow, setShowBackgroundWindow] = useState(false);
-  const [backgroundColor, setBackgroundColor] = useState("");
+  const [backgroundColor, setBackgroundColor] = useState([false, ""]); // First parameter dictates if backgroundColor should be used over backgroundImg
+  const [backgroundImg, setBackgroundImg] = useState([false, ""]); // First parameter dictates if backgroundImg should be used over backgroundColor
   const canvas = useRef(null);
   const colors = ['#f2f2f2', '#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#000000'];
 
@@ -106,6 +112,9 @@ function App() {
   const jokeElementsOnPage = jokeElements.map((props) => <Joke key={props.id} canEdit={editable} identifier={props.id} elements={jokeElements} onChange={handleJokeElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Joke>)
   const listElementsOnPage = listElements.map((props) => <List key={props.id} canEdit={editable} identifier={props.id} elements={listElements} onChange={handleListElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></List>)
 
+  useEffect(()=>{
+    console.log(backgroundImg);
+  },[backgroundImg])
 
   useEffect(() => {
     window.addEventListener('resize', function (event) {
@@ -135,12 +144,14 @@ function App() {
       setSearchElements(JSON.parse(localStorage.getItem("searchElement")));
       setJokeElements(JSON.parse(localStorage.getItem("jokeElement")));
       setListElements(JSON.parse(localStorage.getItem("listElement")));
-
       if (JSON.parse(localStorage.getItem("editable")) !== null) {
         setEditable(JSON.parse(localStorage.getItem("editable")));
       }
-      else if(localStorage.getItem("backgroundColor") !== null){
-        setBackgroundColor(localStorage.getItem("backgroundColor"));
+      if((localStorage.getItem("backgroundColor")) !== null){
+        console.log(JSON.parse(localStorage.getItem("backgroundColor")));
+        let arr = [JSON.parse(localStorage.getItem("backgroundColor"))[0], JSON.parse(localStorage.getItem("backgroundColor"))[1]];
+        console.log(arr);
+        setBackgroundColor(arr);
       }
     }
     return () => {
@@ -228,7 +239,7 @@ function App() {
   const sidebarItem = { hidden: { opacity: 0, scale: 0 }, show: { opacity: 1, scale: 1 } };
 
   return (
-    <Page animate={{backgroundColor: backgroundColor}}>
+    <Page animate={backgroundColor[0] ? {backgroundColor: backgroundColor[1]} : "transparent"} backgroundImage={backgroundImg[0] ? backgroundImg[1] :""}>
       <Sidebar>
         <EditButton buttonBackgroundColor={darkMode ? "#434342" : "#e0d9d3"} variants={sidebarItem} onClick={() => { changeEditable() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
           <ItemImage invert={darkMode ? "100%" : "0%"} src={editable ? backarrow : pencil} style={{ height: "64.5%", width: "64.5%" }} />
@@ -248,7 +259,12 @@ function App() {
         <ItemImage src={darkMode ? sun : moon} invert={darkMode ? "100%" : "0%"} style={{ height: "70%", width: "70%" }}></ItemImage>
       </DarkModeButton>
 
-      <BackgroundWindow setBackgroundColor={setBackgroundColor} setBackgroundWindow = {()=>{setShowBackgroundWindow(!showBackgroundWindow)}} showBackgroundWindow={showBackgroundWindow} editable={editable} darkMode = {darkMode}></BackgroundWindow>
+      <BackgroundWindow
+      setBackgroundImg = {setBackgroundImg}
+      setBackgroundColor={setBackgroundColor}
+      setBackgroundWindow = {()=>{setShowBackgroundWindow(!showBackgroundWindow)}} showBackgroundWindow={showBackgroundWindow}
+      editable={editable} darkMode = {darkMode}>
+      </BackgroundWindow>
 
 
       <Canvas ref={canvas}>
