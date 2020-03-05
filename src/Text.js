@@ -128,7 +128,7 @@ function Text(props) {
    }
    else {
       return (
-         <Component ref={component} initial={{ x: 0, y: 0, opacity: 0 }} animate={controls} style={{ scale }} transition={{ opacity: { duration: 1 } }}  onHoverStart={() => { setHover(true) }} dragMomentum={false} onHoverEnd={() => { setHover(false) }} drag={props.canEdit ? true : false} onDragEnd={() => { storeTranslations() }} dragConstraints={props.canvas}>
+         <Component ref={component} initial={{ x: 0, y: 0, opacity: 0 }} animate={controls} style={{ scale }} transition={{ opacity: { duration: 1 } }}  onHoverStart={() => { setHover(true) }} dragMomentum={true} onHoverEnd={() => { setHover(false) }} drag={props.canEdit ? true : false} onDragEnd={() => { storeTranslations() }} dragConstraints={props.canvas}>
             <motion.div className="tools" initial={{ opacity: 0}} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
                <div className="slider-container">
                   <div className="slider">

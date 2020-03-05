@@ -23,7 +23,6 @@ import moon from './images/moon.png';
 import sun from './images/sun.png';
 import backarrow from './images/backarrow.png';
 import BackgroundWindow from './BackgroundWindow.js';
-import placeholderBackground from './images/placeholderBackground.jpg'
 
 
 const Page = styled(motion.div)`
@@ -34,6 +33,7 @@ const Page = styled(motion.div)`
   justify-content: flex-start;
   flex-shrink: 0;
   overflow-x:hidden;
+  overflow-y: hidden;
   background-image: url(${props=>props.backgroundImage});
   background-repeat: no-repeat;
   background-position: center;
@@ -112,9 +112,6 @@ function App() {
   const jokeElementsOnPage = jokeElements.map((props) => <Joke key={props.id} canEdit={editable} identifier={props.id} elements={jokeElements} onChange={handleJokeElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Joke>)
   const listElementsOnPage = listElements.map((props) => <List key={props.id} canEdit={editable} identifier={props.id} elements={listElements} onChange={handleListElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></List>)
 
-  useEffect(()=>{
-    console.log(backgroundImg);
-  },[backgroundImg])
 
   useEffect(() => {
     window.addEventListener('resize', function (event) {
@@ -148,10 +145,11 @@ function App() {
         setEditable(JSON.parse(localStorage.getItem("editable")));
       }
       if((localStorage.getItem("backgroundColor")) !== null){
-        console.log(JSON.parse(localStorage.getItem("backgroundColor")));
         let arr = [JSON.parse(localStorage.getItem("backgroundColor"))[0], JSON.parse(localStorage.getItem("backgroundColor"))[1]];
-        console.log(arr);
         setBackgroundColor(arr);
+      }
+      if(localStorage.getItem("darkMode") !==null){
+        setDarkMode(JSON.parse(localStorage.getItem("darkMode")));
       }
     }
     return () => {
@@ -255,7 +253,10 @@ function App() {
         </Itembar>
       </Sidebar>
 
-      <DarkModeButton buttonBackgroundColor={darkMode ? "#434342" : "#e0d9d3"} onClick={() => { setDarkMode(!darkMode) }} whileTap={{ scale: 0.9 }} whileHover={{ scale: 1.1 }}>
+      <DarkModeButton buttonBackgroundColor={darkMode ? "#434342" : "#e0d9d3"} 
+      onClick={() => { localStorage.setItem("darkMode", JSON.stringify(!darkMode)); setDarkMode(!darkMode) }} 
+      whileTap={{ scale: 0.9 }} 
+      whileHover={{ scale: 1.1 }}>
         <ItemImage src={darkMode ? sun : moon} invert={darkMode ? "100%" : "0%"} style={{ height: "70%", width: "70%" }}></ItemImage>
       </DarkModeButton>
 
@@ -266,18 +267,8 @@ function App() {
       editable={editable} darkMode = {darkMode}>
       </BackgroundWindow>
 
-
       <Canvas ref={canvas}>
         <Presets>
-          {/*<motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={editable ? { delay: 0 } : { delay: .6 }}>
-            <ReactiveButton text="Preset 1" darkMode={darkMode}></ReactiveButton>
-          </motion.div>
-          <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={editable ? { delay: .2 } : { delay: .4 }}>
-            <ReactiveButton text="Preset 2" darkMode={darkMode}></ReactiveButton>
-          </motion.div>
-          <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={editable ? { delay: .4 } : { delay: .2 }}>
-            <ReactiveButton text="Preset 3" darkMode={darkMode}></ReactiveButton>
-          </motion.div>*/}
           <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={editable ? { delay: .6 } : { delay: 0 }}>
             <ReactiveButton text="Set Background" darkMode={darkMode} showWindow={() => { setShowBackgroundWindow(!showBackgroundWindow) }}></ReactiveButton>
           </motion.div>

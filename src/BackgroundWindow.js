@@ -112,13 +112,11 @@ function BackgroundWindow(props) {
     else{
       setImageError("Submitted Successfully");
       uploadBackgroundImage(files);
-      console.log("bob2");
     }
     
   }
 
   async function uploadBackgroundImage(files) {
-    console.log("2");
     const data = new FormData();
     data.append('file', files[0]);
     data.append('upload_preset', 'etesam');

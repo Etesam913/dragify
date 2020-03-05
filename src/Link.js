@@ -275,7 +275,7 @@ function Link(props) {
    }
    else {
       return (
-         <Component fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} ref={component} initial={{opacity: 0}} animate={controls} style={{ scale }} drag={props.canEdit ? true : false} onDragEnd={()=>{storeTranslations()}} whileHover={{zIndex: 2}} dragMomentum={false} dragConstraints={props.canvas} onHoverStart={() => { setHover(true) }} onHoverEnd={() => {setHover(false)}} onDragEnd={()=>{storeTranslations()}}>
+         <Component fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} ref={component} initial={{opacity: 0}} animate={controls} style={{ scale }} drag={props.canEdit ? true : false} onDragEnd={()=>{storeTranslations()}} whileHover={{zIndex: 2}} dragConstraints={props.canvas} onHoverStart={() => { setHover(true) }} onHoverEnd={() => {setHover(false)}} onDragEnd={()=>{storeTranslations()}}>
             <motion.div className="tools" initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
                <Backarrow invert = {props.darkMode ? "100%" : "0%"} style={{display: displayArrow()}} src={backarrow} onClick={()=> {goBack(stage-1)}} whileHover={{scale: 1.1}} whileTap={{scale: .9}}></Backarrow>
                <div className="small-slider-container">

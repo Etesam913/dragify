@@ -195,7 +195,7 @@ function Searchbar(props){
    }
    else{
       return(
-         <Component ref= {component} initial={{opacity: 0}} animate = {controls} style={{ scale }} onHoverStart={() => { setHover(true) }}  onHoverEnd={() => { setHover(false) }} dragMomentum = {false} drag={props.canEdit ? true : false} onDragEnd={()=>{storeTranslations()}} dragConstraints={props.canvas} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
+         <Component ref= {component} initial={{opacity: 0}} animate = {controls} style={{ scale }} onHoverStart={() => { setHover(true) }}  onHoverEnd={() => { setHover(false) }} drag={props.canEdit ? true : false} onDragEnd={()=>{storeTranslations()}} dragConstraints={props.canvas} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
             <motion.div className="tools" initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
                <div className="slider-container">
                   <div className="slider">
