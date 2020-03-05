@@ -207,7 +207,7 @@ function Link(props) {
       const file = await res.json();
       setLoading(false);
       setImage(file.secure_url);
-      //localStorage.setItem("image" + props.identifier, file.secure_url);
+      localStorage.setItem("image" + props.identifier, file.secure_url);
    }
    function storeImage() {
       setStage(2);

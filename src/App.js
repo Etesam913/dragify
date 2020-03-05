@@ -151,6 +151,9 @@ function App() {
       if(localStorage.getItem("darkMode") !==null){
         setDarkMode(JSON.parse(localStorage.getItem("darkMode")));
       }
+      if(localStorage.getItem("currentBackgroundImage") !== null){
+        setBackgroundImg([true, localStorage.getItem("currentBackgroundImage")]);
+      }
     }
     return () => {
       window.removeEventListener("resize", function () { });

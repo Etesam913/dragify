@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { CirclePicker } from 'react-color';
 import deletebutton from "./images/deletebutton.png";
-
+import placeholderBackground from "./images/placeholderBackground.jpg";
 const Container = styled(motion.div)`
    position: fixed;
    display: flex;
@@ -18,6 +18,12 @@ const Container = styled(motion.div)`
    border-radius: 3rem;
    background-color: ${props => props.backgroundColor};
    color: ${props => props.color};
+   -webkit-touch-callout: none; 
+    -webkit-user-select: none; 
+     -khtml-user-select: none; 
+       -moz-user-select: none; 
+        -ms-user-select: none; 
+            user-select: none; 
 `;
 
 const Title = styled(motion.div)`
@@ -26,6 +32,7 @@ const Title = styled(motion.div)`
   margin-bottom: .5rem;
   padding-left: 10%;
   border-top-left-radius: 3rem;
+  text-align: center;
   @media(max-width: 1600px){
     font-size:1.5rem;
   }
@@ -33,12 +40,6 @@ const Title = styled(motion.div)`
   @media(max-width: 1200px){
     font-size: 1rem;
   }
-  -webkit-touch-callout: none; 
-    -webkit-user-select: none; 
-     -khtml-user-select: none; 
-       -moz-user-select: none; 
-        -ms-user-select: none; 
-            user-select: none; 
 `;
 
 const DeleteButton = styled(motion.img)`
@@ -61,6 +62,7 @@ const RowTitle = styled(Title)`
   margin-left: .75rem;
   margin-right: 1rem;
   padding-left: 0;
+
 `;
 
 const RowGrid = styled.div`
@@ -71,22 +73,54 @@ const RowGrid = styled.div`
   align-items: center;
 `;
 
+const PreviousImages = styled.div`
+  display: grid;
+  width: 90%;
+  height: 15rem;
+  grid-template-columns: 30% 30% 30%;
+  justify-content: space-evenly;
+  align-items: center;
+`;
+
 const RowFlex = styled(motion.div)`
-  width: 100%;
+  width: 90%;
   display: flex;
   margin-top: .5rem;
   margin-bottom: .5rem;
+  justify-content: center;
+`;
+
+const ImageThumbnail = styled(motion.img)`
+  height: auto;
+  max-width: 100%;
+  border-radius: .25rem;
 `;
 
 const FileInput = styled.input`
+  display: none;
   
 `;
 
-const Test = styled.div`
+const FileLabel = styled(motion.label)`
+  border-radius: 2rem;
+  font-size: .9rem;
+  text-align: center;
+  width: 7rem;
   height: 2rem;
-  width: 2rem;
-  background-color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${props => props.buttonBackgroundColor};
+  @media(max-width: 1200px){
+    font-size: .657rem;
+    height: 1.5rem;
+  }
+  
+`;
 
+const RemoveImage = styled(FileLabel)`
+  border-radius: 2rem;
+  margin-left: 1rem;
 `;
 function BackgroundWindow(props) {
   const backgroundVariants = {
@@ -110,7 +144,6 @@ function BackgroundWindow(props) {
       setImageError("File has to be under 1 megabyte.");
     } 
     else{
-      setImageError("Submitted Successfully");
       uploadBackgroundImage(files);
     }
     
@@ -129,7 +162,7 @@ function BackgroundWindow(props) {
     const file = await res.json();
     setLoading(false);
     props.setBackgroundImg([true, file.secure_url]);
-    //localStorage.setItem("image" + props.identifier, file.secure_url);
+    localStorage.setItem("currentBackgroundImage", file.secure_url);
   }
 
   function handleColorChange(colorVal) {
@@ -148,15 +181,40 @@ function BackgroundWindow(props) {
           onClick={() => { props.setBackgroundWindow() }}>
         </DeleteButton>
       </RowGrid>
+      <RowTitle>Colors</RowTitle>
       <RowFlex>
-        <RowTitle>Colors: </RowTitle>
-        <CirclePicker width="75%" onChange={handleColorChange} colors={colors} />
+        <CirclePicker width="100%" marginLeft="1rem" onChange={handleColorChange} colors={colors} />
       </RowFlex>
+      <RowTitle>Upload Background Image</RowTitle>
       <RowFlex>
-        <FileInput id="backgroundFile" type="file" onChange={(e) => { imageHandler(e) }}></FileInput>
-        <Test onClick={() => { props.setBackgroundImg([false, ""]) }}>bob</Test>
-      </RowFlex>
 
+        <FileLabel 
+        buttonBackgroundColor = {props.darkMode ? "rgb(32, 34, 35)" : "rgb(80%, 80%, 80%)"} 
+        htmlFor="backgroundFile"
+        whileHover={{scale: 1.1}} whileTap={{scale: 0.95}}>
+        Upload Image
+        </FileLabel>
+
+        <FileInput id="backgroundFile" type="file" onChange={(e) => { imageHandler(e) }}></FileInput>
+  
+        <RemoveImage 
+        buttonBackgroundColor = {props.darkMode ? "rgb(32, 34, 35)" : "rgb(80%, 80%, 80%)"} 
+        onClick={() => { localStorage.setItem("currentBackgroundImage", [false, ""]); props.setBackgroundImg([false, ""])}}
+        whileHover={{scale: 1.1}} whileTap={{scale: 0.95}}>
+        Remove Image
+        </RemoveImage>
+
+      </RowFlex>
+      <RowFlex>{imageError}</RowFlex>
+      <RowTitle>Previous Background Images</RowTitle>
+      <PreviousImages>
+        <ImageThumbnail src={placeholderBackground} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
+        <ImageThumbnail src={placeholderBackground} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
+        <ImageThumbnail src={placeholderBackground} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
+        <ImageThumbnail src={placeholderBackground} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
+        <ImageThumbnail src={placeholderBackground} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
+        <ImageThumbnail src={placeholderBackground} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
+      </PreviousImages>
     </Container>
   );
 }
