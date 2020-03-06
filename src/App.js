@@ -145,8 +145,9 @@ function App() {
         setEditable(JSON.parse(localStorage.getItem("editable")));
       }
       if((localStorage.getItem("backgroundColor")) !== null){
-        let arr = [JSON.parse(localStorage.getItem("backgroundColor"))[0], JSON.parse(localStorage.getItem("backgroundColor"))[1]];
-        setBackgroundColor(arr);
+        //console.log(localStorage.getItem("backgroundColor"));
+        //let arr = JSON.parse(localStorage.getItem("backgroundColor"));
+        setBackgroundColor(JSON.parse(localStorage.getItem("backgroundColor")));
       }
       if(localStorage.getItem("darkMode") !==null){
         setDarkMode(JSON.parse(localStorage.getItem("darkMode")));
@@ -267,6 +268,7 @@ function App() {
       setBackgroundImg = {setBackgroundImg}
       setBackgroundColor={setBackgroundColor}
       setBackgroundWindow = {()=>{setShowBackgroundWindow(!showBackgroundWindow)}} showBackgroundWindow={showBackgroundWindow}
+      constraint = {canvas}
       editable={editable} darkMode = {darkMode}>
       </BackgroundWindow>
 

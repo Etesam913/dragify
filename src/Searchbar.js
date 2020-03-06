@@ -28,15 +28,16 @@ const BarContainer = styled.form`
    align-items: center;
    font-family: "Gothic A1";
 
-`
+`;
 
 const Bar = styled.input`
    width: 15rem;
    border: none;
    font-size: 1rem;
    background: transparent;
+   outline: none;
    color: ${props=>props.fontColor}
-`
+`;
 const MagnifyingGlass = styled(motion.button)`
    border: none;
    width: 1.5rem;
@@ -76,13 +77,14 @@ function Searchbar(props){
    const controls = useAnimation();
 
    useEffect(()=>{
+    controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
+
       if(JSON.parse(localStorage.getItem("engine" + props.identifier)) !== null){
          setEngine(JSON.parse(localStorage.getItem("engine" + props.identifier)));
       }
    }, [])
 
    useEffect(()=>{
-      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
       
    }, [props.windowResize])
 

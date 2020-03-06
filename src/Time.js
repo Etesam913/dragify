@@ -61,6 +61,8 @@ function Time(props) {
       }
    }
    useEffect(() => {
+      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
+
       let d = new Date();
       let hour = d.getHours();
       let minutes = d.getMinutes();
@@ -86,7 +88,6 @@ function Time(props) {
    }, []);
 
    useEffect(()=>{
-      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
       
    }, [props.windowResize])
 

@@ -7,6 +7,7 @@ import { CirclePicker } from 'react-color';
 const TextArea = styled(motion.input)`
   font-size: 3rem;
   font-family: "Gothic A1";
+  outline: none;
   text-align: center;
   border-top: none; border-left: none; border-right: none; border-bottom: none;
   color: ${props => props.fontColor};
@@ -44,14 +45,15 @@ function Text(props) {
 
    useEffect(() => {
       textInput.current.value = localStorage.getItem("text" + props.identifier);
+      controls.start({ x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: { duration: 1.5 } });
+
       if(localStorage.getItem("colorText" + props.identifier) !== null){
          setColor(localStorage.getItem("colorText" + props.identifier));
       }
-      console.log(JSON.parse(localStorage.getItem("translateXText" + props.identifier)));
-      console.log(JSON.parse(localStorage.getItem("translateYText" + props.identifier)));
+      //console.log(JSON.parse(localStorage.getItem("translateXText" + props.identifier)));
+      //console.log(JSON.parse(localStorage.getItem("translateYText" + props.identifier)));
    }, [])
    useEffect(() => {
-      controls.start({ x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: { duration: 1.5 } });
    }, [props.windowResize])
    function getElementIndex(identifier) {
       for (let i = 0; i < props.elements.length; i++) {

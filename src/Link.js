@@ -107,6 +107,7 @@ function Link(props) {
    useEffect(() => {
       const currentStage = localStorage.getItem("stage" + props.identifier);
       const currentLink = localStorage.getItem("link" + props.identifier);
+      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
       if (currentStage != null) {
          setStage(parseInt(currentStage));
          if (parseInt(currentStage) === 2) {
@@ -120,7 +121,7 @@ function Link(props) {
    }, [])
    
    useEffect(()=>{
-      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
+      //controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
    }, [props.windowResize])
 
    //Movement Functions

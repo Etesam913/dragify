@@ -22,6 +22,7 @@ const ListHeader = styled.input`
    font-size: 2rem;
    width: 26rem;
    text-align: center;
+   outline: none;
    margin-bottom: 1rem;
    border-top: none; border-left: none; border-right: none;
    border-bottom-style: solid;
@@ -66,6 +67,8 @@ function List(props){
       if(localStorage.getItem("listHeader" + props.identifier) != null){
          header.current.value = localStorage.getItem("listHeader" + props.identifier);
       }
+      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
+
    }, [])
 
    useEffect(()=>{
@@ -73,7 +76,6 @@ function List(props){
    }, [items])
 
    useEffect(()=>{
-      controls.start({x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: {duration: 1.5}});
       
    }, [props.windowResize])
    
