@@ -147,8 +147,9 @@ function BackgroundWindow(props) {
 
 
   useEffect(()=>{
+   
     if(localStorage.getItem("prevImgs") !== null){
-      console.log(localStorage.getItem("prevImgs"));
+      console.log(JSON.parse(localStorage.getItem("prevImgs")));
       setPrevImgs(JSON.parse(localStorage.getItem("prevImgs")));
     }
   }, [])
@@ -165,18 +166,23 @@ function BackgroundWindow(props) {
   }
 
   function updateImages(fileAddress){
-    const imgs = prevImgs.slice();
-    // Check for empty space
+    const imgs = prevImgs.slice(0, 6);
+
     for(let i = 0; i< prevImgs.length; i++){
       if(imgs[i] === ""){
+        console.log("bob");        
         imgs[i] = fileAddress;
         setPrevImgs(imgs);
         localStorage.setItem("prevImgs", JSON.stringify(imgs));
         return;
       }
     }
+    for(let i = 0; i < prevImgs.length; i++){
+      console.log(imgs[i]);
+      console.log("yeet");
+    }
     imgs[5] = fileAddress;
-    localStorage.setItem("prevImgs", imgs);
+    localStorage.setItem("prevImgs", JSON.stringify(imgs));
     setPrevImgs(imgs);
   }
 
@@ -192,14 +198,14 @@ function BackgroundWindow(props) {
       })
     const file = await res.json();
     setLoading(false);
-    props.setBackgroundImg([true, file.secure_url]);
+    props.setBackgroundImg(file.secure_url);
     localStorage.setItem("currentBackgroundImage", file.secure_url);
     updateImages(file.secure_url);
   }
 
   function handleColorChange(colorVal) {
-    props.setBackgroundColor([true, colorVal.hex]);
-    localStorage.setItem("backgroundColor", JSON.stringify([true, colorVal.hex]));
+    props.setBackgroundColor(colorVal.hex);
+    localStorage.setItem("backgroundColor", colorVal.hex);
   }
 
   return (
@@ -230,7 +236,7 @@ function BackgroundWindow(props) {
   
         <RemoveImage 
         buttonBackgroundColor = {props.darkMode ? "rgb(32, 34, 35)" : "rgb(80%, 80%, 80%)"} 
-        onClick={() => { localStorage.setItem("currentBackgroundImage", [false, ""]); props.setBackgroundImg([false, ""])}}
+        onClick={() => { localStorage.setItem("currentBackgroundImage", ""); props.setBackgroundImg("")}}
         whileHover={{scale: 1.1}} whileTap={{scale: 0.95}}>
         Remove Image
         </RemoveImage>
@@ -239,12 +245,12 @@ function BackgroundWindow(props) {
       <RowFlex>{imageError}</RowFlex>
       <RowTitle>Previous Background Images</RowTitle>
       <PreviousImages>
-        <ImageThumbnail src={prevImgs[0]} onClick={()=>{props.setBackgroundImg([true, prevImgs[0]])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
-        <ImageThumbnail src={prevImgs[1]} onClick={()=>{props.setBackgroundImg([true, prevImgs[1]])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
-        <ImageThumbnail src={prevImgs[2]} onClick={()=>{props.setBackgroundImg([true, prevImgs[2]])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
-        <ImageThumbnail src={prevImgs[3]} onClick={()=>{props.setBackgroundImg([true, prevImgs[3]])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
-        <ImageThumbnail src={prevImgs[4]} onClick={()=>{props.setBackgroundImg([true, prevImgs[4]])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
-        <ImageThumbnail src={prevImgs[5]} onClick={()=>{props.setBackgroundImg([true, prevImgs[5]])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
+        <ImageThumbnail src={prevImgs[0]} onClick={()=>{props.setBackgroundImg(prevImgs[0])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
+        <ImageThumbnail src={prevImgs[1]} onClick={()=>{props.setBackgroundImg(prevImgs[1])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
+        <ImageThumbnail src={prevImgs[2]} onClick={()=>{props.setBackgroundImg(prevImgs[2])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
+        <ImageThumbnail src={prevImgs[3]} onClick={()=>{props.setBackgroundImg(prevImgs[3])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
+        <ImageThumbnail src={prevImgs[4]} onClick={()=>{props.setBackgroundImg(prevImgs[4])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
+        <ImageThumbnail src={prevImgs[5]} onClick={()=>{props.setBackgroundImg(prevImgs[5])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
       </PreviousImages>
     </Container>
   );

@@ -75,7 +75,7 @@ function Today(props) {
     return -1;
   }
 
-  function handleTrashing() {
+  function handleTrashing(){
     if (props.canEdit) {
       setDeleted(true);
       let modifiedArray = props.elements.slice(0, getElementIndex(props.identifier)).concat(props.elements.slice(getElementIndex(props.identifier) + 1, props.elements.length));

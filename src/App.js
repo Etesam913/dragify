@@ -99,8 +99,8 @@ function App() {
   const [listElements, setListElements] = useState([]);
   const [moveElements, setMoveElements] = useState(true);
   const [showBackgroundWindow, setShowBackgroundWindow] = useState(false);
-  const [backgroundColor, setBackgroundColor] = useState([false, ""]); // First parameter dictates if backgroundColor should be used over backgroundImg
-  const [backgroundImg, setBackgroundImg] = useState([false, ""]); // First parameter dictates if backgroundImg should be used over backgroundColor
+  const [backgroundColor, setBackgroundColor] = useState(""); 
+  const [backgroundImg, setBackgroundImg] = useState(""); 
   const canvas = useRef(null);
   const colors = ['#f2f2f2', '#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#000000'];
 
@@ -134,6 +134,7 @@ function App() {
       setLinkElements([]);
       setSearchElements([]);
       setJokeElements([]);*/
+      
       setTextElements(JSON.parse(localStorage.getItem("textElement")));
       setDateElements(JSON.parse(localStorage.getItem("dateElement")));
       setTimeElements(JSON.parse(localStorage.getItem("timeElement")));
@@ -147,13 +148,13 @@ function App() {
       if((localStorage.getItem("backgroundColor")) !== null){
         //console.log(localStorage.getItem("backgroundColor"));
         //let arr = JSON.parse(localStorage.getItem("backgroundColor"));
-        setBackgroundColor(JSON.parse(localStorage.getItem("backgroundColor")));
+        setBackgroundColor(localStorage.getItem("backgroundColor"));
       }
       if(localStorage.getItem("darkMode") !==null){
         setDarkMode(JSON.parse(localStorage.getItem("darkMode")));
       }
       if(localStorage.getItem("currentBackgroundImage") !== null){
-        setBackgroundImg([true, localStorage.getItem("currentBackgroundImage")]);
+        setBackgroundImg(localStorage.getItem("currentBackgroundImage"));
       }
     }
     return () => {
@@ -231,9 +232,9 @@ function App() {
   }
 
   const sidebarContainer = {
-    hidden: { opacity: 0, scale: 0 },
+    hidden: {scale: 0, transition: {duration: 2} },
     show: {
-      opacity: 1, scale: 1,
+      scale: 1,
       transition: { staggerChildren: 0.375 }
     }
   }
@@ -241,7 +242,7 @@ function App() {
   const sidebarItem = { hidden: { opacity: 0, scale: 0 }, show: { opacity: 1, scale: 1 } };
 
   return (
-    <Page animate={backgroundColor[0] ? {backgroundColor: backgroundColor[1]} : "transparent"} backgroundImage={backgroundImg[0] ? backgroundImg[1] :""}>
+    <Page animate={{backgroundColor: backgroundColor}} backgroundImage={backgroundImg}>
       <Sidebar>
         <EditButton buttonBackgroundColor={darkMode ? "#434342" : "#e0d9d3"} variants={sidebarItem} onClick={() => { changeEditable() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
           <ItemImage invert={darkMode ? "100%" : "0%"} src={editable ? backarrow : pencil} style={{ height: "64.5%", width: "64.5%" }} />
