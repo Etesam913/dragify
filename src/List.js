@@ -29,7 +29,7 @@ const ListHeader = styled.input`
    border-bottom-color: ${props=>props.borderColor};
    border-bottom-width: .13rem;
    background-color: #fff0;
-   font-family: "Gothic A1";
+   font-family: "Inter";
    color: ${props => props.fontColor};
 `;
 
@@ -76,7 +76,8 @@ function List(props){
    }, [items])
 
    useEffect(()=>{
-      
+    controls.start({ x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: { duration: 1.5 } });
+
    }, [props.windowResize])
    
    function addItem(){

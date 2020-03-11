@@ -5,19 +5,20 @@
 }
 .slider{
     position: absolute;
-    width: 10rem;
+    width: 9.5rem;
     height: 1rem;
     background-color: rgb(177, 177, 177);
     border-radius: 1rem;
 }
 .handle{
    position: absolute;
-   left: 43%;
-   bottom: -20%;
+   left: 40%;
+   bottom: -22.5%;
    height: 1.5rem;
    width: 1.5rem;
    border-radius: 1rem;
    background-color: rgb(219, 219, 219);
+ 
 }
 
 .small-slider-container{
@@ -71,4 +72,22 @@
 .colormix{
    height: 5rem;
    width: 5.6rem;
+}
+
+.text-shadow{
+  text-shadow: 0px 5px 6px rgba(150, 150, 150, 1);
+}
+
+.cursor-auto{
+  cursor: url('./images/autocursor.png') 6 6, pointer;
+}
+
+.cursor-drag{
+  cursor: url("./images/hovercursor.png") 10 2, grab;
+}
+.cursor-dragging{
+  cursor: url("./images/draggingcursor.png"), grab;
+}
+.cursor-text{
+  cursor: url("./images/textcursor.png") 6 6, pointer;
 }

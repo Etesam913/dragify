@@ -21,7 +21,6 @@ const Image = styled.img`
 
 function ItembarButton(props) {
    const sidebarItem = { hidden: { opacity: 0, scale: 0 }, show: { opacity: 1, scale: 1 } };
-   const [hover, setHover] = useState(true);
 
    return (
       <Button 
@@ -29,8 +28,7 @@ function ItembarButton(props) {
          onClick={props.addElement}
          whileHover={{ scale: 1.1, backgroundColor: props.darkMode ? "rgb(200, 200, 200)" : "rgb(232, 232, 232)", boxShadow: props.darkMode ? "rgba(153, 153, 153, 0.4) 0px 0px 0px 0px" : "0px 16px 10px 0px rgba(232, 232, 232, 0.5)" }}
          whileTap={{ scale: 0.9, boxShadow: "rgba(153, 153, 153, 0.4) 0px 0px 0px 0px"}}
-         onHoverStart={()=>{setHover(true)}}
-         onHoverEnd={()=>{setHover(false)}}
+        
          borderColor={props.darkMode ? "rgb(200, 200, 200)" : "rgb(232, 232, 232)"}
       >
          <Image src={props.img} invert={props.darkMode ? "100%" : "0%"} style={{height: props.imgDim[0], width: props.imgDim[1]}}></Image>

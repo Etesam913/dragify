@@ -13,10 +13,12 @@ const Component = styled(motion.div)`
     flex-direction: column;
     align-items: center;
     z-index: 1;
+    padding-left: 2rem;
+    padding-right: 2rem;
 `;
 const Text = styled(motion.div)`
     font-size: 3rem;
-    font-family: "Gothic A1";
+    font-family: "Inter";
 `;
 
 const ColorContainer = styled(motion.div)`
@@ -88,7 +90,7 @@ function Time(props) {
    }, []);
 
    useEffect(()=>{
-      
+    controls.start({ x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: { duration: 1.5 } });
    }, [props.windowResize])
 
    function getElementIndex(identifier){
@@ -157,7 +159,7 @@ function Time(props) {
    }
    else {
       return (
-         <Component ref= {component} animate = {controls} style={{ scale }} onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }} drag={props.canEdit ? true : false} onDragEnd={()=>{storeTranslations()}} dragConstraints={props.canvas} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
+         <Component ref= {component} className = "cursor-drag" animate = {controls} style={{ scale }} onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }} drag={props.canEdit ? true : false} onDragEnd={()=>{storeTranslations()}} dragConstraints={props.canvas} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
             <motion.div className="tools" initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
                <div className="slider-container">
                   <div className="slider">
@@ -167,7 +169,7 @@ function Time(props) {
                <motion.img src={trashcan} className={props.darkMode ? "delete-button inverted" :"delete-button"} onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
             </motion.div>
             <Text animate={{color: color}} transition={{duration: 0.5, type: "spring", damping: 300}}>{time}</Text>
-            <ColorContainer initial={{ opacity: 0}} animate={hover && props.canEdit ? { opacity: 1} : { opacity: 0 }}>
+            <ColorContainer className="cursor-grab" initial={{ opacity: 0}} animate={hover && props.canEdit ? { opacity: 1} : { opacity: 0 }}>
                <CirclePicker colors={props.colorArray} width="30rem" onChange={handleColorChange}/>
             </ColorContainer>
             

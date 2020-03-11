@@ -71,6 +71,7 @@ function Joke(props) {
   }, [])
 
   useEffect(() => {
+    controls.start({ x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: { duration: 1.5 } });
 
   }, [props.windowResize])
 
@@ -117,8 +118,8 @@ function Joke(props) {
         let matrix = new DOMMatrix(elem.transform);
         localStorage.setItem("translateXJoke" + props.identifier, matrix.m41);
         localStorage.setItem("translateYJoke" + props.identifier, matrix.m42);
-        console.log(localStorage.getItem("translateXJoke" + props.identifier));
-        console.log(localStorage.getItem("translateYJoke" + props.identifier));
+        controls.start({ x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: { duration: 1.5 } });
+
       }
     }, 1000)
   }

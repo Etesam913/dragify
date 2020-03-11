@@ -142,14 +142,12 @@ function BackgroundWindow(props) {
 
   const colors = ['#f2f2f2', '#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#000000', '#800080', '#CCFF00', '#FFDAB9', '#FFD700', '#0000EE', '#800000', '#1F1F1F']
   const [imageError, setImageError] = useState("");
-  const [loading, setLoading] = useState(false);
   const [prevImgs, setPrevImgs] = useState(["", "", "", "", "", ""]);
 
 
   useEffect(()=>{
    
     if(localStorage.getItem("prevImgs") !== null){
-      console.log(JSON.parse(localStorage.getItem("prevImgs")));
       setPrevImgs(JSON.parse(localStorage.getItem("prevImgs")));
     }
   }, [])
@@ -170,17 +168,14 @@ function BackgroundWindow(props) {
 
     for(let i = 0; i< prevImgs.length; i++){
       if(imgs[i] === ""){
-        console.log("bob");        
+             
         imgs[i] = fileAddress;
         setPrevImgs(imgs);
         localStorage.setItem("prevImgs", JSON.stringify(imgs));
         return;
       }
     }
-    for(let i = 0; i < prevImgs.length; i++){
-      console.log(imgs[i]);
-      console.log("yeet");
-    }
+  
     imgs[5] = fileAddress;
     localStorage.setItem("prevImgs", JSON.stringify(imgs));
     setPrevImgs(imgs);
@@ -190,14 +185,12 @@ function BackgroundWindow(props) {
     const data = new FormData();
     data.append('file', files[0]);
     data.append('upload_preset', 'etesam');
-    setLoading(true);
     const res = await fetch('https://api.cloudinary.com/v1_1/dz5ashos1/image/upload',
       {
         method: 'POST',
         body: data
       })
     const file = await res.json();
-    setLoading(false);
     props.setBackgroundImg(file.secure_url);
     localStorage.setItem("currentBackgroundImage", file.secure_url);
     updateImages(file.secure_url);

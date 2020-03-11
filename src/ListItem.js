@@ -41,7 +41,7 @@ const ItemInput = styled(motion.input)`
    align-items: center;
    text-align: center;
    font-size: 1.5rem;
-   font-family: "Gothic A1";
+   font-family: "Inter";
    padding-left: 1rem;
    padding-right: 1rem;
 `;

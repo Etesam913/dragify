@@ -31,11 +31,12 @@ function Today(props) {
   const [hover, setHover] = useState(false);
   const [deleted, setDeleted] = useState(false);
   const [color, setColor] = useState("#000000");
+  const [drag, setDrag] = useState(false);
 
   const component = useRef(null);
   let x = useMotionValue(getScalePos());
   const motionRange = [-70, 0, 70];
-  const scaleRange = [.25, 1, 1.75];
+  const scaleRange = [.5, 1, 1.5];
   const scale = useTransform(x, motionRange, scaleRange);
   const controls = useAnimation();
 
@@ -63,6 +64,8 @@ function Today(props) {
   }, []);
 
   useEffect(() => {
+    controls.start({ x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: { duration: 1.5 } });
+
   }, [props.windowResize])
 
   function getElementIndex(identifier) {
@@ -75,7 +78,7 @@ function Today(props) {
     return -1;
   }
 
-  function handleTrashing(){
+  function handleTrashing() {
     if (props.canEdit) {
       setDeleted(true);
       let modifiedArray = props.elements.slice(0, getElementIndex(props.identifier)).concat(props.elements.slice(getElementIndex(props.identifier) + 1, props.elements.length));
@@ -152,7 +155,12 @@ function Today(props) {
   }
   else {
     return (
-      <Component ref={component} initial={{ opacity: 0 }} animate={controls} style={{ scale }} onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }} drag={props.canEdit ? true : false} onDragEnd={() => { storeTranslations() }} dragConstraints={props.canvas} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
+      <Component ref={component} className={drag ? "cursor-dragging" : "cursor-drag"}
+        initial={{ opacity: 0 }} animate={controls} style={{ scale }}
+        onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }}
+        drag={props.canEdit ? true : false} onDragStart={() => { setDrag(true); props.soundEffect.play(0.5) }} onDragEnd={() => { storeTranslations(); setDrag(false); props.soundEffect.play(0.3) }}
+        dragConstraints={props.canvas} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
+
         <motion.div className="tools" initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
           <div className="slider-container">
             <div className="slider">
@@ -161,9 +169,9 @@ function Today(props) {
           </div>
           <motion.img src={trashcan} className={props.darkMode ? "delete-button inverted" : "delete-button"} onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
         </motion.div>
-        <Text animate={{ color: color }} transition={{ duration: 0.5, type: "spring", damping: 300 }}>{today}</Text>
+        <Text className={drag ? "text-shadow" : "cursor-text"} animate={{ color: color }} transition={{ duration: 0.5, type: "spring", damping: 300 }}>{today}</Text>
         <ColorContainer initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
-          <CirclePicker colors={props.colorArray} width="30rem" onChange={handleColorChange} />
+          <CirclePicker className="cursor-drag" colors={props.colorArray} width="30rem" onChange={handleColorChange} />
         </ColorContainer>
 
       </Component>
