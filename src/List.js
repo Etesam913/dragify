@@ -51,6 +51,7 @@ const AddButton = styled(motion.img)`
 function List(props){
    const [items, setItems] = useState([]);
    const [hover, setHover] = useState(false);
+   const [drag, setDrag] = useState(false);
    const [deleted, setDeleted] = useState(false);
    const component = useRef(null);
    const header = useRef(null);
@@ -160,7 +161,12 @@ function List(props){
 
    else{
       return(
-         <Component ref= {component} initial={{opacity: 0}} animate = {controls} style={{ scale }} onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }} drag={props.canEdit ? true : false} onDragEnd={()=>{storeTranslations()}} dragConstraints={props.canvas} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
+         <Component ref= {component} className={drag ? "cursor-dragging" : "cursor-drag"}
+          initial={{opacity: 0}} animate = {controls} style={{ scale }}
+          onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }}
+          drag={props.canEdit ? true : false} onDragStart={()=>{setDrag(true); props.soundEffect.play(0.5)}} 
+          onDragEnd={()=>{storeTranslations();props.soundEffect.play(0.3); setDrag(false)}} 
+          dragConstraints={props.canvas} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
             <motion.div className="tools" initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
                <AddButton src={addbutton} invert = {props.darkMode ? "100%" : "0%"} 
                onClick={()=>{addItem()}} initial={{opacity: 0}} animate={hover ? {opacity: 1} : {opacity: 0}} whileHover={{scale: 1.1}} whileTap={{scale: 0.9}}>
@@ -174,7 +180,7 @@ function List(props){
             </motion.div>
             
             <ListContainer>
-               <ListHeader borderColor={props.darkMode ? "white" : "black"} ref = {header} placeholder="Title" fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} onChange={(event)=>{localStorage.setItem("listHeader" + props.identifier, event.target.value)}}></ListHeader>
+               <ListHeader className="cursor-text" borderColor={props.darkMode ? "white" : "black"} ref = {header} placeholder="Title" fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} onChange={(event)=>{localStorage.setItem("listHeader" + props.identifier, event.target.value)}}></ListHeader>
                <Todo>
                   {listItems}
                </Todo>

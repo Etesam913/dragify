@@ -3,9 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { CirclePicker } from 'react-color';
 import deletebutton from "./images/deletebutton.png";
-import placeholderBackground from "./images/placeholderBackground.jpg";
-import checkmarkbutton from "./images/checkmarkbutton.png";
-import { pipelineTopicExpression } from "@babel/types";
+import './App.css';
 const Container = styled(motion.div)`
    position: fixed;
    display: flex;
@@ -218,7 +216,7 @@ function BackgroundWindow(props) {
       <RowTitle>Upload Background Image</RowTitle>
       <RowFlex>
 
-        <FileLabel 
+        <FileLabel className="cursor-auto"
         buttonBackgroundColor = {props.darkMode ? "rgb(32, 34, 35)" : "rgb(80%, 80%, 80%)"} 
         htmlFor="backgroundFile"
         whileHover={{scale: 1.1}} whileTap={{scale: 0.95}}>
@@ -227,7 +225,7 @@ function BackgroundWindow(props) {
 
         <FileInput id="backgroundFile" type="file" onChange={(e) => { imageHandler(e) }}></FileInput>
   
-        <RemoveImage 
+        <RemoveImage className="cursor-auto"
         buttonBackgroundColor = {props.darkMode ? "rgb(32, 34, 35)" : "rgb(80%, 80%, 80%)"} 
         onClick={() => { localStorage.setItem("currentBackgroundImage", ""); props.setBackgroundImg("")}}
         whileHover={{scale: 1.1}} whileTap={{scale: 0.95}}>

@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import './App.css';
 import trashcan from './images/trashcan.png';
 import { CirclePicker } from 'react-color';
-import UIfx from 'uifx';
 
 
 const TextArea = styled(motion.input)`
@@ -140,7 +139,7 @@ function Text(props) {
          <Component className={drag ? "cursor-dragging" : "cursor-drag"} ref={component} 
           initial={{ x: 0, y: 0, opacity: 0 }} animate={controls} style={{ scale }} transition={{ opacity: { duration: 1 } }} 
           onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }} 
-          dragMomentum={true} onDragStart={()=>{setDrag(true); props.soundEffect.play(0.5)}} drag={props.canEdit ? true : false} 
+          dragMomentum={false} onDragStart={()=>{setDrag(true); props.soundEffect.play(0.5)}} drag={props.canEdit ? true : false} 
           onDragEnd={() => { storeTranslations(); setDrag(false); props.soundEffect.play(0.3)}} 
           dragConstraints={props.canvas}>
 

@@ -12,6 +12,7 @@ const Button = styled(motion.div)`
    border-color: rgb(232, 232, 232);
    filter: invert(${props=> props.invert}%);
    font-weight: 300;
+   outline: none;
    
 `;
 const ButtonContent = styled(motion.div)`
