@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
 body {
   margin: 0;
   cursor: url("./images/autocursor.png") 6 6, auto;

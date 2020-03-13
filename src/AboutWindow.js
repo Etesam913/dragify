@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import deletebutton from "./images/deletebutton.png";
 import githublogo from './images/GitHubLogo.png';
 import './App.css'
+
 import {motion} from 'framer-motion';
 import { Window, DeleteButton, RowGrid, Title } from './windowstyled';
 

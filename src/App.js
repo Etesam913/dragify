@@ -9,6 +9,7 @@ import Link from './Link.js';
 import Searchbar from './Searchbar.js';
 import Joke from './Joke.js';
 import List from './List.js';
+import Tutorial from './Tutorial.js';
 import ReactiveButton from './ReactiveButton.js';
 import ItembarButton from './ItembarButton.js';
 import pencil from "./images/pencil.png";
@@ -147,21 +148,34 @@ function App() {
       console.log("it is a string");
     }
     else {
-      /*
-      setTextElements([]);
-      setDateElements([]);
-      setTimeElements([]);
-      setLinkElements([]);
-      setSearchElements([]);
-      setJokeElements([]);*/
+      
+      if(localStorage.getItem("textElement") !== null){
+        setTextElements(JSON.parse(localStorage.getItem("textElement")));
+      }
 
-      setTextElements(JSON.parse(localStorage.getItem("textElement")));
-      setDateElements(JSON.parse(localStorage.getItem("dateElement")));
-      setTimeElements(JSON.parse(localStorage.getItem("timeElement")));
-      setLinkElements(JSON.parse(localStorage.getItem("linkElement")));
-      setSearchElements(JSON.parse(localStorage.getItem("searchElement")));
-      setJokeElements(JSON.parse(localStorage.getItem("jokeElement")));
-      setListElements(JSON.parse(localStorage.getItem("listElement")));
+      if(localStorage.getItem("dateElement") !== null){
+        setDateElements(JSON.parse(localStorage.getItem("dateElement")));
+      }
+
+      if(localStorage.getItem("timeElement") !== null){
+        setTimeElements(JSON.parse(localStorage.getItem("timeElement")));
+      }
+
+      if(localStorage.getItem("linkElement") !== null){
+        setLinkElements(JSON.parse(localStorage.getItem("linkElement")));
+      }
+
+      if(localStorage.getItem("searchElement") !== null){
+        setSearchElements(JSON.parse(localStorage.getItem("searchElement")));
+      }
+
+      if(localStorage.getItem("jokeElement") !== null){
+        setJokeElements(JSON.parse(localStorage.getItem("jokeElement")));
+      }
+
+      if(localStorage.getItem("listElement") !== null){
+        setListElements(JSON.parse(localStorage.getItem("listElement")));
+      }
       if (JSON.parse(localStorage.getItem("editable")) !== null) {
         setEditable(JSON.parse(localStorage.getItem("editable")));
       }
@@ -297,11 +311,10 @@ function App() {
 
       <AboutWindow
         setAboutWindow={() => { setShowAboutWindow(!showAboutWindow)}} showAboutWindow={showAboutWindow}
-        editable={editable} darkMode={darkMode}
-        >
-
+        editable={editable} darkMode={darkMode}>
       </AboutWindow>
 
+      <Tutorial></Tutorial>
 
       <Canvas ref={canvas}>
         <Presets>
