@@ -23,7 +23,7 @@ import moon from './images/moon.png';
 import sun from './images/sun.png';
 import backarrow from './images/backarrow.png';
 import BackgroundWindow from './BackgroundWindow.js';
-
+import AboutWindow from './AboutWindow.js';
 import blopAudio from './images/blop.mp3';
 import UIfx from 'uifx';
 
@@ -110,6 +110,7 @@ function App() {
   const [listElements, setListElements] = useState([]);
   const [moveElements, setMoveElements] = useState(true);
   const [showBackgroundWindow, setShowBackgroundWindow] = useState(false);
+  const [showAboutWindow, setShowAboutWindow] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState("");
   const [backgroundImg, setBackgroundImg] = useState("");
   const canvas = useRef(null);
@@ -294,11 +295,24 @@ function App() {
         editable={editable} darkMode={darkMode}>
       </BackgroundWindow>
 
+      <AboutWindow
+        setAboutWindow={() => { setShowAboutWindow(!showAboutWindow)}} showAboutWindow={showAboutWindow}
+        editable={editable} darkMode={darkMode}
+        >
+
+      </AboutWindow>
+
+
       <Canvas ref={canvas}>
         <Presets>
-          <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={editable ? { delay: .6 } : { delay: 0 }}>
+          <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={{ delay: .1}}>
             <ReactiveButton text="Set Background" darkMode={darkMode} showWindow={() => { setShowBackgroundWindow(!showBackgroundWindow) }}></ReactiveButton>
           </motion.div>
+
+          <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={{delay: .3}}>
+            <ReactiveButton text="About" darkMode={darkMode} showWindow={() => { setShowAboutWindow(!showAboutWindow) }}></ReactiveButton>
+          </motion.div>
+
         </Presets>
         {textElementsOnPage}
         {dateElementsOnPage}

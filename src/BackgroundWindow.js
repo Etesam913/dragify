@@ -4,76 +4,14 @@ import { motion } from 'framer-motion';
 import { CirclePicker } from 'react-color';
 import deletebutton from "./images/deletebutton.png";
 import './App.css';
-const Container = styled(motion.div)`
-   position: fixed;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-   top: 15%;
-   min-height: 70%;
-   width: 35%;
-   background-color: blue;
-   z-index: 2;
-   left: 33.5%;
-   border-radius: 3rem;
-   -webkit-box-shadow: 10px 10px 58px -21px rgba(0,0,0,0.5);
-  -moz-box-shadow: 10px 10px 58px -21px rgba(0,0,0,0.5);
-  box-shadow: 10px 10px 58px -21px rgba(0,0,0,0.5);
-   background-color: ${props => props.backgroundColor};
-   color: ${props => props.color};
-   -webkit-touch-callout: none; 
-    -webkit-user-select: none; 
-     -khtml-user-select: none; 
-       -moz-user-select: none; 
-        -ms-user-select: none; 
-            user-select: none; 
-`;
+import {Window, DeleteButton, RowGrid, Title} from './windowstyled';
 
-const Title = styled(motion.div)`
-  font-size: 2rem;
-  margin-top: .5rem;
-  margin-bottom: .5rem;
-  padding-left: 10%;
-  border-top-left-radius: 3rem;
-  text-align: center;
-  @media(max-width: 1600px){
-    font-size:1.5rem;
-  }
 
-  @media(max-width: 1200px){
-    font-size: 1rem;
-  }
-`;
 
-const DeleteButton = styled(motion.img)`
-  height: 2rem;
-  width: auto;
-  filter: invert(${props => props.invert});
-  border-top-right-radius: 3rem;
-  padding-right: 2rem;
-  @media(max-width: 1600px){
-    height: 1.5rem;
-    padding-right: 1.5rem;
-  }
-  @media(max-width: 1200px){
-    height: 1rem;
-    padding-right: 1.5rem;
-  }
-`;
-
-const RowTitle = styled(Title)`
+ const RowTitle = styled(Title)`
   margin-left: .75rem;
   margin-right: 1rem;
   padding-left: 0;
-
-`;
-
-const RowGrid = styled.div`
-  display: grid;
-  grid-template-columns: 90% 10%;
-  width: 100%;
-  justify-items: center;
-  align-items: center;
 `;
 
 const PreviousImages = styled.div`
@@ -200,11 +138,10 @@ function BackgroundWindow(props) {
   }
 
   return (
-    <Container color={props.darkMode ? "white" : "black"} backgroundColor={props.darkMode ? "rgb(39, 39, 39)" : "rgb(232, 232, 232)"} variants={backgroundVariants} initial={{ opacity: 0, scale: 0 }}  animate={props.showBackgroundWindow && props.editable ? "show" : "hidden"}>
+    <Window darkMode={props.darkMode} variants={backgroundVariants} initial={{ opacity: 0, scale: 0 }}  animate={props.showBackgroundWindow && props.editable ? "show" : "hidden"}>
       <RowGrid>
         <Title> Background Options </Title>
-        <DeleteButton src={deletebutton}
-          invert={props.darkMode ? "100%" : "0%"}
+        <DeleteButton src={deletebutton} darkMode = {props.darkMode}
           whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}
           onClick={() => { props.setBackgroundWindow() }}>
         </DeleteButton>
@@ -243,7 +180,7 @@ function BackgroundWindow(props) {
         <ImageThumbnail src={prevImgs[4]} onClick={()=>{props.setBackgroundImg(prevImgs[4])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
         <ImageThumbnail src={prevImgs[5]} onClick={()=>{props.setBackgroundImg(prevImgs[5])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
       </PreviousImages>
-    </Container>
+    </Window>
   );
 }
 export default BackgroundWindow;

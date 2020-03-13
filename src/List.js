@@ -163,7 +163,7 @@ function List(props){
       return(
          <Component ref= {component} className={drag ? "cursor-dragging" : "cursor-drag"}
           initial={{opacity: 0}} animate = {controls} style={{ scale }}
-          onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }}
+          onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }} dragMomentum={false}
           drag={props.canEdit ? true : false} onDragStart={()=>{setDrag(true); props.soundEffect.play(0.5)}} 
           onDragEnd={()=>{storeTranslations();props.soundEffect.play(0.3); setDrag(false)}} 
           dragConstraints={props.canvas} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
