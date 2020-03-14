@@ -116,7 +116,7 @@ function Tutorial(props){
   }
   else if(props.steps[2] === false){
     return(
-      <SpeechBubble initial={{opacity: 0}} animate={{opacity: 1}} left="7rem" top="4.3rem" >
+      <SpeechBubble variants={variants} initial="hidden" animate="show" left="7rem" top="4.3rem" >
         <TextContainer>Click this button to create a text element</TextContainer>
       </SpeechBubble>
       );

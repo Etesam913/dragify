@@ -120,19 +120,28 @@ function App() {
   const canvas = useRef(null);
   const colors = ['#f2f2f2', '#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#000000'];
 
-  const textElementsOnPage = textElements.map((props) => <Text key={props.id} soundEffect={blop} identifier={props.id} canEdit={editable} elements={textElements} onChange={handleTextElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors} steps={steps} setSteps={setSteps}></Text>);
+  const textElementsOnPage = textElements.map((props) => <Text key={props.id} soundEffect={blop} identifier={props.id} canEdit={editable}
+    elements={textElements} onChange={handleTextElementChange} darkMode={darkMode} canvas={canvas}
+    windowResize={moveElements} colorArray={colors} steps={steps} setSteps={setSteps}>
+  </Text>);
 
-  const dateElementsOnPage = dateElements.map((props) => <Today key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={dateElements} onChange={handleDateElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Today>)
+  const dateElementsOnPage = dateElements.map((props) => <Today key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id}
+    elements={dateElements} onChange={handleDateElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Today>)
 
-  const timeElementsOnPage = timeElements.map((props) => <Time key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={timeElements} onChange={handleTimeElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Time>)
+  const timeElementsOnPage = timeElements.map((props) => <Time key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={timeElements}
+   onChange={handleTimeElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Time>)
 
-  const linkElementsOnPage = linkElements.map((props) => <Link key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={linkElements} onChange={handleLinkElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Link>)
+  const linkElementsOnPage = linkElements.map((props) => <Link key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={linkElements}
+   onChange={handleLinkElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Link>)
 
-  const searchElementsOnPage = searchElements.map((props) => <Searchbar key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={searchElements} onChange={handleSearchElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Searchbar>)
+  const searchElementsOnPage = searchElements.map((props) => <Searchbar key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id}
+   elements={searchElements} onChange={handleSearchElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Searchbar>)
 
-  const jokeElementsOnPage = jokeElements.map((props) => <Joke key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={jokeElements} onChange={handleJokeElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Joke>)
+  const jokeElementsOnPage = jokeElements.map((props) => <Joke key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={jokeElements}
+   onChange={handleJokeElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Joke>)
 
-  const listElementsOnPage = listElements.map((props) => <List key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={listElements} onChange={handleListElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></List>)
+  const listElementsOnPage = listElements.map((props) => <List key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={listElements}
+   onChange={handleListElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></List>)
 
 
 
@@ -289,14 +298,14 @@ function App() {
           <ItemImage invert={darkMode ? "100%" : "0%"} src={editable ? backarrow : pencil} style={{ height: "64.5%", width: "64.5%" }} />
         </EditButton>
         <Itembar variants={sidebarContainer} initial="hidden" animate={editable ? "show" : "hidden"}>
-          <ItembarButton img={edit} imgDim={["55%", "35%"]} addElement={() => { addElement("text") }} darkMode={darkMode} variants={sidebarItem} 
+          <ItembarButton img={edit} imgDim={["55%", "35%"]} addElement={() => { addElement("text") }} darkMode={darkMode} variants={sidebarItem}
             setSteps={() => { setSteps([true, true, true, steps[3], steps[4], steps[5], steps[6], steps[7], steps[8], steps[9]]) }}></ItembarButton>
-          <ItembarButton img={date} imgDim={["60.5%", "63.5%"]} addElement={() => { addElement("date") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
-          <ItembarButton img={time} imgDim={["35%", "75%"]} addElement={() => { addElement("time") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
-          <ItembarButton img={chain} imgDim={["32%", "75%"]} addElement={() => { addElement("link") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
-          <ItembarButton img={searchv2} imgDim={["60%", "60%"]} addElement={() => { addElement("search") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
-          <ItembarButton img={laugh} imgDim={["70%", "70%"]} addElement={() => { addElement("joke") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
-          <ItembarButton img={todolist} imgDim={["70%", "70%"]} addElement={() => { addElement("list") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
+          <ItembarButton img={date} imgDim={["60.5%", "63.5%"]} setSteps={() => {}} addElement={() => { addElement("date") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
+          <ItembarButton img={time} imgDim={["35%", "75%"]} setSteps={() => {}} addElement={() => { addElement("time") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
+          <ItembarButton img={chain} imgDim={["32%", "75%"]} setSteps={() => {}} addElement={() => { addElement("link") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
+          <ItembarButton img={searchv2} imgDim={["60%", "60%"]} setSteps={() => {}} addElement={() => { addElement("search") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
+          <ItembarButton img={laugh} imgDim={["70%", "70%"]} setSteps={() => {}} addElement={() => { addElement("joke") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
+          <ItembarButton img={todolist} imgDim={["70%", "70%"]} setSteps={() => {}} addElement={() => { addElement("list") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
         </Itembar>
       </Sidebar>
 

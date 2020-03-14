@@ -24,7 +24,9 @@ function ItembarButton(props) {
 
   function handleClick(){
     props.addElement();
-    props.setSteps();
+    if(props.setSteps !== null){
+      props.setSteps();
+    }
 
   } 
 
