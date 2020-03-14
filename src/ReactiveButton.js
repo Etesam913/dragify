@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import { motion} from "framer-motion";
-
+import './App.css'
 const Button = styled(motion.div)`
    height: 2rem;
    border-radius: .5rem;
@@ -39,7 +39,7 @@ const Text = styled.div`
 function ReactiveButton(props){
    const [hover, setHover] = useState(false);
    return(
-      <Button invert={props.darkMode ? 100 : 0}> 
+      <Button className="cursor-drag" invert={props.darkMode ? 100 : 0}> 
          <ButtonContent 
          onHoverStart={()=>{setHover(true)}} onHoverEnd={()=>{setHover(false)}}
          animate={{backgroundColor: hover ? "rgb(232, 232, 232)" : "rgba(224, 217, 211, 0)"}}

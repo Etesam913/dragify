@@ -91,7 +91,7 @@ function Today(props) {
 
   function handleColorChange(colorVal) {
     setColor(colorVal.hex);
-    localStorage.setItem("colorTime" + props.identifier, colorVal.hex);
+    localStorage.setItem("colorDate" + props.identifier, colorVal.hex);
   }
 
   function slidingDone(event, info) {

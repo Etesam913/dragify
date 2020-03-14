@@ -1,18 +1,18 @@
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import speechbubbletemplate from './images/speechbubbleTemplate.png';
 import flowifyLarge from './images/flowifylarge.png';
 import ReactiveButton from './ReactiveButton.js';
 
-const SpeechBubble = styled.div`
+const SpeechBubble = styled(motion.div)`
   background-image: url(${speechbubbletemplate});
   background-repeat: no-repeat;
   width: 14.75rem;
   height: 5.375rem;
   position: absolute;
-  left: 50%;
-  top: 50%;
+  left: ${props=>props.left};
+  top: ${props=>props.top};
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -42,12 +42,13 @@ const Description = styled(motion.div)`
 `;
 
 const TextContainer = styled.div`
-  height: 80%;
   width: 85%;
   border-radius: 2.5rem;
   font-family: "Inter";
-  margin-left: 1rem;
+  
   font-size: 1rem;
+  text-align: center;
+  
 `;
 
 const ButtonContainer = styled(motion.div)`
@@ -79,14 +80,16 @@ const BeginningScreen = styled.div`
 `;
 
 function Tutorial(props){
-  const [steps, setSteps] = useState([false, false, false, false]);
-
   const variants = {
     hidden: {opacity: 0, scale: 0},
     show: {opacity: 1, scale: 1}
   }
 
-  if(steps[0] === false){
+  useEffect(()=>{
+    console.log(props.steps);
+  }, [props.steps])
+
+  if(props.steps[0] === false){
     return(
         <BeginningScreen>
           <TitleRow variants={variants} initial="hidden" animate="show">
@@ -97,37 +100,45 @@ function Tutorial(props){
           <Description variants={variants} initial="hidden" animate="show" transition={{delay: .4}}>A Free Flowing Extension</Description>
 
           <ButtonContainer variants={variants} initial="hidden" animate="show" transition={{delay: .8}}>
-            <ReactiveButton showWindow={()=>{setSteps([true, true, true, true])}} text="Skip Tutorial"></ReactiveButton>
-            <ReactiveButton text="Begin Tutorial"></ReactiveButton>
+            <ReactiveButton showWindow={()=>{props.setSteps([true, true, true, true, true, true, true, true, true, true])}} text="Skip Tutorial"></ReactiveButton>
+            <ReactiveButton showWindow={()=>{props.setSteps([true, false, false, false, false, false, false, false, false])}} text="Begin Tutorial"></ReactiveButton>
           </ButtonContainer>
         </BeginningScreen>
       );
   }
-  else if(steps[1] === false){
+  else if(props.steps[1] === false){
     return(
-      <SpeechBubble>
-        <TextContainer>Bob is my name. Lorem Ipsum Dolor. Etesam was here yoloololo</TextContainer>
+      
+      <SpeechBubble left="7rem" top="0" variants={variants} initial="hidden" animate="show">
+        <TextContainer>Click the pencil to edit the canvas</TextContainer>
       </SpeechBubble>
       );
   }
-  else if(steps[2] === false){
+  else if(props.steps[2] === false){
     return(
-      <SpeechBubble>
-        <TextContainer>Bob is my name. Lorem Ipsum Dolor. Etesam was here yoloololo</TextContainer>
+      <SpeechBubble initial={{opacity: 0}} animate={{opacity: 1}} left="7rem" top="4.3rem" >
+        <TextContainer>Click this button to create a text element</TextContainer>
       </SpeechBubble>
       );
   }
-  else if(steps[3] === false){
+  else if(props.steps[3] === false){
     return(
-      <SpeechBubble>
-        <TextContainer>Bob is my name. Lorem Ipsum Dolor. Etesam was here yoloololo</TextContainer>
+      <SpeechBubble left="67rem" top="40%">
+        <TextContainer>Click the placeholder text and put your own message in</TextContainer>
       </SpeechBubble>
       );
   }
-  else{
+  else if(props.steps[4] === false){
     return(
-      <div></div>
+      <SpeechBubble left="64rem" top="40%">
+        <TextContainer>Move the slider handle to change the scale, and drag the text to move it.</TextContainer>
+      </SpeechBubble>
     );
   }
+
+  else{
+    return(<div></div>);
+  }
+
 }
 export default Tutorial;

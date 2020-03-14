@@ -114,25 +114,28 @@ function App() {
   const [showAboutWindow, setShowAboutWindow] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState("");
   const [backgroundImg, setBackgroundImg] = useState("");
+  const [steps, setSteps] = useState([false, false, false, false, false, false, false, false, false, false]); // Steps for tutorial
+
+
   const canvas = useRef(null);
   const colors = ['#f2f2f2', '#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#000000'];
 
-  const textElementsOnPage = textElements.map((props) => <Text key={props.id} soundEffect = {blop} identifier={props.id} canEdit={editable} elements={textElements} onChange={handleTextElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Text>);
+  const textElementsOnPage = textElements.map((props) => <Text key={props.id} soundEffect={blop} identifier={props.id} canEdit={editable} elements={textElements} onChange={handleTextElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors} steps={steps} setSteps={setSteps}></Text>);
 
-  const dateElementsOnPage = dateElements.map((props) => <Today key={props.id} soundEffect = {blop} canEdit={editable} identifier={props.id} elements={dateElements} onChange={handleDateElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Today>)
+  const dateElementsOnPage = dateElements.map((props) => <Today key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={dateElements} onChange={handleDateElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Today>)
 
-  const timeElementsOnPage = timeElements.map((props) => <Time key={props.id} soundEffect = {blop} canEdit={editable} identifier={props.id} elements={timeElements} onChange={handleTimeElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Time>)
+  const timeElementsOnPage = timeElements.map((props) => <Time key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={timeElements} onChange={handleTimeElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Time>)
 
-  const linkElementsOnPage = linkElements.map((props) => <Link key={props.id} soundEffect = {blop} canEdit={editable} identifier={props.id} elements={linkElements} onChange={handleLinkElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Link>)
+  const linkElementsOnPage = linkElements.map((props) => <Link key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={linkElements} onChange={handleLinkElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Link>)
 
-  const searchElementsOnPage = searchElements.map((props) => <Searchbar key={props.id} soundEffect = {blop} canEdit={editable} identifier={props.id} elements={searchElements} onChange={handleSearchElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Searchbar>)
+  const searchElementsOnPage = searchElements.map((props) => <Searchbar key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={searchElements} onChange={handleSearchElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Searchbar>)
 
-  const jokeElementsOnPage = jokeElements.map((props) => <Joke key={props.id} soundEffect = {blop} canEdit={editable} identifier={props.id} elements={jokeElements} onChange={handleJokeElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Joke>)
+  const jokeElementsOnPage = jokeElements.map((props) => <Joke key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={jokeElements} onChange={handleJokeElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Joke>)
 
-  const listElementsOnPage = listElements.map((props) => <List key={props.id} soundEffect = {blop} canEdit={editable} identifier={props.id} elements={listElements} onChange={handleListElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></List>)
+  const listElementsOnPage = listElements.map((props) => <List key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={listElements} onChange={handleListElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></List>)
 
 
-  
+
 
   useEffect(() => {
     window.addEventListener('resize', function (event) {
@@ -148,32 +151,32 @@ function App() {
       console.log("it is a string");
     }
     else {
-      
-      if(localStorage.getItem("textElement") !== null){
+
+      if (localStorage.getItem("textElement") !== null) {
         setTextElements(JSON.parse(localStorage.getItem("textElement")));
       }
 
-      if(localStorage.getItem("dateElement") !== null){
+      if (localStorage.getItem("dateElement") !== null) {
         setDateElements(JSON.parse(localStorage.getItem("dateElement")));
       }
 
-      if(localStorage.getItem("timeElement") !== null){
+      if (localStorage.getItem("timeElement") !== null) {
         setTimeElements(JSON.parse(localStorage.getItem("timeElement")));
       }
 
-      if(localStorage.getItem("linkElement") !== null){
+      if (localStorage.getItem("linkElement") !== null) {
         setLinkElements(JSON.parse(localStorage.getItem("linkElement")));
       }
 
-      if(localStorage.getItem("searchElement") !== null){
+      if (localStorage.getItem("searchElement") !== null) {
         setSearchElements(JSON.parse(localStorage.getItem("searchElement")));
       }
 
-      if(localStorage.getItem("jokeElement") !== null){
+      if (localStorage.getItem("jokeElement") !== null) {
         setJokeElements(JSON.parse(localStorage.getItem("jokeElement")));
       }
 
-      if(localStorage.getItem("listElement") !== null){
+      if (localStorage.getItem("listElement") !== null) {
         setListElements(JSON.parse(localStorage.getItem("listElement")));
       }
       if (JSON.parse(localStorage.getItem("editable")) !== null) {
@@ -207,7 +210,7 @@ function App() {
     console.log(JSON.parse(localStorage.getItem("textElement")));
   }, [textElements, dateElements, timeElements, linkElements, searchElements, jokeElements, listElements]);
 
-  
+
 
   function handleTextElementChange(arr) {
     setTextElements(arr);
@@ -280,11 +283,14 @@ function App() {
   return (
     <Page animate={{ backgroundColor: backgroundColor }} backgroundImage={backgroundImg}>
       <Sidebar>
-        <EditButton buttonBackgroundColor={darkMode ? "#434342" : "#e0d9d3"} variants={sidebarItem} onClick={() => { changeEditable() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+        <EditButton buttonBackgroundColor={darkMode ? "#434342" : "#e0d9d3"} variants={sidebarItem}
+          onClick={() => { changeEditable(); setSteps([true, true, steps[2], steps[3], steps[4], steps[5], steps[6], steps[7], steps[8], steps[9]]) }}
+          whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
           <ItemImage invert={darkMode ? "100%" : "0%"} src={editable ? backarrow : pencil} style={{ height: "64.5%", width: "64.5%" }} />
         </EditButton>
         <Itembar variants={sidebarContainer} initial="hidden" animate={editable ? "show" : "hidden"}>
-          <ItembarButton img={edit} imgDim={["55%", "35%"]} addElement={() => { addElement("text") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
+          <ItembarButton img={edit} imgDim={["55%", "35%"]} addElement={() => { addElement("text") }} darkMode={darkMode} variants={sidebarItem} 
+            setSteps={() => { setSteps([true, true, true, steps[3], steps[4], steps[5], steps[6], steps[7], steps[8], steps[9]]) }}></ItembarButton>
           <ItembarButton img={date} imgDim={["60.5%", "63.5%"]} addElement={() => { addElement("date") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
           <ItembarButton img={time} imgDim={["35%", "75%"]} addElement={() => { addElement("time") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
           <ItembarButton img={chain} imgDim={["32%", "75%"]} addElement={() => { addElement("link") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
@@ -310,19 +316,19 @@ function App() {
       </BackgroundWindow>
 
       <AboutWindow
-        setAboutWindow={() => { setShowAboutWindow(!showAboutWindow)}} showAboutWindow={showAboutWindow}
+        setAboutWindow={() => { setShowAboutWindow(!showAboutWindow) }} showAboutWindow={showAboutWindow}
         editable={editable} darkMode={darkMode}>
       </AboutWindow>
 
-      <Tutorial></Tutorial>
+      <Tutorial steps={steps} setSteps={setSteps}></Tutorial>
 
       <Canvas ref={canvas}>
         <Presets>
-          <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={{ delay: .1}}>
+          <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={{ delay: .1 }}>
             <ReactiveButton text="Set Background" darkMode={darkMode} showWindow={() => { setShowBackgroundWindow(!showBackgroundWindow) }}></ReactiveButton>
           </motion.div>
 
-          <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={{delay: .3}}>
+          <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={{ delay: .3 }}>
             <ReactiveButton text="About" darkMode={darkMode} showWindow={() => { setShowAboutWindow(!showAboutWindow) }}></ReactiveButton>
           </motion.div>
 

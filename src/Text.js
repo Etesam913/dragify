@@ -58,6 +58,8 @@ function Text(props) {
    }, [])
 
    
+
+
    function getElementIndex(identifier) {
       for (let i = 0; i < props.elements.length; i++) {
          //console.log(props.elements[i]);
@@ -126,6 +128,19 @@ function Text(props) {
       //console.log(localStorage.getItem("scaleText" + props.identifier));
    }
 
+   function handleTextChange(event){
+    localStorage.setItem("text" + props.identifier, event.target.value);
+    if(textInput.current.value !== ""){
+      props.setSteps([true, true, true, true, props.steps[4], props.steps[5], props.steps[6], props.steps[7], props.steps[8], props.steps[9]]);
+    }
+   }
+
+   function handleDragStart(){
+    setDrag(true);
+    props.soundEffect.play(0.5);
+    props.setSteps([true, true, true, true, true, props.steps[5], props.steps[6], props.steps[7], props.steps[8], props.steps[9]]);
+  }
+
    if (deleted) {
       return (
          <div></div>
@@ -136,7 +151,8 @@ function Text(props) {
          <Component className={drag ? "cursor-dragging" : "cursor-drag"} ref={component} 
           initial={{ x: 0, y: 0, opacity: 0 }} animate={controls} style={{ scale }} transition={{ opacity: { duration: 1 } }} 
           onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }} 
-          dragMomentum={false} onDragStart={()=>{setDrag(true); props.soundEffect.play(0.5)}} drag={props.canEdit ? true : false} 
+          dragMomentum={false} onDragStart={()=>{handleDragStart()}}
+          drag={props.canEdit ? true : false} 
           onDragEnd={() => { storeTranslations(); setDrag(false); props.soundEffect.play(0.3)}} 
           dragConstraints={props.canvas}>
 
@@ -148,7 +164,7 @@ function Text(props) {
                </div>
                <motion.img src={trashcan} className={props.darkMode ? "delete-button inverted" : "delete-button"} onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
             </motion.div>
-            <TextArea className= {drag ? "text-shadow" : "cursor-text"} ref={textInput} animate={{color: color}} transition={{duration: 0.5, type: "spring", damping: 300}} readOnly={props.canEdit ? false : true}  onChange={(event) => { localStorage.setItem("text" + props.identifier, event.target.value) }} placeholder="placeholder"></TextArea>
+            <TextArea className= {drag ? "text-shadow" : "cursor-text"} ref={textInput} animate={{color: color}} transition={{duration: 0.5, type: "spring", damping: 300}} readOnly={props.canEdit ? false : true}  onChange={(event) => { handleTextChange(event) }} placeholder="placeholder"></TextArea>
             <ColorContainer initial={{ opacity: 0}} animate={hover && props.canEdit ? { opacity: 1} : { opacity: 0 }}>
                <CirclePicker colors={props.colorArray} width="30rem" onChange={handleColorChange}/>
             </ColorContainer>
