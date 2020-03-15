@@ -6,8 +6,6 @@ import deletebutton from "./images/deletebutton.png";
 import './App.css';
 import {Window, DeleteButton, RowGrid, Title} from './windowstyled';
 
-
-
  const RowTitle = styled(Title)`
   margin-left: .75rem;
   margin-right: 1rem;
@@ -76,9 +74,10 @@ function BackgroundWindow(props) {
       opacity: 0,
       scale: 0,
     }
-  }
+  };
 
-  const colors = ['#f2f2f2', '#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#000000', '#800080', '#CCFF00', '#FFDAB9', '#FFD700', '#0000EE', '#800000', '#1F1F1F']
+
+  const colors = ['#f2f2f2', '#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#000000', '#800080', '#CCFF00', '#FFDAB9', '#FFD700', '#0000EE', '#800000', '#1F1F1F'];
   const [imageError, setImageError] = useState("");
   const [prevImgs, setPrevImgs] = useState(["", "", "", "", "", ""]);
 
@@ -88,15 +87,14 @@ function BackgroundWindow(props) {
     if(localStorage.getItem("prevImgs") !== null){
       setPrevImgs(JSON.parse(localStorage.getItem("prevImgs")));
     }
-  }, [])
+  }, []);
 
   //Image uploading
   function imageHandler(e) {
     const files = e.target.files;
-    if(files[0].size > 1048576){ // File cannot be greater than a megabyte
+    if (files[0].size > 1048576) { // File cannot be greater than a megabyte
       setImageError("File has to be under 1 megabyte.");
-    } 
-    else{
+    } else {
       uploadBackgroundImage(files);
     }
   }
@@ -127,7 +125,7 @@ function BackgroundWindow(props) {
       {
         method: 'POST',
         body: data
-      })
+      });
     const file = await res.json();
     props.setBackgroundImg(file.secure_url);
     localStorage.setItem("currentBackgroundImage", file.secure_url);
@@ -162,7 +160,7 @@ function BackgroundWindow(props) {
         Upload Image
         </FileLabel>
 
-        <FileInput id="backgroundFile" type="file" onChange={(e) => { imageHandler(e) }}></FileInput>
+        <FileInput id="backgroundFile" type="file" onChange={(e) => { imageHandler(e) }}/>
   
         <RemoveImage className="cursor-auto"
         buttonBackgroundColor = {props.darkMode ? "rgb(32, 34, 35)" : "rgb(80%, 80%, 80%)"} 
@@ -175,12 +173,12 @@ function BackgroundWindow(props) {
       <RowFlex>{imageError}</RowFlex>
       <RowTitle>Previous Background Images</RowTitle>
       <PreviousImages>
-        <ImageThumbnail src={prevImgs[0]} onClick={()=>{props.setBackgroundImg(prevImgs[0])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
-        <ImageThumbnail src={prevImgs[1]} onClick={()=>{props.setBackgroundImg(prevImgs[1])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
-        <ImageThumbnail src={prevImgs[2]} onClick={()=>{props.setBackgroundImg(prevImgs[2])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
-        <ImageThumbnail src={prevImgs[3]} onClick={()=>{props.setBackgroundImg(prevImgs[3])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
-        <ImageThumbnail src={prevImgs[4]} onClick={()=>{props.setBackgroundImg(prevImgs[4])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
-        <ImageThumbnail src={prevImgs[5]} onClick={()=>{props.setBackgroundImg(prevImgs[5])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}></ImageThumbnail>
+        <ImageThumbnail src={prevImgs[0]} onClick={()=>{props.setBackgroundImg(prevImgs[0])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}/>
+        <ImageThumbnail src={prevImgs[1]} onClick={()=>{props.setBackgroundImg(prevImgs[1])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}/>
+        <ImageThumbnail src={prevImgs[2]} onClick={()=>{props.setBackgroundImg(prevImgs[2])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}/>
+        <ImageThumbnail src={prevImgs[3]} onClick={()=>{props.setBackgroundImg(prevImgs[3])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}/>
+        <ImageThumbnail src={prevImgs[4]} onClick={()=>{props.setBackgroundImg(prevImgs[4])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}/>
+        <ImageThumbnail src={prevImgs[5]} onClick={()=>{props.setBackgroundImg(prevImgs[5])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}/>
       </PreviousImages>
     </Window>
   );
