@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, useTransform, useMotionValue, useAnimation } from 'framer-motion';
 import styled from 'styled-components';
 import './App.css';
-import trashcan from './images/trashcan.png';
 import { CirclePicker } from 'react-color';
 
 
@@ -34,7 +33,6 @@ const ColorContainer = styled(motion.div)`
 function Text(props) {
    const [hover, setHover] = useState(false);
    const [drag, setDrag] = useState(false);
-   const [deleted, setDeleted] = useState(false);
    const [color, setColor] = useState("#000000");
    const textInput = useRef(null);
    const component = useRef(null);
@@ -54,54 +52,38 @@ function Text(props) {
          setColor(localStorage.getItem("colorText" + props.identifier));
       }
  
-   }, [])
+   }, []);
 
    
    useEffect(()=>{
     controls.start({ x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: { duration: 1.5 } });
 
-   }, [props.windowResize])
+   }, [props.windowResize]);
 
-   function getElementIndex(identifier) {
-      for (let i = 0; i < props.elements.length; i++) {
-         //console.log(props.elements[i]);
-         if (identifier === props.elements[i].id) {
-            return i;
-         }
-      }
-      return -1;
-   }
    function handleTrashing() {
       if (props.canEdit) {
-         setDeleted(true);
          localStorage.setItem("text" + props.identifier, "");
          localStorage.setItem("scalePosText" + props.identifier, "0");
-         let modifiedArray = props.elements.slice(0, getElementIndex(props.identifier)).concat(props.elements.slice(getElementIndex(props.identifier) + 1, props.elements.length));
-
+         const modifiedArray = props.elements.slice(0, props.getElementIndex(props.identifier, props.elements)).concat(props.elements.slice(props.getElementIndex(props.identifier, props.elements) + 1, props.elements.length));
          props.onChange(modifiedArray);
-      }
-      else {
-         return;
       }
    }
    function handleColorChange(colorVal){
       setColor(colorVal.hex);
       localStorage.setItem("colorText" + props.identifier, colorVal.hex);
    }
-   function slidingDone(event, info) {
+   function slidingDone(info) {
       storeScale();
-      localStorage.setItem("scalePosText" + props.identifier, info.point.x);
+      localStorage.setItem("scalePosText" + props.identifier, "" + info.point.x);
    }
    function storeTranslations() {
       setTimeout(function () {
          if (component.current !== null) {
             let elem = getComputedStyle(component.current);
             let matrix = new DOMMatrix(elem.transform);
-            const xcoord = matrix.m41;
-            const ycoord = matrix.m42;
 
-            localStorage.setItem("translateXText" + props.identifier, xcoord);
-            localStorage.setItem("translateYText" + props.identifier, ycoord);
+            localStorage.setItem("translateXText" + props.identifier, "" + matrix.m41);
+            localStorage.setItem("translateYText" + props.identifier, "" + matrix.m42);
             //console.log(localStorage.getItem("translateXText" + props.identifier));
             //console.log(localStorage.getItem("translateYText" + props.identifier));
          }
@@ -109,8 +91,6 @@ function Text(props) {
    }
    function getTranslations() {
       if (localStorage.getItem("translateXText" + props.identifier) !== null) {
-         //console.log(localStorage.getItem("translateXText" + props.identifier));
-         //console.log(localStorage.getItem("translateYText" + props.identifier));
          return [parseFloat((localStorage.getItem("translateXText" + props.identifier))), parseFloat(localStorage.getItem("translateYText" + props.identifier))]
       }
       else {
@@ -144,36 +124,21 @@ function Text(props) {
     props.setSteps([true, true, true, true, true, props.steps[5], props.steps[6], props.steps[7], props.steps[8], props.steps[9]]);
     localStorage.setItem("steps", JSON.stringify([true, true, true, true, true, props.steps[5], props.steps[6], props.steps[7], props.steps[8], props.steps[9]]));
   }
+   return (
+      <Component className={drag ? "cursor-dragging" : "cursor-drag"} ref={component}
+       initial={{ x: 0, y: 0, opacity: 0 }} animate={controls} style={{ scale }} transition={{ opacity: { duration: 1 } }}
+       onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }}
+       dragMomentum={false} onDragStart={()=>{handleDragStart()}}
+       drag={props.canEdit && props.steps[3] ? true : false}
+       onDragEnd={() => { storeTranslations(); setDrag(false); props.soundEffect.play(0.3)}}
+       dragConstraints={props.canvas}>
+         {props.getTools(slidingDone, handleTrashing, x, hover)}
+         <TextArea className= {drag ? "text-shadow" : "cursor-text"} ref={textInput} animate={{color: color}} transition={{duration: 0.5, type: "spring", damping: 300}} readOnly={props.canEdit ? false : true}  onChange={(event) => { handleTextChange(event) }} placeholder="placeholder"></TextArea>
+         <ColorContainer initial={{ opacity: 0}} animate={hover && props.canEdit ? { opacity: 1} : { opacity: 0 }}>
+            <CirclePicker colors={props.colorArray} width="30rem" onChange={handleColorChange}/>
+         </ColorContainer>
+      </Component>
+   );
 
-   if (deleted) {
-      return (
-         <div></div>
-      );
-   }
-   else {
-      return (
-         <Component className={drag ? "cursor-dragging" : "cursor-drag"} ref={component} 
-          initial={{ x: 0, y: 0, opacity: 0 }} animate={controls} style={{ scale }} transition={{ opacity: { duration: 1 } }} 
-          onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }} 
-          dragMomentum={false} onDragStart={()=>{handleDragStart()}}
-          drag={props.canEdit && props.steps[3] ? true : false} 
-          onDragEnd={() => { storeTranslations(); setDrag(false); props.soundEffect.play(0.3)}} 
-          dragConstraints={props.canvas}>
-
-            <motion.div className="tools" initial={{ opacity: 0}} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
-               <div className="slider-container">
-                  <div className="slider">
-                     <motion.div className="handle" style={{ x }} drag={props.canEdit ? 'x' : false} dragConstraints={{ left: -70, right: 70 }} dragElastic={0} dragMomentum={false} onDragEnd={(event, info) => { slidingDone(event, info) }}></motion.div>
-                  </div>
-               </div>
-               <motion.img src={trashcan} className={props.darkMode ? "delete-button inverted" : "delete-button"} onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
-            </motion.div>
-            <TextArea className= {drag ? "text-shadow" : "cursor-text"} ref={textInput} animate={{color: color}} transition={{duration: 0.5, type: "spring", damping: 300}} readOnly={props.canEdit ? false : true}  onChange={(event) => { handleTextChange(event) }} placeholder="placeholder"></TextArea>
-            <ColorContainer initial={{ opacity: 0}} animate={hover && props.canEdit ? { opacity: 1} : { opacity: 0 }}>
-               <CirclePicker colors={props.colorArray} width="30rem" onChange={handleColorChange}/>
-            </ColorContainer>
-         </Component>
-      );
-   }
 }
 export default Text;

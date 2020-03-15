@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import { motion, useMotionValue, useTransform, useAnimation } from "framer-motion";
 import styled from 'styled-components';
 import './App.css';
-import trashcan from './images/trashcan.png';
 import { CirclePicker } from 'react-color';
 
 const Component = styled(motion.div)`
@@ -32,7 +31,6 @@ const ColorContainer = styled(motion.div)`
 function Time(props) {
   const [time, setTime] = useState("");
   const [hover, setHover] = useState(false);
-  const [deleted, setDeleted] = useState(false);
   const [color, setColor] = useState("#000000");
   const [drag, setDrag] = useState(false);
   const component = useRef(null);
@@ -104,12 +102,8 @@ function Time(props) {
 
   function handleTrashing() {
     if (props.canEdit) {
-      setDeleted(true);
-      let modifiedArray = props.elements.slice(0, getElementIndex(props.identifier)).concat(props.elements.slice(getElementIndex(props.identifier) + 1, props.elements.length));
+      const modifiedArray = props.elements.slice(0, getElementIndex(props.identifier)).concat(props.elements.slice(getElementIndex(props.identifier) + 1, props.elements.length));
       props.onChange(modifiedArray);
-    }
-    else {
-      return;
     }
   }
 
@@ -118,8 +112,8 @@ function Time(props) {
     localStorage.setItem("colorTime" + props.identifier, colorVal.hex);
   }
 
-  function slidingDone(event, info) {
-    localStorage.setItem("scalePosTime" + props.identifier, info.point.x);
+  function slidingDone(info) {
+    localStorage.setItem("scalePosTime" + props.identifier, "" + info.point.x);
   }
 
   function getScalePos() {
@@ -137,10 +131,8 @@ function Time(props) {
       if (component.current != null) {
         let elem = getComputedStyle(component.current);
         let matrix = new DOMMatrix(elem.transform);
-        localStorage.setItem("translateXTime" + props.identifier, matrix.m41);
-        localStorage.setItem("translateYTime" + props.identifier, matrix.m42);
-        console.log(localStorage.getItem("translateXTime" + props.identifier));
-        console.log(localStorage.getItem("translateYTime" + props.identifier));
+        localStorage.setItem("translateXTime" + props.identifier, "" + matrix.m41);
+        localStorage.setItem("translateYTime" + props.identifier, "" + matrix.m42);
       }
     }, 1000)
   }
@@ -154,31 +146,19 @@ function Time(props) {
       return [0, 0];
     }
   }
-  if (deleted) {
-    return (<div></div>);
-  }
-  else {
-    return (
-      <Component ref={component} className={drag ? "cursor-dragging" : "cursor-drag"}
-        animate={controls} style={{ scale }} onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }}
-        drag={props.canEdit ? true : false} dragConstraints={props.canvas} dragMomentum={false}
-        onDragStart={() => { setDrag(true); props.soundEffect.play(0.5) }} onDragEnd={() => { storeTranslations(); setDrag(false); props.soundEffect.play(0.3) }}
-        dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
-        <motion.div className="tools" initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
-          <div className="slider-container">
-            <div className="slider">
-              <motion.div className="handle" dragMomentum={false} style={{ x }} drag={props.canEdit ? 'x' : false} onDragEnd={(event, info) => { slidingDone(event, info) }} dragConstraints={{ left: -70, right: 70 }} dragElastic={0}></motion.div>
-            </div>
-          </div>
-          <motion.img src={trashcan} className={props.darkMode ? "delete-button inverted" : "delete-button"} onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
-        </motion.div>
-        <Text className={drag ? "text-shadow" : ""} animate={{ color:color}} transition={{ duration: 0.5, type: "spring", damping: 300 }}>{time}</Text>
-        <ColorContainer className="cursor-grab" initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
-          <CirclePicker colors={props.colorArray} width="30rem" onChange={handleColorChange} />
-        </ColorContainer>
 
-      </Component>
-    );
-  }
+  return (
+    <Component ref={component} className={drag ? "cursor-dragging" : "cursor-drag"}
+      animate={controls} style={{ scale }} onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }}
+      drag={props.canEdit ? true : false} dragConstraints={props.canvas} dragMomentum={false}
+      onDragStart={() => { setDrag(true); props.soundEffect.play(0.5) }} onDragEnd={() => { storeTranslations(); setDrag(false); props.soundEffect.play(0.3) }}
+      dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
+      {props.getTools(slidingDone, handleTrashing, x, hover)}
+      <Text className={drag ? "text-shadow" : ""} animate={{ color:color}} transition={{ duration: 0.5, type: "spring", damping: 300 }}>{time}</Text>
+      <ColorContainer className="cursor-grab" initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
+        <CirclePicker colors={props.colorArray} width="30rem" onChange={handleColorChange} />
+      </ColorContainer>
+    </Component>
+  );
 }
 export default Time;

@@ -2,11 +2,11 @@ import React, { useEffect, useState, useRef } from 'react';
 import { motion, useMotionValue, useTransform, useAnimation } from "framer-motion";
 import styled from 'styled-components';
 import './App.css';
-import trashcan from './images/trashcan.png';
 import search from './images/search.png';
 import google from './images/google.png';
 import duckduckgo from './images/duckduckgo.png';
 import bing from './images/bing.png';
+
 const Component = styled(motion.div)`
     position: absolute;
     left: 43%;
@@ -75,7 +75,6 @@ function Searchbar(props) {
   const [hover, setHover] = useState(false);
   const motionRange = [-70, 0, 70];
   const scaleRange = [.25, 1, 1.75];
-  const [deleted, setDeleted] = useState(false);
   const scale = useTransform(x, motionRange, scaleRange);
   const controls = useAnimation();
 
@@ -95,7 +94,6 @@ function Searchbar(props) {
   // Trashing
   function getElementIndex(identifier) {
     for (let i = 0; i < props.elements.length; i++) {
-      //console.log(props.elements[i]);
       if (identifier === props.elements[i].id) {
         return i;
       }
@@ -105,18 +103,14 @@ function Searchbar(props) {
 
   function handleTrashing() {
     if (props.canEdit) {
-      setDeleted(true);
-      let modifiedArray = props.elements.slice(0, getElementIndex(props.identifier)).concat(props.elements.slice(getElementIndex(props.identifier) + 1, props.elements.length));
+      const modifiedArray = props.elements.slice(0, getElementIndex(props.identifier)).concat(props.elements.slice(getElementIndex(props.identifier) + 1, props.elements.length));
       props.onChange(modifiedArray);
-    }
-    else {
-      return;
     }
   }
 
   // Scale
-  function slidingDone(event, info) {
-    localStorage.setItem("scalePosSearch" + props.identifier, info.point.x);
+  function slidingDone(info) {
+    localStorage.setItem("scalePosSearch" + props.identifier, "" + info.point.x);
   }
 
   function getScalePos() {
@@ -134,10 +128,8 @@ function Searchbar(props) {
       if (component.current != null) {
         let elem = getComputedStyle(component.current);
         let matrix = new DOMMatrix(elem.transform);
-        localStorage.setItem("translateXSearch" + props.identifier, matrix.m41);
-        localStorage.setItem("translateYSearch" + props.identifier, matrix.m42);
-        console.log(localStorage.getItem("translateXSearch" + props.identifier));
-        console.log(localStorage.getItem("translateYSearch" + props.identifier));
+        localStorage.setItem("translateXSearch" + props.identifier, "" + matrix.m41);
+        localStorage.setItem("translateYSearch" + props.identifier, "" + matrix.m42);
       }
     }, 1000)
   }
@@ -203,36 +195,23 @@ function Searchbar(props) {
       );
     }
   }
-  if (deleted) {
-    return (<div></div>);
-  }
-  else {
-    return (
-      <Component ref={component} className={drag ? "cursor-dragging" : "cursor-drag"}
-        initial={{ opacity: 0 }} animate={controls} style={{ scale }}
-        onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }}
-        drag={props.canEdit ? true : false} onDragStart={() => { setDrag(true); props.soundEffect.play(0.5) }} onDragEnd={() => { storeTranslations(); setDrag(false); props.soundEffect.play(0.3) }}
-        dragMomentum={false} dragConstraints={props.canvas} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
-        <motion.div className="tools" initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
-          <div className="slider-container">
-            <div className="slider">
-              <motion.div className="handle" dragMomentum={false} style={{ x }} drag={props.canEdit ? 'x' : false} onDragEnd={(event, info) => { slidingDone(event, info) }} dragConstraints={{ left: -70, right: 70 }} dragElastic={0}></motion.div>
-            </div>
-          </div>
-          <motion.img src={trashcan} className={props.darkMode ? "delete-button inverted" : "delete-button"} onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}></motion.img>
-        </motion.div>
-        
-          <BarContainer className={drag ? "box-shadow" : ""} backgroundColor={props.darkMode ? "rgb(32, 34, 35)" : "#e4e4e4"} method="get" action={engine.action}>
-            <SearchLogo invert={props.darkMode ? "100%" : "0%"} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => { storeOtherEngines() }} src={engine.image}></SearchLogo>
-            <Bar ref={bar} onChange={()=>{handleSearch()}} className="cursor-text" type="text" placeholder={engine.placeholder} name="q" size="31" autoComplete="off" fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"}></Bar>
-            <MagnifyingGlass type="submit" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}></MagnifyingGlass>
-          </BarContainer>
-  
 
-        {engineList()}
-      </Component>
-    );
-  }
+  return (
+    <Component ref={component} className={drag ? "cursor-dragging" : "cursor-drag"}
+      initial={{ opacity: 0 }} animate={controls} style={{ scale }}
+      onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }}
+      drag={props.canEdit ? true : false} onDragStart={() => { setDrag(true); props.soundEffect.play(0.5) }} onDragEnd={() => { storeTranslations(); setDrag(false); props.soundEffect.play(0.3) }}
+      dragMomentum={false} dragConstraints={props.canvas} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
+        {props.getTools(slidingDone, handleTrashing, x, hover)}
+        <BarContainer className={drag ? "box-shadow" : ""} backgroundColor={props.darkMode ? "rgb(32, 34, 35)" : "#e4e4e4"} method="get" action={engine.action}>
+          <SearchLogo invert={props.darkMode ? "100%" : "0%"} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => { storeOtherEngines() }} src={engine.image}></SearchLogo>
+          <Bar ref={bar} onChange={()=>{handleSearch()}} className="cursor-text" type="text" placeholder={engine.placeholder} name="q" size="31" autoComplete="off" fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"}></Bar>
+          <MagnifyingGlass type="submit" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}></MagnifyingGlass>
+        </BarContainer>
+      {engineList()}
+    </Component>
+  );
+
 
 }
 export default Searchbar;

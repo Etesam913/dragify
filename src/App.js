@@ -1,7 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+/*
+Etesam Ansari
+GitHub: Etesam913
+A new tab extension that allows the user to drag and drop compounds freely.
+Made with React, Styled Components, and Framer Motion.
+*/
 
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
+import UIfx from 'uifx';
+
 import Text from './Text.js';
 import Today from './Today.js';
 import Time from './Time.js';
@@ -26,7 +34,8 @@ import backarrow from './images/backarrow.png';
 import BackgroundWindow from './BackgroundWindow.js';
 import AboutWindow from './AboutWindow.js';
 import blopAudio from './images/blop.mp3';
-import UIfx from 'uifx';
+
+import trashcan from "./images/trashcan.png";
 
 
 const Page = styled(motion.div)`
@@ -109,7 +118,7 @@ const blop = new UIfx(
   {
     volume: 1, // number between 0.0 ~ 1.0
   }
-)
+);
 
 function App() {
   const [editable, setEditable] = useState(false);
@@ -134,36 +143,32 @@ function App() {
   const colors = ['#f2f2f2', '#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#000000'];
 
   const textElementsOnPage = textElements.map((props) => <Text key={props.id} soundEffect={blop} identifier={props.id} canEdit={editable}
-    elements={textElements} onChange={handleTextElementChange} darkMode={darkMode} canvas={canvas}
-    windowResize={moveElements} colorArray={colors} steps={steps} setSteps={setSteps}>
-  </Text>);
+    elements={textElements} onChange={setTextElements} darkMode={darkMode} canvas={canvas}
+    windowResize={moveElements} colorArray={colors} steps={steps} setSteps={setSteps} getTools={getTools} getElementIndex={getElementIndex}/>);
 
   const dateElementsOnPage = dateElements.map((props) => <Today key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id}
-    elements={dateElements} onChange={handleDateElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Today>)
+    elements={dateElements} onChange={setDateElements} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors} getTools={getTools}/>);
 
   const timeElementsOnPage = timeElements.map((props) => <Time key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={timeElements}
-    onChange={handleTimeElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Time>)
+    onChange={setTimeElements} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors} getTools={getTools}/>);
 
   const linkElementsOnPage = linkElements.map((props) => <Link key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={linkElements}
-    onChange={handleLinkElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></Link>)
+    onChange={setLinkElements} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors} getTools={getTools}/>);
 
   const searchElementsOnPage = searchElements.map((props) => <Searchbar key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id}
-    elements={searchElements} onChange={handleSearchElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}
-    steps={steps} setSteps={setSteps}>
-    </Searchbar>)
+    elements={searchElements} onChange={setSearchElements} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}
+    steps={steps} setSteps={setSteps} getTools={getTools}/>);
 
   const jokeElementsOnPage = jokeElements.map((props) => <Joke key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={jokeElements}
-    onChange={handleJokeElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}
-    steps={steps} setSteps={setSteps}></Joke>)
+    onChange={setJokeElements} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}
+    steps={steps} setSteps={setSteps} getTools={getTools}/>);
 
   const listElementsOnPage = listElements.map((props) => <List key={props.id} soundEffect={blop} canEdit={editable} identifier={props.id} elements={listElements}
-    onChange={handleListElementChange} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors}></List>)
+    onChange={setListElements} darkMode={darkMode} canvas={canvas} windowResize={moveElements} colorArray={colors} getTools={getTools}/>);
 
-
-
-
+  // Gets states on mount from local storage
   useEffect(() => {
-    window.addEventListener('resize', function (event) {
+    window.addEventListener('resize', function () {
       if (resizeTimer !== null) {
         this.clearTimeout(resizeTimer);
       }
@@ -171,62 +176,58 @@ function App() {
       var resizeTimer = setTimeout(function () {
         setMoveElements(true);
       }, 500);
-    })
-    if (localStorage.getItem("textElements") === "" || localStorage.getItem("dateElements") === "") {
-      console.log("it is a string");
+    });
+
+    if (localStorage.getItem("textElement") !== null) {
+      setTextElements(JSON.parse(localStorage.getItem("textElement")));
     }
-    else {
 
-      if (localStorage.getItem("textElement") !== null) {
-        setTextElements(JSON.parse(localStorage.getItem("textElement")));
-      }
-
-      if (localStorage.getItem("dateElement") !== null) {
-        setDateElements(JSON.parse(localStorage.getItem("dateElement")));
-      }
-
-      if (localStorage.getItem("timeElement") !== null) {
-        setTimeElements(JSON.parse(localStorage.getItem("timeElement")));
-      }
-
-      if (localStorage.getItem("linkElement") !== null) {
-        setLinkElements(JSON.parse(localStorage.getItem("linkElement")));
-      }
-
-      if (localStorage.getItem("searchElement") !== null) {
-        setSearchElements(JSON.parse(localStorage.getItem("searchElement")));
-      }
-
-      if (localStorage.getItem("jokeElement") !== null) {
-        setJokeElements(JSON.parse(localStorage.getItem("jokeElement")));
-      }
-
-      if (localStorage.getItem("listElement") !== null) {
-        setListElements(JSON.parse(localStorage.getItem("listElement")));
-      }
-      if (JSON.parse(localStorage.getItem("editable")) !== null) {
-        setEditable(JSON.parse(localStorage.getItem("editable")));
-      }
-      if ((localStorage.getItem("backgroundColor")) !== null) {
-        //console.log(localStorage.getItem("backgroundColor"));
-        //let arr = JSON.parse(localStorage.getItem("backgroundColor"));
-        setBackgroundColor(localStorage.getItem("backgroundColor"));
-      }
-      if (localStorage.getItem("darkMode") !== null) {
-        setDarkMode(JSON.parse(localStorage.getItem("darkMode")));
-      }
-      if (localStorage.getItem("currentBackgroundImage") !== null) {
-        setBackgroundImg(localStorage.getItem("currentBackgroundImage"));
-      }
-      if (localStorage.getItem("tutorialComplete") !== null) {
-        setTutorialComplete(JSON.parse(localStorage.getItem("tutorialComplete")));
-      }
+    if (localStorage.getItem("dateElement") !== null) {
+      setDateElements(JSON.parse(localStorage.getItem("dateElement")));
     }
+
+    if (localStorage.getItem("timeElement") !== null) {
+      setTimeElements(JSON.parse(localStorage.getItem("timeElement")));
+    }
+
+    if (localStorage.getItem("linkElement") !== null) {
+      setLinkElements(JSON.parse(localStorage.getItem("linkElement")));
+    }
+
+    if (localStorage.getItem("searchElement") !== null) {
+      setSearchElements(JSON.parse(localStorage.getItem("searchElement")));
+    }
+
+    if (localStorage.getItem("jokeElement") !== null) {
+      setJokeElements(JSON.parse(localStorage.getItem("jokeElement")));
+    }
+
+    if (localStorage.getItem("listElement") !== null) {
+      setListElements(JSON.parse(localStorage.getItem("listElement")));
+    }
+    if (JSON.parse(localStorage.getItem("editable")) !== null) {
+      setEditable(JSON.parse(localStorage.getItem("editable")));
+    }
+    if ((localStorage.getItem("backgroundColor")) !== null) {
+
+      setBackgroundColor(localStorage.getItem("backgroundColor"));
+    }
+    if (localStorage.getItem("darkMode") !== null) {
+      setDarkMode(JSON.parse(localStorage.getItem("darkMode")));
+    }
+    if (localStorage.getItem("currentBackgroundImage") !== null) {
+      setBackgroundImg(localStorage.getItem("currentBackgroundImage"));
+    }
+    /*if (localStorage.getItem("tutorialComplete") !== null) {
+      setTutorialComplete(JSON.parse(localStorage.getItem("tutorialComplete")));
+    }*/
+
     return () => {
       window.removeEventListener("resize", function () { });
     }
   }, []);
 
+  // Modifies state when a new element of a type is added
   useEffect(() => {
     localStorage.setItem("textElement", JSON.stringify(textElements));
     localStorage.setItem("dateElement", JSON.stringify(dateElements));
@@ -235,69 +236,49 @@ function App() {
     localStorage.setItem("searchElement", JSON.stringify(searchElements));
     localStorage.setItem("jokeElement", JSON.stringify(jokeElements));
     localStorage.setItem("listElement", JSON.stringify(listElements));
-    console.log(JSON.parse(localStorage.getItem("textElement")));
   }, [textElements, dateElements, timeElements, linkElements, searchElements, jokeElements, listElements]);
 
-
-
-  function handleTextElementChange(arr) {
-    setTextElements(arr);
-  }
-  function handleDateElementChange(arr) {
-    setDateElements(arr);
-  }
-  function handleTimeElementChange(arr) {
-    setTimeElements(arr);
-  }
-  function handleLinkElementChange(arr) {
-    setLinkElements(arr);
-  }
-  function handleSearchElementChange(arr) {
-    setSearchElements(arr);
-  }
-  function handleJokeElementChange(arr) {
-    setJokeElements(arr);
-  }
-  function handleListElementChange(arr) {
-    setListElements(arr);
-  }
   function changeEditable() {
-    console.log("bob");
     localStorage.setItem("editable", JSON.stringify(!editable));
     setEditable(!editable);
   }
   function addElement(type) {
+    const elem = [{ id: Math.random() * 1000 }];
     if (type === "text") {
-      const elem = [{ id: Math.random() * 200 }];
-      console.log(textElements.length);
       setTextElements(textElements.concat(elem));
     }
     else if (type === "date") {
-      const elem = [{ id: Math.random() * 200 }];
       setDateElements(dateElements.concat(elem));
     }
     else if (type === "time") {
-      const elem = [{ id: Math.random() * 200 }];
       setTimeElements(timeElements.concat(elem));
     }
     else if (type === "link") {
-      const elem = [{ id: Math.random() * 200 }];
       setLinkElements(linkElements.concat(elem));
     }
     else if (type === "search") {
-      const elem = [{ id: Math.random() * 200 }];
       setSearchElements(searchElements.concat(elem));
     }
     else if (type === "joke") {
-      const elem = [{ id: Math.random() * 200 }];
       if(jokeElements.length === 0){
         setJokeElements([jokeElements.concat(elem)]);  
       }
     }
     else if (type === "list") {
-      const elem = [{ id: Math.random() * 200 }];
       setListElements(listElements.concat(elem));
     }
+  }
+  function getTools(slidingDone, handleTrashing, x, hover){
+    return(
+        <motion.div className="tools" initial={{ opacity: 0 }} animate={hover && editable ? { opacity: 1 } : { opacity: 0 }}>
+          <div className="slider-container">
+            <div className="slider">
+              <motion.div className="handle" dragMomentum={false} style={{ x }} drag={editable ? 'x' : false} onDragEnd={(info) => { slidingDone(info) }} dragConstraints={{ left: -70, right: 70 }} dragElastic={0}/>
+            </div>
+          </div>
+          <motion.img src={trashcan} className={darkMode ? "delete-button inverted" : "delete-button"} onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}/>
+        </motion.div>
+    );
   }
 
   const sidebarContainer = {
@@ -306,7 +287,7 @@ function App() {
       scale: 1,
       transition: { staggerChildren: 0.375 }
     }
-  }
+  };
 
   const sidebarItem = { hidden: { opacity: 0, scale: 0 }, show: { opacity: 1, scale: 1 } };
 
@@ -331,6 +312,15 @@ function App() {
     localStorage.setItem("steps", JSON.stringify([true, true, true, true, true, true, true, true, steps[8], steps[9]]));
   }
 
+  function getElementIndex(identifier, elements) {
+    for (let i = 0; i < elements.length; i++) {
+      if (identifier === elements[i].id) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
   return (
     <Page animate={{ backgroundColor: backgroundColor }} backgroundImage={backgroundImg}>
       <Sidebar>
@@ -341,13 +331,13 @@ function App() {
         </EditButton>
         <Itembar variants={sidebarContainer} initial="hidden" animate={editable ? "show" : "hidden"}>
           <ItembarButton img={edit} imgDim={["55%", "35%"]} addElement={() => { addElement("text") }} darkMode={darkMode} variants={sidebarItem}
-            setSteps={() => { handleText() }}></ItembarButton>
-          <ItembarButton img={date} imgDim={["60.5%", "63.5%"]} setSteps={() => { }} addElement={() => { addElement("date") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
-          <ItembarButton img={time} imgDim={["35%", "75%"]} setSteps={() => { }} addElement={() => { addElement("time") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
-          <ItembarButton img={chain} imgDim={["32%", "75%"]} setSteps={() => { }} addElement={() => { addElement("link") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
-          <ItembarButton img={searchv2} imgDim={["60%", "60%"]} setSteps={() => { handleSearch() }} addElement={() => { addElement("search") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
-          <ItembarButton img={laugh} imgDim={["70%", "70%"]} setSteps={() => {handleJoke() }} addElement={() => { addElement("joke") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
-          <ItembarButton img={todolist} imgDim={["70%", "70%"]} setSteps={() => { }} addElement={() => { addElement("list") }} darkMode={darkMode} variants={sidebarItem}></ItembarButton>
+            setSteps={handleText}/>
+          <ItembarButton img={date} imgDim={["60.5%", "63.5%"]} setSteps={() => { }} addElement={() => { addElement("date") }} darkMode={darkMode} variants={sidebarItem}/>
+          <ItembarButton img={time} imgDim={["35%", "75%"]} setSteps={() => { }} addElement={() => { addElement("time") }} darkMode={darkMode} variants={sidebarItem}/>
+          <ItembarButton img={chain} imgDim={["32%", "75%"]} setSteps={() => { }} addElement={() => { addElement("link") }} darkMode={darkMode} variants={sidebarItem}/>
+          <ItembarButton img={searchv2} imgDim={["60%", "60%"]} setSteps={handleSearch} addElement={() => { addElement("search") }} darkMode={darkMode} variants={sidebarItem}/>
+          <ItembarButton img={laugh} imgDim={["70%", "70%"]} setSteps={handleJoke} addElement={() => { addElement("joke") }} darkMode={darkMode} variants={sidebarItem}/>
+          <ItembarButton img={todolist} imgDim={["70%", "70%"]} setSteps={() => { }} addElement={() => { addElement("list") }} darkMode={darkMode} variants={sidebarItem}/>
         </Itembar>
       </Sidebar>
 
@@ -355,7 +345,7 @@ function App() {
         onClick={() => { localStorage.setItem("darkMode", JSON.stringify(!darkMode)); setDarkMode(!darkMode) }}
         whileTap={{ scale: 0.9 }}
         whileHover={{ scale: 1.1 }}>
-        <ItemImage src={darkMode ? sun : moon} invert={darkMode ? "100%" : "0%"} style={{ height: "70%", width: "70%" }}></ItemImage>
+        <ItemImage src={darkMode ? sun : moon} invert={darkMode ? "100%" : "0%"} style={{ height: "70%", width: "70%" }}/>
       </DarkModeButton>
 
       <BackgroundWindow
@@ -371,17 +361,17 @@ function App() {
         editable={editable} darkMode={darkMode}>
       </AboutWindow>
 
-      {tutorialComplete ? <div></div> : <Tutorial darkMode={darkMode} steps={steps} setSteps={setSteps} tutorialComplete={tutorialComplete} setTutorialComplete={() => { setTutorialComplete() }}></Tutorial>}
+      {tutorialComplete ? <div/> : <Tutorial darkMode={darkMode} steps={steps} setSteps={setSteps} tutorialComplete={tutorialComplete} setTutorialComplete={setTutorialComplete}/>}
 
 
       <Canvas ref={canvas}>
         <Presets>
           <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={{ delay: .1 }}>
-            <ReactiveButton text="Set Background" darkMode={darkMode} showWindow={() => { setShowBackgroundWindow(!showBackgroundWindow) }}></ReactiveButton>
+            <ReactiveButton text="Set Background" darkMode={darkMode} showWindow={() => { setShowBackgroundWindow(!showBackgroundWindow) }}/>
           </motion.div>
 
           <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={{ delay: .3 }}>
-            <ReactiveButton text="About" darkMode={darkMode} showWindow={() => { setShowAboutWindow(!showAboutWindow) }}></ReactiveButton>
+            <ReactiveButton text="About" darkMode={darkMode} showWindow={() => { setShowAboutWindow(!showAboutWindow) }}/>
           </motion.div>
 
         </Presets>
