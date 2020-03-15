@@ -9,7 +9,6 @@ import { Window, DeleteButton, RowGrid, Title } from './windowstyled';
 
 const Subtitle = styled(Title)`
   font-size: 1.5rem;
-  padding-right: 10%;
   text-decoration: none;
 `;
 

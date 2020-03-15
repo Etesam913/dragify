@@ -33,6 +33,8 @@ const RowFlex = styled(motion.div)`
 
 const ImageThumbnail = styled(motion.img)`
   height: 5rem;
+  width: 5rem;
+  object-fit: cover;
   border-radius: .25rem;
   display: flex;
   align-self: center;

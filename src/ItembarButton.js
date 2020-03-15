@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
@@ -13,6 +13,18 @@ const Button = styled(motion.div)`
    border-style: solid;
    border-color: ${props => props.borderColor};
    background-color: rgba(255, 255, 255, 0);
+   @media(max-height: 900px){
+     width: 4rem;
+     height: 4rem;
+   }
+   @media(max-height: 600px){
+     width: 3rem;
+     height: 3rem;
+   }
+   @media(max-height: 400px){
+     width: 1.5rem;
+     height: 1.5rem;
+   }
 `;
 
 const Image = styled.img`

@@ -57,6 +57,7 @@ export const Title = styled(motion.div)`
   margin-top: .5rem;
   margin-bottom: .5rem;
   padding-left: 10%;
+  padding-right: 10%;
   border-top-left-radius: 3rem;
   text-align: center;
   @media(max-width: 1600px){

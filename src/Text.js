@@ -47,7 +47,6 @@ function Text(props) {
 
    useEffect(() => {
       textInput.current.value = localStorage.getItem("text" + props.identifier);
-      storeTranslations();
       controls.start({ x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: { duration: 1.5 } });
       console.log(props.canvas.current.offsetWidth + ", " + props.canvas.current.offsetHeight);
 
@@ -58,7 +57,10 @@ function Text(props) {
    }, [])
 
    
+   useEffect(()=>{
+    controls.start({ x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: { duration: 1.5 } });
 
+   }, [props.windowResize])
 
    function getElementIndex(identifier) {
       for (let i = 0; i < props.elements.length; i++) {
@@ -132,6 +134,7 @@ function Text(props) {
     localStorage.setItem("text" + props.identifier, event.target.value);
     if(textInput.current.value !== ""){
       props.setSteps([true, true, true, true, props.steps[4], props.steps[5], props.steps[6], props.steps[7], props.steps[8], props.steps[9]]);
+      localStorage.setItem("steps", JSON.stringify([true, true, true, true, props.steps[4], props.steps[5], props.steps[6], props.steps[7], props.steps[8], props.steps[9]]));
     }
    }
 
@@ -139,6 +142,7 @@ function Text(props) {
     setDrag(true);
     props.soundEffect.play(0.5);
     props.setSteps([true, true, true, true, true, props.steps[5], props.steps[6], props.steps[7], props.steps[8], props.steps[9]]);
+    localStorage.setItem("steps", JSON.stringify([true, true, true, true, true, props.steps[5], props.steps[6], props.steps[7], props.steps[8], props.steps[9]]));
   }
 
    if (deleted) {
@@ -152,7 +156,7 @@ function Text(props) {
           initial={{ x: 0, y: 0, opacity: 0 }} animate={controls} style={{ scale }} transition={{ opacity: { duration: 1 } }} 
           onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }} 
           dragMomentum={false} onDragStart={()=>{handleDragStart()}}
-          drag={props.canEdit ? true : false} 
+          drag={props.canEdit && props.steps[3] ? true : false} 
           onDragEnd={() => { storeTranslations(); setDrag(false); props.soundEffect.play(0.3)}} 
           dragConstraints={props.canvas}>
 

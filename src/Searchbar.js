@@ -64,6 +64,7 @@ const SearchLogoListItem = styled(SearchLogo)`
 `;
 function Searchbar(props) {
   const component = useRef(null);
+  const bar = useRef(null);
   const [engine, setEngine] = useState({ image: google, placeholder: "Search Google", action: "https://www.google.com/search" });
   const [otherEngines, setOtherEngines] = useState([]);
   const [showList, setShowList] = useState(false);
@@ -141,6 +142,13 @@ function Searchbar(props) {
     }, 1000)
   }
 
+  function handleSearch(){
+    if(bar.current.value !== "" && !props.steps[7]){
+      props.setSteps([true, true, true, true, true, true, true, props.steps[7], props.steps[8], props.steps[9]]);
+      localStorage.setItem("steps", JSON.stringify([true, true, true, true, true, true, true, props.steps[7], props.steps[8], props.steps[9]]));
+    }
+  }
+
   function getTranslations() {
     if (localStorage.getItem("translateXSearch" + props.identifier) !== null) {
       return [parseFloat(localStorage.getItem("translateXSearch" + props.identifier)), parseFloat(localStorage.getItem("translateYSearch" + props.identifier))]
@@ -216,7 +224,7 @@ function Searchbar(props) {
         
           <BarContainer className={drag ? "box-shadow" : ""} backgroundColor={props.darkMode ? "rgb(32, 34, 35)" : "#e4e4e4"} method="get" action={engine.action}>
             <SearchLogo invert={props.darkMode ? "100%" : "0%"} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => { storeOtherEngines() }} src={engine.image}></SearchLogo>
-            <Bar className="cursor-text" type="text" placeholder={engine.placeholder} name="q" size="31" autoComplete="off" fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"}></Bar>
+            <Bar ref={bar} onChange={()=>{handleSearch()}} className="cursor-text" type="text" placeholder={engine.placeholder} name="q" size="31" autoComplete="off" fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"}></Bar>
             <MagnifyingGlass type="submit" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}></MagnifyingGlass>
           </BarContainer>
   

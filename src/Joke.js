@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import './App.css';
 import trashcan from './images/trashcan.png';
 import axios from "axios";
-import { loadPartialConfig } from '@babel/core';
 
 const Component = styled(motion.div)`
     position: absolute;
@@ -133,8 +132,19 @@ function Joke(props) {
     }
   }
 
+  function handleSetup(){
+    setShowPunchline(!showPunchline);
+    setTimeout(function(){
+      props.setSteps([true, true, true, true, true, true, true, true, true, props.steps[9]]);
+    }, 3000);
+    localStorage.setItem("steps", JSON.stringify([true, true, true, true, true, true, true, true, true, props.steps[9]]));
+  }
+
   return (
-    <Component fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} ref={component} initial={{ opacity: 0 }} animate={controls} style={{ scale }} onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }} drag={props.canEdit ? true : false} onDragEnd={() => { storeTranslations() }} dragConstraints={props.canvas} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
+    <Component fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} ref={component} 
+      initial={{ opacity: 0 }} animate={controls} style={{ scale }} onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }} 
+      drag={props.canEdit ? true : false} onDragEnd={() => { storeTranslations() }} dragMomentum={false}
+      dragConstraints={props.canvas} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
       <motion.div className="tools" initial={{ opacity: 0 }} animate={hover && props.canEdit ? { opacity: 1 } : { opacity: 0 }}>
         <div className="slider-container">
           <div className="slider">
@@ -146,7 +156,7 @@ function Joke(props) {
       <JokeSetup backgroundColor={props.darkMode ? "rgb(32, 34, 35)" : "#e4e4e4"}
         initial={{ opacity: 0 }}
         animate={jokeSetup !== "" ? { opacity: 1 } : { opacity: 0 }}
-        onClick={() => { setShowPunchline(true) }} whileHover={showPunchline ? { scale: 1 } : { scale: 1.05 }} whileTap={showPunchline ? { scale: 1 } : { scale: 0.95 }}>
+        onClick={() => { handleSetup() }} whileHover={showPunchline ? { scale: 1 } : { scale: 1.05 }} whileTap={showPunchline ? { scale: 1 } : { scale: 0.95 }}>
         {loading ? "..." : jokeSetup}
       </JokeSetup>
       <JokePunchline backgroundColor={props.darkMode ? "rgb(32, 34, 35)" : "#e4e4e4"}
