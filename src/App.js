@@ -37,7 +37,6 @@ import blopAudio from './images/blop.mp3';
 
 import trashcan from "./images/trashcan.png";
 
-
 const Page = styled(motion.div)`
   position: absolute;
   height: 100%;
@@ -218,9 +217,9 @@ function App() {
     if (localStorage.getItem("currentBackgroundImage") !== null) {
       setBackgroundImg(localStorage.getItem("currentBackgroundImage"));
     }
-    /*if (localStorage.getItem("tutorialComplete") !== null) {
+    if (localStorage.getItem("tutorialComplete") !== null) {
       setTutorialComplete(JSON.parse(localStorage.getItem("tutorialComplete")));
-    }*/
+    }
 
     return () => {
       window.removeEventListener("resize", function () { });
@@ -273,7 +272,7 @@ function App() {
         <motion.div className="tools" initial={{ opacity: 0 }} animate={hover && editable ? { opacity: 1 } : { opacity: 0 }}>
           <div className="slider-container">
             <div className="slider">
-              <motion.div className="handle" dragMomentum={false} style={{ x }} drag={editable ? 'x' : false} onDragEnd={(info) => { slidingDone(info) }} dragConstraints={{ left: -70, right: 70 }} dragElastic={0}/>
+              <motion.div className="handle" dragMomentum={false} style={{ x }} drag={editable ? 'x' : false} onDragEnd={(event, info) => { slidingDone(info) }} dragConstraints={{ left: -70, right: 70 }} dragElastic={0}/>
             </div>
           </div>
           <motion.img src={trashcan} className={darkMode ? "delete-button inverted" : "delete-button"} onClick={() => { handleTrashing() }} whileHover={{ scale: 1.15 }} whileTap={{ scale: .9 }}/>
@@ -362,7 +361,6 @@ function App() {
       </AboutWindow>
 
       {tutorialComplete ? <div/> : <Tutorial darkMode={darkMode} steps={steps} setSteps={setSteps} tutorialComplete={tutorialComplete} setTutorialComplete={setTutorialComplete}/>}
-
 
       <Canvas ref={canvas}>
         <Presets>
