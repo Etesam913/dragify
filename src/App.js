@@ -259,9 +259,7 @@ function App() {
       setSearchElements(searchElements.concat(elem));
     }
     else if (type === "joke") {
-      if(jokeElements.length === 0){
-        setJokeElements([jokeElements.concat(elem)]);  
-      }
+      setJokeElements(jokeElements.concat(elem));
     }
     else if (type === "list") {
       setListElements(listElements.concat(elem));

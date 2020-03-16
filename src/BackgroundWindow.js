@@ -77,7 +77,7 @@ function BackgroundWindow(props) {
   };
 
 
-  const colors = ['#f2f2f2', '#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#000000', '#800080', '#CCFF00', '#FFDAB9', '#FFD700', '#0000EE', '#800000', '#1F1F1F'];
+  const colors = ['#f2f2f2', '#FF6900', '#FCB900', '#7BDCB5', '#00D084', '#8ED1FC', '#0693E3', '#ABB8C3', '#EB144C', '#F78DA7', '#800080', '#CCFF00', '#FFDAB9', '#FFD700', '#0000EE', '#800000', '#1F1F1F'];
   const [imageError, setImageError] = useState("");
   const [prevImgs, setPrevImgs] = useState(["", "", "", "", "", ""]);
 
@@ -92,9 +92,10 @@ function BackgroundWindow(props) {
   //Image uploading
   function imageHandler(e) {
     const files = e.target.files;
-    if (files[0].size > 1048576) { // File cannot be greater than a megabyte
-      setImageError("File has to be under 1 megabyte.");
+    if (files[0].size > 524288) { // File cannot be greater than 500 kb
+      setImageError("File has to be under 500 kb.");
     } else {
+      setImageError("Image successfully uploaded.")
       uploadBackgroundImage(files);
     }
   }
@@ -160,8 +161,8 @@ function BackgroundWindow(props) {
         Upload Image
         </FileLabel>
 
-        <FileInput id="backgroundFile" type="file" onChange={(e) => { imageHandler(e) }}/>
-  
+        <FileInput id="backgroundFile" type="file" onChange={(e) => { imageHandler(e) }} accept=".png,.jpg,.svg"/>
+
         <RemoveImage className="cursor-auto"
         buttonBackgroundColor = {props.darkMode ? "rgb(32, 34, 35)" : "rgb(80%, 80%, 80%)"} 
         onClick={() => { localStorage.setItem("currentBackgroundImage", ""); props.setBackgroundImg("")}}

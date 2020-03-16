@@ -12,6 +12,8 @@ const Component = styled(motion.div)`
     flex-direction: column;
     z-index: 1;
     color: ${props => props.fontColor};
+    padding-left: .5rem;
+    padding-right: .5rem;
 `;
 
 const JokeSetup = styled(motion.div)`
@@ -39,6 +41,7 @@ function Joke(props) {
   const [showPunchline, setShowPunchline] = useState(false);
   const [error, setError] = useState(false);
   const [hover, setHover] = useState(false);
+  const [drag, setDrag] = useState(false);
   const component = useRef(null);
 
   const x = useMotionValue(getScalePos());
@@ -66,10 +69,9 @@ function Joke(props) {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    controls.start({ x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: { duration: 1.5 } });
-
-  }, [props.windowResize]);
+  useEffect(()=>{
+    console.log(props.canEdit);
+  }, [props.canEdit])
 
   // Trashing
   function getElementIndex(identifier) {
@@ -95,7 +97,6 @@ function Joke(props) {
 
   function getScalePos() {
     if (localStorage.getItem("scalePosJoke" + props.identifier) !== null) {
-      console.log(parseInt(localStorage.getItem("scalePosJoke" + props.identifier)));
       return parseInt(localStorage.getItem("scalePosJoke" + props.identifier));
     }
     else {
@@ -134,15 +135,16 @@ function Joke(props) {
   }
 
   return (
-    <Component fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} ref={component} 
+    <Component className={drag ? "cursor-dragging" : "cursor-drag"} fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} ref={component}
       initial={{ opacity: 0 }} animate={controls} style={{ scale }} onHoverStart={() => { setHover(true) }} onHoverEnd={() => { setHover(false) }} 
-      drag={props.canEdit ? true : false} onDragEnd={() => { storeTranslations() }} dragMomentum={false}
+      drag={props.canEdit ? true : false} onDragEnd={() => { storeTranslations(); setDrag(false); props.soundEffect.play(0.3) }}
+      dragMomentum={false} onDragStart={()=>{setDrag(true); props.soundEffect.play(0.5)}}
       dragConstraints={props.canvas} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
       {props.getTools(slidingDone, handleTrashing, x, hover)}
       <JokeSetup backgroundColor={props.darkMode ? "rgb(32, 34, 35)" : "#e4e4e4"}
         initial={{ opacity: 0 }}
         animate={jokeSetup !== "" ? { opacity: 1 } : { opacity: 0 }}
-        onClick={() => { handleSetup() }} whileHover={showPunchline ? { scale: 1 } : { scale: 1.05 }} whileTap={showPunchline ? { scale: 1 } : { scale: 0.95 }}>
+        onClick={() => { handleSetup() }} whileHover={{scale: 1.05}} whileTap={showPunchline ? { scale: 1 } : { scale: 0.95 }}>
         {loading ? "..." : jokeSetup}
       </JokeSetup>
       <JokePunchline backgroundColor={props.darkMode ? "rgb(32, 34, 35)" : "#e4e4e4"}

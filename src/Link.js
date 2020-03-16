@@ -187,8 +187,8 @@ function Link(props) {
   // Image and Storage Functions
   function imageHandler(e) {
     const files = e.target.files;
-    if (files[0].size > 524288) { // 500 kilobytes
-      setImageError("File has to be under 500 kilobytes");
+    if (files[0].size > 104857.) { // 100 kilobytes
+      setImageError("File has to be under 100 kilobytes");
     }
     else {
       setImageError("Submitted Successfully");
@@ -254,7 +254,7 @@ function Link(props) {
         <Box className={drag ? "box-shadow" : ""} backgroundColor={props.darkMode ? "rgb(39, 39, 39)" : "rgb(90%, 90%, 90%);"}
           animate={{ borderRadius: "20%" }} transition={{ duration: 1 }}>
           <FileLabel className="cursor-auto" buttonBackgroundColor={props.darkMode ? "rgb(32, 34, 35)" : "rgb(80%, 80%, 80%)"} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} htmlFor="files">Select Image</FileLabel>
-          <FileInput id="files" type="file" onChange={(e) => { imageHandler(e) }}></FileInput>
+          <FileInput id="files" type="file" onChange={(e) => { imageHandler(e) }} accept=".png,.jpeg,.svg"></FileInput>
           <Subtitle style={{ marginBottom: ".5rem", marginTop: ".5rem" }}>{imageError}</Subtitle>
           <Button className="cursor-auto" buttonBackgroundColor={props.darkMode ? "rgb(32, 34, 35)" : "rgb(80%, 80%, 80%)"} fontColor={props.darkMode ? "rgb(232, 230, 227)" : "black"} onClick={() => { storeImage() }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>Submit</Button>
         </Box>

@@ -133,7 +133,9 @@ function Text(props) {
        onDragEnd={() => { storeTranslations(); setDrag(false); props.soundEffect.play(0.3)}}
        dragConstraints={props.canvas}>
          {props.getTools(slidingDone, handleTrashing, x, hover)}
-         <TextArea className= {drag ? "text-shadow" : "cursor-text"} ref={textInput} animate={{color: color}} transition={{duration: 0.5, type: "spring", damping: 300}} readOnly={props.canEdit ? false : true}  onChange={(event) => { handleTextChange(event) }} placeholder="placeholder"></TextArea>
+         <TextArea className= {drag ? "text-shadow" : "cursor-text"} ref={textInput}
+            animate={{color: color}} transition={{duration: 0.5, type: "spring", damping: 300}} readOnly={props.canEdit ? false : true}
+            onChange={(event) => { handleTextChange(event) }} placeholder="Enter Text Here"></TextArea>
          <ColorContainer initial={{ opacity: 0}} animate={hover && props.canEdit ? { opacity: 1} : { opacity: 0 }}>
             <CirclePicker colors={props.colorArray} width="30rem" onChange={handleColorChange}/>
          </ColorContainer>

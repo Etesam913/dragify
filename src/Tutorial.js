@@ -100,7 +100,6 @@ function Tutorial(props) {
   }
 
   useEffect(() => {
-    //props.setSteps([false, false, false, false, false, false, false, false, false, false,]);
     if(localStorage.getItem("steps") !== null){
       props.setSteps(JSON.parse(localStorage.getItem("steps")));
     }
@@ -134,7 +133,7 @@ function Tutorial(props) {
           <Logo src={flowifyLarge}></Logo>
         </TitleRow>
 
-        <Description variants={variants} initial="hidden" animate="show" transition={{ delay: .4 }}>A Free Flowing Extension</Description>
+        <Description variants={variants} initial="hidden" animate="show" transition={{ delay: .4 }}>A Free Flowing New Tab Extension</Description>
 
         <ButtonContainer variants={variants} initial="hidden" animate="show" transition={{ delay: .8 }}>
           <ReactiveButton showWindow={() => { handleTutorialComplete() }} text="Skip Tutorial"></ReactiveButton>
