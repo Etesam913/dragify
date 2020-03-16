@@ -7,31 +7,31 @@
 ## 📦 Install
 
 
-## Previews
+## 🤔 Previews
 
 ### Text Element
-<p align="center"><img src="gifs/TextComponent.gif"></img></p>
+<img src="gifs/TextComponent.gif"></img>
 
 ### Date Element
-<p align="center"> <img src="gifs/TodayComponent.gif"></img></p>
+<img src="gifs/TodayComponent.gif"></img>
 
 ### Time Element
-<p align="center"> <img src="gifs/TimeComponent.gif"></img></p>
+<img src="gifs/TimeComponent.gif"></img>
 
 ### Thumbnail Element
-<p align="center"> <img src="gifs/LinkComponent.gif"></img></p>
+<img src="gifs/LinkComponent.gif"></img></p>
 
 ### Searchbar Element
-<p align="center"> <img src="gifs/SearchComponent.gif"></img></p>
+<img src="gifs/SearchComponent.gif"></img>
 
 ### Joke Element
-<p align="center"> <img src="gifs/JokeComponent.gif"></img></p>
+<img src="gifs/JokeComponent.gif"></img>
 
 ### List Element
-<p align="center"> <img src="gifs/ListComponent.gif"></img></p>
+<img src="gifs/ListComponent.gif"></img>
 
 ### Background Options
-<p align="center"> <img src="gifs/BackgroundOptions.gif"></img></p>
+<img src="gifs/BackgroundOptions.gif"></img>
 
 
 
