@@ -138,6 +138,11 @@ function BackgroundWindow(props) {
     localStorage.setItem("backgroundColor", colorVal.hex);
   }
 
+  function handlePrevImgChange(img){
+    props.setBackgroundImg(img);
+    localStorage.setItem("currentBackgroundImage", img);
+  }
+
   return (
     <Window darkMode={props.darkMode} variants={backgroundVariants} initial={{ opacity: 0, scale: 0 }}  animate={props.showBackgroundWindow && props.editable ? "show" : "hidden"}>
       <RowGrid>
@@ -174,12 +179,12 @@ function BackgroundWindow(props) {
       <RowFlex>{imageError}</RowFlex>
       <RowTitle>Previous Background Images</RowTitle>
       <PreviousImages>
-        <ImageThumbnail src={prevImgs[0]} onClick={()=>{props.setBackgroundImg(prevImgs[0])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}/>
-        <ImageThumbnail src={prevImgs[1]} onClick={()=>{props.setBackgroundImg(prevImgs[1])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}/>
-        <ImageThumbnail src={prevImgs[2]} onClick={()=>{props.setBackgroundImg(prevImgs[2])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}/>
-        <ImageThumbnail src={prevImgs[3]} onClick={()=>{props.setBackgroundImg(prevImgs[3])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}/>
-        <ImageThumbnail src={prevImgs[4]} onClick={()=>{props.setBackgroundImg(prevImgs[4])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}/>
-        <ImageThumbnail src={prevImgs[5]} onClick={()=>{props.setBackgroundImg(prevImgs[5])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}/>
+        <ImageThumbnail src={prevImgs[0]} onClick={()=>{handlePrevImgChange(prevImgs[0])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}/>
+        <ImageThumbnail src={prevImgs[1]} onClick={()=>{handlePrevImgChange(prevImgs[1])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}/>
+        <ImageThumbnail src={prevImgs[2]} onClick={()=>{handlePrevImgChange(prevImgs[2])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}/>
+        <ImageThumbnail src={prevImgs[3]} onClick={()=>{handlePrevImgChange(prevImgs[3])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}/>
+        <ImageThumbnail src={prevImgs[4]} onClick={()=>{handlePrevImgChange(prevImgs[4])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}/>
+        <ImageThumbnail src={prevImgs[5]} onClick={()=>{handlePrevImgChange(prevImgs[5])}} whileHover={{scale: 1.1}} whileTap={{scale: .95}}/>
       </PreviousImages>
     </Window>
   );
