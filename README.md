@@ -5,6 +5,7 @@
 <p align="center">A Free Flowing New Tab Extension</p>
 
 ## 📦 Install
+### Firefox: https://addons.mozilla.org/en-US/firefox/addon/flowify/?src=search
 
 
 ## 🤔 Previews
