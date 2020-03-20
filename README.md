@@ -7,6 +7,8 @@
 ## 📦 Install
 ### Firefox: https://addons.mozilla.org/en-US/firefox/addon/flowify/?src=search
 
+## 📹 Video
+### https://www.youtube.com/watch?v=Oh9byT0PMnc
 
 ## 🤔 Previews
 

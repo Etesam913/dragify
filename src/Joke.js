@@ -70,8 +70,8 @@ function Joke(props) {
   }, []);
 
   useEffect(()=>{
-    console.log(props.canEdit);
-  }, [props.canEdit])
+    controls.start({ x: getTranslations()[0], y: getTranslations()[1], opacity: 1, transition: { duration: 1.5 } });
+  }, [props.windowResize])
 
   // Trashing
   function getElementIndex(identifier) {
