@@ -89,7 +89,7 @@
 }
 
 .cursor-drag{
-  cursor: url("./images/hovercursor.png") 10 2, grab;
+  cursor: url("./images/hovercursor.png") , grab;
 }
 .cursor-dragging{
   cursor: url("./images/draggingcursor.png"), grab;

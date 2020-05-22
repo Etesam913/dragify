@@ -9,7 +9,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import UIfx from 'uifx';
-
+import CursorBlur from 'react-mouse-blur';
 import Text from './Text.js';
 import Today from './Today.js';
 import Time from './Time.js';
@@ -34,7 +34,7 @@ import backarrow from './images/backarrow.png';
 import BackgroundWindow from './BackgroundWindow.js';
 import AboutWindow from './AboutWindow.js';
 import blopAudio from './images/blop.mp3';
-
+import cursor from './images/autocursor.png';
 import trashcan from "./images/trashcan.png";
 
 const Page = styled(motion.div)`
@@ -115,7 +115,7 @@ const Canvas = styled.div`
 const blop = new UIfx(
   blopAudio,
   {
-    volume: 1, // number between 0.0 ~ 1.0
+    volume: 1
   }
 );
 
@@ -319,7 +319,7 @@ function App() {
   }
 
   return (
-    <Page animate={{ backgroundColor: backgroundColor }} backgroundImage={backgroundImg}>
+    <Page className="cursor-auto" animate={{ backgroundColor: backgroundColor }} backgroundImage={backgroundImg}>
       <Sidebar>
         <EditButton buttonBackgroundColor={darkMode ? "#434342" : "#e0d9d3"} variants={sidebarItem}
           onClick={() => { handleEdit() }}
@@ -359,7 +359,7 @@ function App() {
       </AboutWindow>
 
       {tutorialComplete ? <div/> : <Tutorial darkMode={darkMode} steps={steps} setSteps={setSteps} tutorialComplete={tutorialComplete} setTutorialComplete={setTutorialComplete}/>}
-
+      <CursorBlur image={cursor} intensity={4} transparency = {true} canvas = {canvas}/>
       <Canvas ref={canvas}>
         <Presets>
           <motion.div animate={editable ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }} transition={{ delay: .1 }}>

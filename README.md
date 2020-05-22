@@ -1,7 +1,4 @@
-<p align="center"> <img height=150 src="screenshots/flowify.png"></img></p>
-
-
-<h1 align="center">Flowify</h1>
+<h1 align="center">Dragify</h1>
 <p align="center">A Free Flowing New Tab Extension</p>
 
 ## 📦 Install

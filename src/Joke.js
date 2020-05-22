@@ -140,6 +140,7 @@ function Joke(props) {
       drag={props.canEdit ? true : false} onDragEnd={() => { storeTranslations(); setDrag(false); props.soundEffect.play(0.3) }}
       dragMomentum={false} onDragStart={()=>{setDrag(true); props.soundEffect.play(0.5)}}
       dragConstraints={props.canvas} dragTransition={{ bounceStiffness: 300, bounceDamping: 10 }}>
+      
       {props.getTools(slidingDone, handleTrashing, x, hover)}
       <JokeSetup backgroundColor={props.darkMode ? "rgb(32, 34, 35)" : "#e4e4e4"}
         initial={{ opacity: 0 }}
