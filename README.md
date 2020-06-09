@@ -1,8 +1,8 @@
-<h1 align="center">Dragify</h1>
+<h1 align="center">o</h1>
 <p align="center">A Free Flowing New Tab Extension</p>
 
 ## 📦 Install
-### Firefox: https://addons.mozilla.org/en-US/firefox/addon/flowify/?src=search
+### Firefox: https://addons.mozilla.org/en-US/firefox/addon/dragify
 
 ## 📹 Video
 ### https://www.youtube.com/watch?v=Oh9byT0PMnc
