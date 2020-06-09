@@ -1,4 +1,4 @@
-<h1 align="center">o</h1>
+<h1 align="center">Dragify</h1>
 <p align="center">A Free Flowing New Tab Extension</p>
 
 ## 📦 Install
